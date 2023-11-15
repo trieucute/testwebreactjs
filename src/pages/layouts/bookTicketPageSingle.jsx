@@ -1,0 +1,851 @@
+import React, { useEffect, useState } from 'react';
+// import "../../assets/css/home.css";
+// import "../../assets/css/searchBus.css";
+import "../../assets/css/datve.css";
+import xe2 from "../../assets/images/xe2.gif";
+import city from "../../assets/images/city2.jpg";
+import axiosClient from '../../axios-client';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import Autocomplete from 'react-autocomplete';
+import { TimeHM, formatDate } from '../../config';
+import Notification from '../NotificationTrip';
+import { useStateContext } from '../../context/ContextProvider';
+import Loading from '../loadingTrip';
+import { setFormData, setUserData } from '../../reduxTool/dataTicketSlice';
+
+
+const BookTicketPageSingle  = () => {
+    const tabsStepMobile = () => {
+        const tabs = document.querySelectorAll(".tabs-step");
+        const butNext = document.querySelectorAll(".button_step");
+        const content = document.querySelectorAll(".items-choose");
+      
+        const openTabs = (e) => {
+          const btn = e.currentTarget;
+          const dataTab = btn.dataset.tabs;
+
+          const dataNext = btn.dataset.next;
+      
+          content.forEach((el) => {
+            el.classList.remove("active-step-item");
+          });
+          tabs.forEach((el) => {
+            el.classList.remove("active-step");
+          });
+      
+          if (dataTab) {
+            document.querySelector("#" + dataTab).classList.add("active-step-item");
+            btn.classList.add("active-step");
+          }
+      
+          if (dataNext) {
+            document.querySelector("#" + dataNext).classList.add("active-step-item");
+            const id = document.querySelector('.active-step-item').getAttribute("id");
+            document.querySelectorAll(".tabs-step").forEach((e) => {
+              if (e.dataset.tabs === id) {
+                e.classList.add("active-step");
+              }
+            });
+          }
+      
+      
+        };
+      
+        tabs.forEach((e) => {
+          e.addEventListener("click", openTabs);
+        });
+        butNext.forEach((e) => {
+          e.addEventListener("click", openTabs);
+        });
+   
+      };
+      const showInforBus=()=>{
+        
+        let InforBus= document.getElementById('infor_bus_router');
+        let showInfor= document.querySelector('.infor_bus_router')
+        InforBus.addEventListener("click",()=>{
+            showInfor.classList.add('active-busInfor')
+        })
+        showInfor.classList.remove('active-busInfor');
+
+        let close = document.querySelector('#close-infor');
+        close.addEventListener('click', () => {
+              showInfor.classList.remove('active-busInfor');
+          });
+        }
+        
+        const navigate= useNavigate()
+        const tripId= useSelector(state => state.tripReducer.selectedTrip);
+        // if(tripId===null){
+     
+        // }
+        console.log(tripId);
+   const [tripDetail,setTripDetail]= useState([])
+   const [selectedSeats, setSelectedSeats] = useState([]);
+   const [showFullMessage, setShowFullMessage] = useState(false);
+   const handleSeatClick = (seat) => {
+    if (seat.status !== 'booked') {
+      const seatIndex = selectedSeats.indexOf(seat.position);
+      if (seatIndex === -1 && selectedSeats.length < 5) {
+        // Nếu chưa được chọn và số lượng ghế đã chọn chưa đạt tới giới hạn (5)
+        setSelectedSeats([...selectedSeats, seat.position]);
+      } else if (seatIndex !== -1) {
+        // Nếu đã được chọn, loại bỏ khỏi mảng
+        const newSelectedSeats = [...selectedSeats];
+        newSelectedSeats.splice(seatIndex, 1);
+        setSelectedSeats(newSelectedSeats);
+      }
+      else {
+        setShowFullMessage(true); // Hiển thị thông báo khi đã chọn đủ 5 ghế
+      // Ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        setShowFullMessage(false);
+      }, 4000);
+    }
+  }
+  };
+
+   console.log(selectedSeats)
+
+   const { token } = useStateContext();
+   const [user, setUser] = useState({});
+   const [isLoading, setIsLoading] = useState(true); // Biến trạng thái để kiểm soát việc hiển thị
+
+  // useEffect(()=>{
+
+  // })
+      useEffect(()=>{
+        window.scrollTo(0, 0);
+        if (!tripId) {
+          navigate('/lichtrinh1chieu/?'); // Điều hướng đến đường dẫn tìm kiếm chuyến xe của bạn
+          return; // Dừng các thao tác tiếp theo nếu không có tripId
+        }
+        // setIsLoading(true);
+        const fetchData = async () => {
+          try {
+            setIsLoading(true); // Bắt đầu hiển thị "Loading..."
+    
+            // Fetch dữ liệu từ API /trip/${tripId}
+            const tripResponse = await axiosClient.get(`/trip/${tripId}`);
+            const tripData = tripResponse.data.data;
+            setTripDetail(tripData);
+    
+            // Gọi API lấy thông tin người dùng nếu có token
+            if (token) {
+              const userInfor = {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              };
+              const userResponse = await axiosClient.get("/user/profile", userInfor);
+              const userData = userResponse.data.data;
+              setUser(userData);
+            }
+  
+            setIsLoading(false); // Dừng hiển thị "Loading..." khi đã tải xong dữ liệu
+            
+            tabsStepMobile();
+            showInforBus();
+          } catch (error) {
+            console.error(error);
+            setIsLoading(false); // Dừng hiển thị "Loading..." khi gặp lỗi trong quá trình tải dữ liệu
+          }
+        };
+    
+        fetchData();
+       
+      },[tripId, token])
+    //   console.log(tripDetail.seats.position);
+    const [pickupValue, setPickupValue] = useState('');
+    const [dropoffValue, setDropoffValue] = useState('');
+    const [selectedPickup, setSelectedPickup] = useState(null);
+    const [selectedDropoff, setSelectedDropoff] = useState(null);
+  
+    const handleSelect = (value, item, type) => {
+      // Đây là nơi để xử lý khi một mục được chọn
+      // Trong ví dụ này, mình giữ thông tin của mục đã chọn
+      if (type === 'pickup') {
+        setPickupValue(value);
+        setSelectedPickup(item);
+      } else if (type === 'dropoff') {
+        setDropoffValue(value);
+        setSelectedDropoff(item);
+      }
+    };
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNum, setPhoneNum] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
+    const formData = useSelector((state) => state.dataTicket.formData);
+    const userData = useSelector((state) => state.dataTicket.userData);
+    const dispatch = useDispatch()
+    const handlePay=(e)=>{
+      e.preventDefault();
+      if (selectedSeats.length === 0) {
+        alert('Vui lòng chọn ghế');
+        return;
+      }
+        // Kiểm tra nếu không có giá trị trong input thì hiển thị thông báo
+    if (!pickupValue.trim()) {
+      alert('Vui lòng chọn điểm đi');
+      return; // Dừng việc xử lý nếu không có giá trị trong input
+    }
+    if (!dropoffValue.trim()) {
+      alert('Vui lòng chọn điểm đến');
+      return; // Dừng việc xử lý nếu không có giá trị trong input
+    }
+    if (!isChecked) {
+      alert('Vui lòng chấp nhận điều khoản và chính sách bảo mật của WebProTicket');
+      return;
+    }
+    if(name ==='' || email ==="" || phoneNum===""){
+        alert('Vui lòng nhập đầy đủ thông tin khách hàng');
+    return; // Dừng việc xử lý nếu không có giá trị trong input
+    }
+  
+    
+     // Lưu dữ liệu vào Redux store bằng cách dispatch các actions
+     dispatch(setFormData({pickupValue, dropoffValue, selectedSeats}));
+     dispatch(setUserData({ name, email, phoneNum }));
+    //  console.log('formData ', formData ,'userData',userData);
+    }
+    useEffect(() => {
+      console.log('formData:', formData);
+      console.log('userData:', userData);
+    }, [formData, userData]);
+
+
+    return (
+        <div className='mt-10'>
+            {/* ---------------------------tên chuyến xe (TP.HCM -> ĐÀ LẠT ) từ đâu đến đâu ----------------------------*/}
+            {isLoading ? (
+              <Loading/>
+      ) : (
+        <>
+        <form action="">
+        <div className='routes-bus-container container  ps-0 pe-0'>
+
+                <div className=" d-flex align-items-center" style={{backgroundColor:"white"}}>
+                    <div className='w-25 text-center'><img src={xe2} alt="" style={{width:"65%"}} /></div>
+                    <div className='text-center w-50 ' >
+                        <h5 className='p-0 m-0'>
+                        {tripDetail&& tripDetail.start_station &&  tripDetail.end_station&&(
+                          <>{tripDetail.start_station.province} - {tripDetail.end_station.province}</>
+                        )
+                        }
+                          {/* TP.Hồ Chí Minh - Đà Lạt */}
+                          </h5>
+                        <span className='date_go'> {tripDetail && tripDetail.departure_time&&(
+                                       <>{formatDate( tripDetail.departure_time)}</>
+                                      )}
+                        </span>
+                    </div>
+                    <div className='w-25 text-center'><img src={city} alt=""  style={{width:"63%"}} /></div>
+                </div>
+
+            {/* ---------------------------CÁC BƯỚC THỰC HIỆN MUA VÉ TRÊN MOBILE----------------------------*/}
+
+                <div className='steps-booking-contents'>
+                <div className='row align-items-center p-2' style={{margin:"0 auto", width:"98%"}}>
+                    <div className='col text-center tabs-step active-step' data-tabs="step1">
+                        <span className='position-relative'>
+                            <svg width={22} height={22} viewBox="0 0 15 15"  xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7.5" cy="7.5" r="7.5" fill="#AEACAC" fillOpacity="0.8" />
+                            </svg>
+                            <span className='number-step' >1</span>
+                        </span>
+                        
+                        <br />
+                        <span>Chọn ghế</span>
+                    </div>
+                    <div className='col border-step'>
+                    </div>
+                    <div className='col  text-center  tabs-step' data-tabs="step2">
+                        <span className='position-relative'>
+                            <svg width={22} height={22} viewBox="0 0 15 15"  xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7.5" cy="7.5" r="7.5" fill="#AEACAC" fillOpacity="0.8" />
+                            </svg>
+                            <span className='number-step' >2</span>
+                        </span>
+                        
+                        <br />
+                        <span>Địa điểm </span>
+                    </div>
+                    <div className='col border-step'>
+                    </div>
+                    <div className='col  text-center  tabs-step' data-tabs="step3">
+                        <span className='position-relative'>
+                            <svg width={22} height={22} viewBox="0 0 15 15"  xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7.5" cy="7.5" r="7.5" fill="#AEACAC" fillOpacity="0.8" />
+                            </svg>
+                            <span className='number-step' >3</span>
+                        </span>
+                        
+                        <br />
+                        <span>Thông tin</span>
+                    </div>
+                    <div className='col border-step '>
+                    </div>
+                    <div className='col  text-center  tabs-step' data-tabs="step4">
+                        <span className='position-relative'>
+                            <svg width={22} height={22} viewBox="0 0 15 15"  xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7.5" cy="7.5" r="7.5" fill="#AEACAC" fillOpacity="0.8" />
+                            </svg>
+                           <span className='number-step' >4</span> 
+                        </span>
+                        
+                        <br />
+                        <span>Thanh toán</span>
+                    </div>
+                </div>
+            </div>
+            {/* ------------------------END---CÁC BƯỚC THỰC HIỆN MUA VÉ TRÊN MOBILE----------------------------*/}
+
+            </div>
+            {/* --------------------------END -tên chuyến xe  từ đâu đến đâu ----------------------------*/}
+        
+            <div className=" my-3 ">
+          <div className="contents-items-choose container ">
+                    <div className='row'>
+                        <div className="col-md-8  card backWhite-padding" style={{border:"none"}}>
+                            <div className='items-contents'>
+                                {/* --------------------------- BƯỚC 1 CHỌN GHẾ---------------------------*/}
+                        
+                   
+                                <div className='items-chair items-choose active-step-item' id='step1'>
+                                <div className='d-flex justify-content-between'>
+                                    <h5>Chọn ghế</h5>
+                                {/* ---------------------------THÔNG TIN XE --------------------------*/}
+
+                                    <h6 className=' position-relative' id='infor_bus_router' style={{cursor:"pointer"}}>Thông tin xe</h6>
+                                    
+                                    <div className='position-absolute infor_bus_router ' >
+                                        <div className='py-3'>
+                                            <div className='d-flex justify-content-between px-3 pb-2'>
+                                                <h5 >Chính sách</h5>
+                                                <span className='pe-1' id='close-infor' style={{cursor:"pointer"}}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512" style={{fill:'#cececf'}}>
+                                                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" />
+                                                    </svg>
+                                                </span>
+                                           </div>
+                                           <div className='row overflow-auto' style={{width:"95%", margin:"0 auto"}}>
+                                                <div className='items_infor_bus_router '>
+                                                    <h6>Chính sách huỷ vé</h6>
+                                                    <ul>
+                                                        <li>Chỉ được chuyển đổi vé 1 lần duy nhất</li>
+                                                        <li>Chi phí hủy vé từ 10% – 30% giá vé tùy thuộc thời gian hủy vé so với giờ khởi hành ghi trên vé và số lượng vé cá nhân/tập thể áp dụng theo các quy định hiện hành.</li>
+                                                        <li>Quý khách khi có nhu cầu muốn thay đổi hoặc hủy vé đã thanh toán, cần liên hệ với Trung tâm tổng đài 1900 6067 hoặc quầy vé chậm nhất trước 24h so với giờ xe khởi hành được ghi trên vé, trên email hoặc tin nhắn để được hướng dẫn thêm.</li>
+
+                                                    </ul>
+                                                    <hr />
+                                                </div>
+                                                
+                                                <div  className='items_infor_bus_router'>
+                                                    <h6>Yêu cầu khi lên xe</h6>
+                                                    <ul>
+                                                        <li>Có mặt tại Văn phòng/Bến xe (Địa điểm xe đón trực tiếp) trước 30 phút để làm thủ tục lên xe (đối với ngày lễ tết cần ra trước 60 phút).</li>
+                                                        <li>Không mang thức ăn/đồ uống có mùi lên xe.</li>
+                                                        <li>Không hút thuốc, không sử dụng đồ uống có cồn hoặc sử dụng chất kích thích trên xe.</li>
+                                                        <li>Không mang các vật dễ cháy nổ lên xe.</li>
+                                                        <li>Không vứt rác trên xe.</li>
+                                                        <li>Không mang động vật lên xe.</li>
+
+                                                    </ul>
+                                                    <hr />
+
+                                                </div>
+                                                <div  className='items_infor_bus_router'>
+                                                    <h6>Hành lý xách tay</h6>
+                                                    <ul>
+                                                        <li>Tổng trọng lượng hành lý không vượt quá 20kg</li>
+                                                        <li>Không vận chuyển hàng hoá cồng kềnh</li>
+                                                
+
+                                                    </ul>
+                                                    <hr />
+
+                                                </div>
+                                                <div  className='items_infor_bus_router'>
+                                                    <h6>Trẻ em dưới 6 tuổi và phụ nữ có thai</h6>
+                                                    <ul>
+                                                        <li>Trẻ em dưới 6 tuổi, cao từ 1.3m trở xuống, cân nặng dưới 30kg thì không phải mua vé.</li>
+                                                        <li>Trong trường hợp trẻ em không thoả 1 trong 3 tiêu chí trên sẽ mua 01 vé tương đương với người lớn</li>
+                                                        <li>Mỗi người lớn sẽ đi kèm tối đa một trẻ em.</li>
+                                                        <li>Phụ nữ có thai cần đảm bảo sức khoẻ trong suốt quá trình di chuyển.</li>
+                                                        <li>Không vứt rác trên xe.</li>
+                                                        <li>Không mang động vật lên xe.</li>
+
+                                                    </ul>
+                                                    <hr />
+
+                                                </div>
+                                                <div  className='items_infor_bus_router'>
+                                                    <h6>Vé đón đường</h6>
+                                                    <ul>
+                                                        <li>Trường hợp có nhu cầu lên xe dọc đường, Quý khách vui lòng liên hệ tổng đài 19006067 để đăng kí trước ít nhất 2 tiếng so với giờ xe khởi hành và vui lòng chuẩn bị hành lý nhỏ gọn (tối đa 20kg).</li>
+                                                        <li>Lưu ý, chúng tôi chỉ hỗ trợ đón ở một số địa điểm thuận tiện nằm trên lộ trình</li>
+                            
+                                                    </ul>
+                                                </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                {/* ------------------------END---THÔNG TIN XE --------------------------*/}
+
+                                </div>
+
+                                <div className='row px-4 py-3 '>
+                                {showFullMessage&& <Notification message="Đã chọn đủ số ghế!" />}
+                                    {/*-------------------- SỐ GHẾ TẦNG DƯỚI--------------------------*/}
+                                    <div className='items-FloorDown col-sm-4 '>
+                                        <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
+                                        <div className='row items-content-floor'>
+                                        {tripDetail&& tripDetail.seats &&
+                                            tripDetail.seats
+                                              .filter(seat => seat.position.startsWith('A'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className={`items-content-floor-row ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' ? 'Chosen-seat' : ''}`}
+                                                    key={seat.id}
+                                                    onClick={() => handleSeatClick(seat)}
+                                                    >
+                                                  <div className='d-flex justify-content-between m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                         className={selectedSeats.includes(seat.position) ? 'selected-path' : ''}
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute ${selectedSeats.includes(seat.position) ? 'selected-span' : ''}`} style={{ fontSize: "0.6em", top: "3px" }}>{seat.position}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              ))
+                                         
+                                        
+                                             
+                                        }
+
+                                        </div>
+                                   
+                                    </div>
+                                    {/*----------------END---- SỐ GHẾ TẦNG DƯỚI --------------------------*/}
+
+
+                                    {/*-------------------- SỐ GHẾ TẦNG TRÊN--------------------------*/}
+                                    <div className='items-FloorUp col-sm-4'>
+                                        <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
+                                        <div className='row items-content-floor'>
+                                        {tripDetail&& tripDetail.seats &&
+                                            tripDetail.seats
+                                              .filter(seat => seat.position.startsWith('B'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className={`items-content-floor-row ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''} ${seat.status === 'Available' ? 'available-seat' : ''}`}
+                                                    key={seat.id}
+                                                    onClick={() => handleSeatClick(seat)}
+                                                    >
+                                                  <div className='d-flex justify-content-between m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                         className={selectedSeats.includes(seat.position) ? 'selected-path' : ''}
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute ${selectedSeats.includes(seat.position) ? 'selected-span' : ''}`} style={{ fontSize: "0.6em", top: "3px" }}>{seat.position}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              ))
+                                         
+                                        
+                                             
+                                        }
+                             
+                                        </div>
+                                    </div>
+                                    {/*----------------END---- SỐ GHẾ TẦNG TRÊN--------------------------*/}
+
+                                                       {/* {/*-------------------- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}
+                      <div className="items-Floor-des col-sm-4">
+                        <div className="row mt-4">
+                          <div className="item-des d-flex my-2">
+                            <span>
+                              <svg
+                                width={15}
+                                height={15}
+                                viewBox="0 0 15 15"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="7.5"
+                                  cy="7.5"
+                                  r="7.5"
+                                  fill="#AEACAC"
+                                  fillOpacity="0.8"
+                                />
+                              </svg>
+                            </span>
+                            <span className="ms-3">Đã bán</span>
+                          </div>
+                          <div className="item-des d-flex  my-2">
+                            <span>
+                              <svg
+                                width={15}
+                                height={15}
+                                viewBox="0 0 15 15"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="7.5"
+                                  cy="7.5"
+                                  r="7.5"
+                                 fill="#A1CCD1"
+                                  fillOpacity="0.8"
+                                />
+                              </svg>
+                            </span>
+                            <span className="ms-3">Còn trống</span>
+                          </div>
+                          <div className="item-des d-flex my-2">
+                            <span>
+                              <svg
+                                width={15}
+                                height={15}
+                                viewBox="0 0 15 15"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="7.5"
+                                  cy="7.5"
+                                  r="7.5"
+                                  fill="#FE6531"
+                                  fillOpacity="0.8"
+                                />
+                              </svg>
+                            </span>
+                            <span className="ms-3">Đang chọn</span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* {/*------------------END --- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}
+                                </div>
+                                {/* --------------------------- HIỆN SỐ GHẾ ĐÃ CHỌN TRÊN MOBILE--------------------------*/}
+
+                                <div className='chair-chosen'>
+                                    <hr />
+                                    <span>Ghế: A10, A11 , B10, B11</span>
+                                </div>
+                                {/* ------------------------END--- HIỆN SỐ GHẾ ĐÃ CHỌN MOBILE- --------------------------*/}
+
+                                {/* ------------------------ NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}
+                                <div className='button_conti-step'>
+                                    <div className='d-flex justify-content-end mt-3 btn-handle'>
+                                        <button className='btn' hidden>Quay lai</button>
+                                        <button className='btn button_step' type='button' data-next='step2'>Tiếp tục</button>
+                                    </div>
+                                  </div>
+                                {/* ------------------------END --- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}
+
+                                </div>
+                                {/* -------------------------END-- BƯỚC CHỌN GHẾ---------------------------*/}
+
+                                 <div className='border-bt'></div>
+
+                                {/* --------------------------- BƯỚC 2 ĐIỂM ĐÓN TRẢ KHÁCH---------------------------*/}
+
+                                <div className='pickUp-dropOff-location-contents my-4  items-choose' id='step2'>
+                                    <div>
+                                        <h5>Địa điểm đón trả</h5>
+                                        <div className='mt-3'>
+                                            <div action="" className='row'>
+                                                <div className="form-group">
+                                                    <label htmlFor="diemdon" className='mb-2'>Điểm đón</label>
+                                                    {tripDetail && tripDetail.schedule && (
+                                                      <Autocomplete
+                                                      inputProps={{
+                                                        className: 'form-control',
+                                                        name: 'pickup_location',
+                                                        placeholder: 'Điểm đến',
+                                                        autoComplete: 'off',
+                                                        // value: pickUpLocation, // Bind giá trị của input với biến trạng thái dropoffLocation
+                                                        // onChange: (e) => setPickUpLocation(e.target.value), // Cập nhật giá trị khi người dùng nhập
+                                                      }}
+                                                        getItemValue={(item) => `${item.name}`}
+                                                        items={tripDetail.schedule.filter(schedule => schedule.type === 'pickup').map((schedule, index) => ({
+                                                          name: `${schedule.name}`,
+                                                          time: `${schedule.time}`,
+                                                          address: ` ${schedule.address}`,
+                                                          value: index,
+                                                        }))}
+                                                        renderItem={(item, isHighlighted) => (
+                                                          <div className='option-select-PD' style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                                            <div className='row mx-0 py-2'>
+                                                              <div className='col pe-0'>
+                                                                <span className='medium-name'>{item.name}</span><br />
+                                                                <span className='small-address'> {item.address}</span>
+                                                              </div>
+                                                              <div className='col-3 text-end'><span className='medium-name text-end'>{TimeHM( item.time)}</span></div>
+                                                            </div>
+                                            
+                                                          </div>
+                                                        )}
+                                                        value={pickupValue}
+                                                        onChange={(e) => setPickupValue(e.target.value)}
+                                                        onSelect={(value, item) => handleSelect(value, item, 'pickup')}
+                                                      />
+                                                    )}                                     
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="diemdon"  className='mb-2'>Điểm trả</label>
+                                                    {tripDetail && tripDetail.schedule && (
+                                                      <Autocomplete
+                                                      inputProps={{
+                                                        className: 'form-control',
+                                                        name: 'dropoff_location',
+                                                        placeholder: 'Điểm đến',
+                                                        autoComplete: 'off',
+                                                      }}
+                                                        getItemValue={(item) => `${item.name} `}
+                                                        items={tripDetail.schedule.filter(schedule => schedule.type === 'dropoff').map((schedule, index) => ({
+                                                          name: `${schedule.name}`,
+                                                          time: `${schedule.time}`,
+                                                          address: ` ${schedule.address}`,
+                                                          value: index,
+                                                        }))}
+                                                        renderItem={(item, isHighlighted) => (
+                                                          <div className='option-select-PD' style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                                          <div className='row mx-0 py-2'>
+                                                            <div className='col pe-0'>
+                                                              <span className='medium-name'>{item.name}</span><br />
+                                                              <span className='small-address'> {item.address}</span>
+                                                            </div>
+                                                            <div className='col-3 text-end'><span className='medium-name text-end'>{TimeHM( item.time)}</span></div>
+                                                          </div>
+                                          
+                                                        </div>
+                                                        )}
+                                                        value={dropoffValue}
+                                                        onChange={(e) => setDropoffValue(e.target.value)}
+                                                        onSelect={(value, item) => handleSelect(value, item, 'dropoff')}
+                                                      />
+                                                    )}
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {/* --------------------------- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}
+
+                                    <div className='button_conti-step'>
+                                    <div className='d-flex justify-content-between mt-3 btn-handle'>
+                                        <button className='btn button_step' type='button' data-next='step1'>Quay lại</button>
+                                        <button  className='btn button_step' type='button' data-next='step3'>Tiếp tục</button>
+                                    </div>
+                                  </div>
+                                {/* ------------------------END --- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}
+
+                                </div>
+                                {/* -----------------------END---- BƯỚC 2 ĐIỂM ĐÓN TRẢ KHÁCH---------------------------*/}
+
+                                <div className='border-bt'></div>
+
+                                {/* --------------------------- BƯỚC 3 NHẬP THÔNG TIN ĐẶT VÉ ---------------------------*/}
+                                <div className='Client-information-contents my-4  items-choose' id='step3'>
+                                    <div className='row mt-3'>
+                                        <div className='items-infor col-6'>
+                                            <h5 >Thông tin khách hàng</h5>
+                                            <div className='mt-4'>
+                                                <div action="">
+                                                <div className="form-group">
+                                                        <label  className='mb-2'>Họ và tên</label>
+                                                        <input type="text" className="form-control" name='name' placeholder="Họ tên" value={user.name || name} onChange={(e)=>setName(e.target.value)}/>
+                                                    </div>
+                                                    <div className="form-group mt-3">
+                                                        <label  className='mb-2'>Số điện thoại</label>
+                                                        <input type="number" className="form-control" placeholder="Số điện thoại" name='phone_number' value={user.phone_number || phoneNum } onChange={(e)=>setPhoneNum(e.target.value)}/>
+                                                    </div>
+                                                    <div className="form-group mt-3">
+                                                        <label  className='mb-2'>Email</label>
+                                                        <input type="email" className="form-control" placeholder="Email" name="email"  value={user.email || email} onChange={(e)=>setEmail(e.target.value)}/>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='items-terms-notes col-6'>
+                                            <h5 className='text-center'>ĐIỀU KHOẢN & LƯU Ý</h5>
+                                            <div className='mt-4' style={{textAlign:"justify"}}>
+                                            (*) Quý khách vui lòng có mặt tại bến xuất phát của xe trước ít nhất 30 phút giờ xe khởi hành, mang theo thông báo đã thanh toán vé thành công có chứa mã vé được gửi từ hệ thống WebProTicket. Vui lòng liên hệ Trung tâm tổng đài 1900 6067 để được hỗ trợ.
+                                            <br />
+                                            (*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ Tổng đài trung chuyển 1900 6918 trước khi đặt vé. Chúng tôi không đón/trung chuyển tại những điểm xe trung chuyển không thể tới được.
+                                            </div>
+                                        </div>
+                                    </div>
+                                 <div className='d-flex align-items-center mt-5 submit-checkbox'>
+                                    <input type="checkbox" style={{width:"15px", height:"15px", }}  checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
+                                    <div className='text'><span className='ms-3' style={{color:"#E63946"}}>Chấp nhận điều khoản   </span> đặt vé & chính sách bảo mật thông tin của WebProTicket </div>
+                                </div>
+
+                                   {/* -------------------------- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}
+                                <div className='button_conti-step'>
+                                    <div className='d-flex justify-content-between mt-3 btn-handle'>
+                                        <button className='btn button_step' type='button' data-next='step2'>Quay lại</button>
+                                        <button  className='btn button_step' type='button' data-next='step4'>Tiếp tục</button>
+                                    </div>
+                                  </div>   
+                                   {/* ------------------------END --- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}
+
+                                </div>
+                                {/* -----------------------END---- BƯỚC 3 NHẬP THÔNG TIN ĐẶT VÉ ---------------------------*/}
+                               
+                            </div>
+                          
+                        </div>
+
+                        {/* --------------------------- BƯỚC 4 HIỆN TỔNG QUÁT THÔNG TIN ĐẶT VÉ ---------------------------*/}
+                        <div className='col-4 infor-bus-contents  items-choose'  id='step4'>
+                        <div className="col">
+                            <div className="card" style={{border:"none", backgroundColor:"white", borderRadius:"5px"}}>
+                                <div className="card-body">
+                                <h5 className="card-title text-start">Thông tin lượt đi</h5>
+                                <div className="row mt-3">
+                                    <div className="col text-start">Tuyến xe</div>
+                                    <div className="col-9 text-end">
+                                      {tripDetail &&  tripDetail.start_station &&(
+                                       <>{tripDetail.start_station.name} =&gt; {tripDetail.end_station.name}</>
+                                      )}
+                                      {/* BX Mien Dong =&gt; Da lat */}
+                                      </div>
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col text-start">Thời gian</div>
+                                    <div className="col text-end text-danger">
+                                    {tripDetail && tripDetail.departure_time&&(
+                                       <>{formatDate( tripDetail.departure_time)}</>
+                                      )}
+                                      {/* 19:35 10-08-2023 */}
+                                      </div>
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col text-start">Số lượng ghế</div>
+                                    <div className="col text-end">
+                                    {/* {selectedSeats.length=0 && selectedSeats.length} */}
+                                        {selectedSeats.length>0 ? selectedSeats.length : 0}</div>
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col text-start">Số ghế</div>
+                                    <div className="col text-end text-danger">
+                                      {selectedSeats.length>0 && 
+                                      selectedSeats.join(', ')
+                                      }
+                                      
+                                      </div>
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col text-start">Tổng tiền lượt đi</div>
+                                    <div className="col text-end text-danger">
+                                    {
+                                      tripDetail && tripDetail.seats &&
+                                      (() => {
+                                        const totalPrice = tripDetail.seats
+                                          .filter(seat => selectedSeats.includes(seat.position))
+                                          .reduce((total, seat) => total + seat.price, 0);
+
+                                        return totalPrice.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+                                      })()
+                                    }
+
+                                      </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div className="col mt-4">
+                                <div className="card" style={{border:"none", backgroundColor:"white", borderRadius:"5px"}}>
+                                    <div className="card-body">
+                                    <h5 className="card-title text-start">Chi tiết giá</h5>
+                                    <div className="row mt-3">
+                                        <div className="col text-start">Giá vé lượt đi</div>
+                                        <div className="col text-end text-danger">
+                                          {/* 1.120.000đ */}
+                                          {
+                                      tripDetail && tripDetail.seats &&
+                                      (() => {
+                                        const totalPrice = tripDetail.seats
+                                          .filter(seat => selectedSeats.includes(seat.position))
+                                          .reduce((total, seat) => total + seat.price, 0);
+
+                                        return totalPrice.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+                                      })()
+                                    }
+                                          </div>
+                                    </div>
+                                    <div className="row mt-2">
+                                        <div className="col text-start">Phí thanh toán</div>
+                                        <div className="col text-end">0 ₫</div>
+                                    </div>
+                                    <hr />
+                                    <div className="row mt-3">
+                                        <div className="col text-start">Tổng tiền</div>
+                                        <div className="col text-end text-danger">
+                                          {/* 1.120.000đ */}
+                                          {
+                                      tripDetail && tripDetail.seats &&
+                                      (() => {
+                                        const totalPrice = tripDetail.seats
+                                          .filter(seat => selectedSeats.includes(seat.position))
+                                          .reduce((total, seat) => total + seat.price, 0);
+
+                                        return totalPrice.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+                                      })()
+                                    }
+                                          </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* --------------------------- NÚT BẤM ĐẾN TRANG THANH  TOÁN --------------------------*/}
+
+                            <div className="col justify-content-between d-flex mt-4 btn-handle">
+                  <button className="btn">
+                    <a href="..">Huỷ</a>
+                  </button>
+                  <button className="btn" onClick={handlePay}>Thanh toán
+                    {/* <a href="/thanhtoan1chieu">Thanh toán</a> */}
+                  </button>
+                </div>
+                            {/* ------------------------END --- NÚT BẤM ĐẾN TRANG THANH  TOÁN --------------------------*/}
+
+                        </div>
+                        {/* --------------------------- BƯỚC 4 HIỆN TỔNG QUÁT THÔNG TIN ĐẶT VÉ ---------------------------*/}
+
+                    </div>
+                </div>
+              
+            </div>
+            </form>
+        </>
+      )}
+            
+        </div>
+    );
+};
+
+export default BookTicketPageSingle;

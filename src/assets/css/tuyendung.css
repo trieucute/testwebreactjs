@@ -1,0 +1,490 @@
+.recruitment-container{
+    font-weight: 500;
+
+}
+.container.recruitment-containers{
+    max-width: 1415px;
+}
+.recruitment-container .text-title-recruitment{
+    font-size: 22px;
+    color: var(--colorFont);
+    position: relative;
+    font-weight: 800;
+}
+.box-brings-contents {
+    width: 94%;
+    margin: 0 auto;
+}
+.box-brings-contents .col-12 i{
+    font-size: 42px;
+    height: 100%;
+
+}
+.vacancies-container .pagination{
+    margin-bottom: 0;
+}
+.box-brings-contents .col-12 svg{
+    height: 100%;
+    width: 52px;
+}
+.box-brings-contents .col-md-4{
+    width: 27%;
+    margin: 1em 0;
+}
+.box-brings-contents .items-brings .col-12:first-child{
+    margin: 1em auto;
+    text-align: center;
+    height: 60px;
+    color: var(--colorPrimary);
+
+}
+
+.recruitment-container .text-title-recruitment::after{
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    max-width: 300px;
+    margin:  0 auto;
+    background-color: var(--colorPrimary);
+
+}
+
+.box-brings-contents .items-brings .col-12:last-child{
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+
+}
+.employee-container{
+    position: relative;
+}
+/* .employee-container .image-line {
+    width:350px;
+    position: absolute;
+    top: 25px;
+    left: 28%;
+    transform: translateX(0%);
+    height: 50px;
+    background-image: url(../images/wave.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0;
+
+  } */
+  
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+  }
+  
+  .employee-container .text-title-recruitment:hover + .image-line {
+    animation: slide-in 1s forwards;
+  }
+  
+
+  .employee-container .col-md-4{
+    width: 28%;
+
+  }
+  .employee-container .mt-7{
+    margin: 3em auto;
+  }
+  .employee-container .items-employee .card{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+  .employee-container .items-employee:first-child .card{
+    /* background-color: var(--colorPrimary); */
+  }
+  .employee-container .items-employee:nth-child(2) .card{
+    /* background-color: var(--colorPrimary); */
+  }
+  .employee-container .items-employee:nth-child(3) .card{
+    /* background-color: #FF9B30; */
+  }
+  .items-employee .card{
+    width: 100%;
+    border: none;
+    color: rgb(0, 0, 0);
+}
+.items-employee .card .card-text{
+    font-size: 15px;
+}
+  .items-employee .card img{
+    width: 100%;
+    max-height: 100%;
+    height: 270px;
+    object-fit: cover;
+  }
+  .items-employee .card .card-body{
+    padding: 2em 2.5em;
+    height: 230px;
+    text-align: center;
+  }
+
+
+
+  .vacancies-container {
+    position: relative;
+}
+.vacancies-container .image-line2 {
+    width:300px;
+    position: absolute;
+    top: 25px;
+    left: 29%;
+    transform: translateX(0%);
+    height: 50px;
+    background-image: url(../images/wave2.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0;
+
+  }
+  
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+  }
+  
+  .vacancies-container .text-title-recruitment:hover + .image-line2 {
+    animation: slide-in 1s forwards;
+  }
+
+  .vacancies-contents{
+    margin: 4em auto 2em auto;
+    width: 88%;
+  }
+  .vacancies-contents .items-vacancies{
+    font-weight: 500;
+    font-size: 15px;
+    padding: 25px 20px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 2px gainsboro;
+    margin: 2.5em  0;
+}
+.vacancies-contents .items-vacancies:hover{
+    transform: scale(1.02);
+    transition: all 0.2s linear;
+    box-shadow: 1px 1px 2px 3px gainsboro;
+
+}
+.items-vacancies .col-md-3{
+    width: 22.5%;
+}
+.items-vacancies .title-position ,.items-vacancies .b-email{
+    font-weight: 700;
+    font-size: 18px;
+}
+.items-vacancies .b-email{
+    font-size: 14px;
+    
+    background-color: var(--colorPrimary);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 10px;
+}
+.items-vacancies .fas{
+    font-size: 20px;
+    width: 20px;
+    color: var(--colorPrimary);
+    margin-right: 10px;
+}
+.items-vacancies .col-12{
+    margin: 4px 0;
+}
+
+
+
+
+  /* phân trang */
+  .pagination{
+    justify-content: center;
+  }
+ 
+  .pagination .page-prev,   .pagination .page-next{
+    background-color: transparent;
+    color: var(--colorFont);
+  }
+  .pagination li{
+    margin: 0 7px;
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 8px 17px;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 100%;
+    background-color: rgb(239, 232, 232);
+  }
+  .pagination .active-pagina{
+    color: white;
+    background-color: var(--colorFont);
+  }
+
+.employ-contents{
+    width: 95%;
+    /* margin: 0 auto; */
+}
+
+  .line-qanda{
+    width: 80%;
+    margin: 1em auto;
+    height: 3px ;
+    background-color: var(--colorFont);
+  }
+
+  .questions-asked-container h1::after{
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    max-width:290px;
+    margin:  0 auto;
+    background-color: var(--colorFont);
+
+}
+.questions-asked-container .col-md-5 {
+    width: 47%;
+}
+.question-contents{
+    margin: 2em 0;
+}
+.questions-asked-container .item-question {
+    font-weight: 500;
+    font-size: 15px;
+    margin: 0.8em 0 !important;
+    text-align: justify;
+}
+.questions-asked-container .item-question .col-12:first-child{
+    font-weight: 700;
+    margin: 0.5em 0 ;
+}
+
+
+
+@media only screen and (max-width: 1200px){
+    .employee-container .col-md-4 {
+        width: 32%;
+    }
+    .items-employee .card .card-body {
+        padding: 1em 1.5em;
+        height: 200px;
+    }
+    .items-vacancies .col-md-3 {
+        width: 25%;
+    }
+    .items-vacancies .b-email {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 992px){
+    .container.recruitment-containers{
+        max-width: 920px;
+    }
+    .employee-container .col-md-4 {
+        width: 33%;
+    }
+    .items-employee .card img {
+        height: 200px;
+    }
+    .items-employee .card .card-body {
+        padding: 1em 1em;
+        font-size: 15px;
+    }
+    .items-vacancies .col-md-3 {
+        width: 30%;
+    }
+    .items-vacancies .b-email {
+        font-size: 13px;
+        padding: 15px 5px;
+    }
+    .vacancies-contents{
+        /* margin: 4em auto 2em auto; */
+        width: 92%;
+      }
+}
+@media only screen and (max-width: 768px){
+    .box-brings-contents {
+        width: 98%;
+    }
+    .box-brings-contents .col-12 i {
+        font-size: 40px;
+        height: 100%;
+    }
+    .box-brings-contents .col-12 svg {
+        height: 100%;
+        width: 55px;
+    }
+    .box-brings-contents .items-brings .col-12:last-child {
+        padding: 5px 0;
+        font-size: 16px;
+    }
+    .items-employee .card img {
+        height: 180px;
+    }
+    .employee-container .col-md-4 {
+        width: 32%;
+        padding: 0 0;
+    }
+    .items-employee .card .card-body {
+        height: 240px;
+    }
+    .vacancies-contents {
+        margin: 2em auto;
+        width: 95%;
+    }
+    .items-vacancies .b-email {
+        font-size: 12px;
+    }
+    .items-vacancies .col-md-3 {
+        width: 35%;
+        font-size: 12px;
+    }
+    
+    .items-vacancies .col-12{
+        padding-left: 0 !important;
+    }
+    .vacancies-contents .items-vacancies {
+        font-size: 15px;
+        padding: 15px 10px;
+    }
+    .employ-contents{
+        width: 100%;
+    }
+    .items-employee .card .card-text {
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width: 568px){
+    .items-employee .card .card-text {
+        font-size: 14px;
+    }
+    .recruitment-container .text-title-recruitment {
+        font-size: 18px;
+    }
+    .box-brings-contents h1::after {
+        max-width: 255px;
+    }
+    .box-brings-contents .col-md-4 {
+        width: 45%;
+    }
+    .employee-container .mt-7 {
+        margin: 1em 0;
+    }
+    .employee-container .col-md-4 {
+        width: 90%;
+        margin:  0 auto;
+        padding: 0 0;
+    }
+    .items-employee .card .card-body {
+        height: 180px;
+        padding: 2em 2em;
+    }
+    .items-employee .card img {
+        height: 350px;
+    }
+    .items-vacancies .col-12{
+        padding-left: 10px !important;
+    }
+    .vacancies-contents {
+        margin: 1em auto;
+        width: 98%;
+    }
+    .items-vacancies .col-md-3 {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .recruitment-containers .backWhite-padding{
+        padding: 25px 10px
+    }
+    .items-vacancies .col-md-3  div{
+        width: 90%;
+        padding: 15px 5px;
+        margin: 10px auto;
+    }
+    .items-vacancies .b-email {
+        font-size: 13px;
+    }
+    .vacancies-container .image-line2{
+        display: none;
+    }
+    .employee-container .image-line{
+        display: none;
+        
+    }
+    .items-vacancies .title-position {
+        font-size: 15px;
+    }
+    .pagination li {
+        padding: 3px 12px;
+        font-size: 15px;
+    }
+    .questions-asked-container .item-question {
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .vacancies-contents .items-vacancies {
+        font-size: 13px;
+    }
+    .question-contents .col-md-5 {
+     width: 100%;
+    }
+    .box-brings-contents .col-12 i {
+        font-size: 35px;
+        height: 100%;
+    }
+    .box-brings-contents .col-12 svg {
+        height: 100%;
+        width: 50px;
+    }
+    .box-brings-contents .items-brings .col-12:last-child {
+        padding: 5px 0;
+        font-size: 13px;
+    }
+    .questions-asked-container h1::after {
+        max-width: 200px;
+    }
+}
+@media only screen and (max-width: 400px){
+    .recruitment-container .text-title-recruitment {
+        font-size: 19px;
+    }
+    .employee-container .col-md-4 {
+        width: 92%;
+        margin:  0 auto;
+        padding: 0 0;
+    }
+    .items-employee .card .card-body {
+        height: 175px;
+        padding: 1em 2em;
+    }
+    .items-employee .card img {
+        height: 320px;
+    }
+    .items-vacancies .col-md-3  div{
+        width: 90%;
+    }
+}

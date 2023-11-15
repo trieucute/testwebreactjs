@@ -1,0 +1,157 @@
+.rules-container{
+    font-family: var(--fontRegular);
+    text-align: justify;
+
+}
+.rules-container.container{
+    max-width: 1440px;
+}
+.title__name{
+    text-align: center;
+    color: #0E2954;
+    font-size: 1.8em;
+    font-family: var(--fontExtraBold);
+}
+.title__rules{
+    text-align: center;
+    color: #0E2954;
+    font-size: 1.8em;
+    margin-bottom: 3%;
+    font-family: var(--fontBold);
+
+}
+.rules-container .container{
+    width: 90%;
+    margin: 0 auto;
+}
+.title__rules1{
+    font-size: 1.3em;
+    color: #0E2954;
+    font-family: var(--fontBold);
+
+}
+.content__rules{
+    font-size: 16px;
+}
+.detail__desc{
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+.box__box{
+    width: 40%;
+    margin-left: 3%;
+}
+.head__box{
+    display: flex;
+}
+.num__box{
+    color: #0E2954;
+    transform: translateY(40%);
+    margin-left: 5%;
+}
+.name__box{
+    color: #139407;
+    font-weight: 600;
+    margin-top: 3%;
+}
+.content__box{
+    width: 95%;
+    text-align: justify;
+}
+
+/* respon */
+@media only screen and (max-width: 992px){
+    .rules-container .container {
+        width: 95%;
+    }
+    .rules-container .container {
+        max-width: 810px;
+    }
+    .rules-container  .detail__desc{
+        width: 100%;
+    }
+
+}
+@media only screen and (max-width: 768px){
+    .detail__desc{
+        width: 95%;
+    }
+    .num__box{
+        font-size: 120%;
+    }
+    .rules-container .container{
+        width: 99%;
+        margin: 0 auto;
+    }
+    .title__name{
+  
+        font-size: 25px;
+    }
+    .title__rules{
+        font-size: 23px;
+
+    
+    }
+    .title__rules1 {
+        font-size: 20px;
+    }
+    .rules-container  .detail__desc .content__box{
+        text-align: center;
+    
+}
+.rules-container .detail__desc  .col{
+    width: 100%;
+    flex: inherit;
+    text-align: center;
+}
+.detail__desc  .head__box {
+    justify-content: center;
+}
+}
+
+@media only screen and (max-width: 480px){
+    .detail__desc{
+        width: 95%;
+        flex-wrap: wrap;
+    }
+    .box__box{
+        width: 80%;
+        margin: 0 auto;
+    }
+    .head__box{
+        width: 70%;
+    }
+    .content__box {
+        width: 100%;
+        text-align: justify;
+    }
+    .title__name{
+  
+        font-size: 23px;
+    }
+    .title__rules{
+        font-size: 18px;
+
+    
+    }
+    .title__rules1 {
+        font-size: 17px;
+    }
+}
+@media only screen and (max-width: 320px){
+    .title__name{
+        font-size: 110%;
+    }
+    .title__rules{
+        font-size: 110%;
+    }
+
+    .title__rules1{
+        font-size: 100%;
+    }
+    .head__box{
+        width: 85%;
+    }
+}

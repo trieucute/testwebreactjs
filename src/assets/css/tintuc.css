@@ -1,0 +1,389 @@
+/* -----------------tin tức---------------------- */
+.news-container .container{
+
+    max-width: 1415px;
+}
+.news-container h5{
+     font-weight: 700;
+    font-size: 27px;
+    font-weight: 800;
+    color: var(--colorFont);
+}
+.news-container .img-news{
+    width: 100%;
+    max-height: 348px;
+
+}
+.news-container .img-news img{
+    width: 100%;
+    max-height: 348px;
+    object-fit: cover;
+}
+
+.btn-watch-a .btn-watch{
+    max-width: 200px;
+    background-color: var(--colorPrimary);
+     font-weight: 700;
+    padding: 9px 22px;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    font-size: 17px;
+}
+.btn-watch-a .btn-watch  {
+    border: none;
+    color: #fff;
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .btn-watch-a  .btn-watch {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .btn-watch-a .btn-watch:after {
+    content: '»';
+    position: absolute;
+    opacity: 0;  
+    top: 0;
+    right: -20px;
+    font-size: 25px;
+    transition: 0.5s;
+  }
+  
+  .btn-watch-a .btn-watch:hover{
+    padding-right: 24px;
+    padding-left:8px;
+    box-shadow: 0 10px 20px -8px rgba(0, 0, 0,.7);
+    background-color: var(--colorFont);
+  }
+  
+  .btn-watch-a .btn-watch:hover:after {
+    opacity: 1;
+    right: 20px;
+    
+  }
+/* .btn-watch:hover {
+    background-color: var(--colorFont);
+    border-color: none;
+} */
+.news-container .btn-shareFB{
+    background-color: var(--colorFont);
+    font-weight: 500;
+    padding: 2px 15px;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    font-size: 14px;
+}
+.news-container .btn-shareFB span{
+    padding-left: 5px;
+
+}
+.news-container .circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    /* margin-bottom: 10px; */
+     font-weight: 700;
+  }
+  
+.news-container .circle-container .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--colorFont);
+    display: flex;
+     font-weight: 700;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    margin: 0 5px;
+
+    color: #ffffff;
+  }
+  
+.news-container .circle .number {
+    font-weight: bold;
+  }
+.news-container  .news-items-box{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+.news-items-box .list-group, .news-items-box .list-group .list-group-item {
+    /* background-color: rgba(46, 138, 153, 0.4) !important; */
+    backdrop-filter: 0.3;
+}
+.news-items-box .list-group .list-group-item {
+    padding: 18px 10px;
+}
+.news-items-box .card-header {
+    font-size: 20px;
+    padding: 10px 0;
+    font-family: var(--fontBold)
+}
+
+  /* phân trang */
+  .pagination{
+    justify-content: center;
+  }
+ 
+  .pagination .page-prev,   .pagination .page-next{
+    background-color: transparent;
+    color: var(--colorFont);
+  }
+  .pagination li{
+    margin: 0 7px;
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 8px 17px;
+     font-weight: 700;
+    font-size: 18px;
+    border-radius: 100%;
+    background-color: rgb(239, 232, 232);
+  }
+  .pagination .active-pagina{
+    color: white;
+    background-color: var(--colorPrimary);
+  }
+  .news-container .text-des-news .text-start{
+    display: -webkit-box;
+    line-height: 1.3;
+    font-size: 15px;
+
+    -webkit-line-clamp: 3;  /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    
+  }
+  .news-items-box .list-group-item .col.text-start{
+    display: -webkit-box;
+    line-height: 1.3;
+    /* height: 60px; */
+    font-size: 15px;
+    -webkit-line-clamp: 3;  /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-container  .items-news  .header-news-items{
+    font-size: 13px;
+  }
+  /* .news-container .items-news .text .fs-4{
+    font-size: 20px  !important;  
+
+  } */
+/* -----------------END  tin tức ---------------------- */
+
+
+/* -----------------tin chi tiết---------------------- */
+.news-relate-container .container{
+    max-width: 1415px;
+}
+.btn-back-news{
+    text-decoration: none;
+    padding: 8px 20px;
+    color: white;
+    border-radius: 5px;
+    background-color: var(--colorPrimary);
+    font-size: 16px;
+     font-weight: 700;
+
+}
+.news-relate-container h3{
+     font-weight: 700;
+    font-size: 25px;
+    text-align: center;
+    margin: 0 0 1em 0;
+}
+.items-relate-news img{
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.items-relate-news{
+    font-weight: 500;
+    margin-bottom: 1em;
+}
+.items-relate-news .card-text{
+    display: -webkit-box;
+    line-height: 1.3;
+    -webkit-line-clamp: 3;  /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.items-relate-news a{
+    text-decoration: none;
+}
+.items-relate-news a .card-title{
+     font-weight: 700;
+    
+    font-size: 16px;
+}
+.items-relate-news a .card-text{
+    font-size: 14px;
+    color: rgb(166, 166, 166);
+    margin: 10px 0;
+}
+.detail-news-container .container{
+    max-width: 1440px;
+}
+.detail-news-container .text1{
+    font-size: 16px;
+}
+.detail-news-container .img-detail-news{
+    font-size: 16px;
+    font-style: italic;
+}
+.detail-news-container .title-news h5{
+    font-size: 25px;
+    font-weight: 700;
+
+
+}
+.detail-news-container .title-news p{
+    font-size: 18px;
+    font-weight: 500;
+
+}
+
+/* -----------------END  tin chi tiết---------------------- */
+
+/* responsive */
+@media only screen and (max-width: 1200px){
+/* -----------------tin tức---------------------- */
+
+    /* .news-container {
+        width: 95%;
+        margin: 0 auto;
+    } */
+    .news-container .col-md-4{
+        padding: 0 0 !important;
+    }
+    .news-container .col-md-8 .pe-5{
+        padding: 0 15px 0 0!important;
+
+    }
+/* -----------------END  tin tức---------------------- */
+
+}
+
+@media only screen and (max-width: 1024px){
+    /* -----------------tin tức---------------------- */
+
+    .news-container .col-md-4{
+        display: none;
+    }
+    .news-container .col-md-8{
+        width: 100%;
+    }
+    .news-container .col-md-8.pe-4{
+        padding: 0 10px !important;
+
+    }
+    .news-container .img-news{
+        max-height: 450px;
+    }
+    .news-container .img-news img{
+        max-height: 450px;
+
+    }
+/* -----------------END  tin tức---------------------- */
+
+    .detail-news-container .col-md-4{
+        display: none;
+    }
+    .detail-news-container .col-md-8{
+        width: 100%;
+    }
+    .detail-news-container .col-md-8.pe-5{
+        padding: 0 0 !important;
+
+    }
+    .detail-news-container .container-fluid{
+        padding: 0 0 ;
+    }
+    .detail-news-container .container-fluid >.row{
+        padding: 0 10px;
+    }
+  
+}
+@media only screen and (max-width: 768px){
+    /* -----------------tin tức---------------------- */
+    .news-container .col-md-8.pe-4{
+        padding: 0 0 !important;
+
+    }
+    .news-container .col-star{
+        display: none;
+    }
+    .news-container .col-cmt{
+        display: none;
+    }
+    .news-container h5.py-4{
+        padding: 10px 0 !important;
+        font-size: 24px;
+    }
+/* -----------------END  tin tức---------------------- */
+
+
+.detail-news-container .title-news h5{
+    font-size: 25px;
+}
+.detail-news-container .title-news p {
+    font-size: 17px;
+
+}
+}
+
+@media only screen and (max-width: 560px){
+    /* -----------------tin tức---------------------- */
+    .pagination li {
+        padding: 3px 12px;
+        font-size: 15px;
+    }
+    .btn-watch{
+        font-size: 14px;
+        max-width: 150px;
+    }
+    .news-container .circle-container .circle {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+    }
+    .items-news .fs-5 {
+        font-size: 1rem !important;
+    }
+    .news-container .text-des-news .text-start {
+        font-size: 14px;
+    }
+    .news-container .items-news .header-news-items {
+        font-size: 11px;
+    }
+    .news-container .btn-shareFB {
+        padding: 2px 10px;
+        font-size: 12px;
+    }
+    .btn-watch-a .btn-watch{
+        font-size: 14px;
+    }
+    /* -----------------END  tin tức---------------------- */
+
+}
+
+@media only screen and (max-width: 350px){
+    .detail-news-container .title-news p {
+        font-size: 15px;
+    
+    }
+    .btn-watch{
+        font-size: 13px;
+        padding: 7px 10px;
+        max-width: 135px;
+    }
+}

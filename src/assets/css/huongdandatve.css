@@ -1,0 +1,137 @@
+
+.box-container-instruct .tiltle__instruct{
+    margin-bottom: 2%;
+    text-align: center;
+    font-family: var(--fontBold);
+}
+.box-container-instruct.container{
+    max-width: 1440px;
+}
+/* bước 1 */
+/* .container__instruct{
+    width: 75%;
+    height: 20%;
+    margin: 0 auto;
+    font-family: var(--fontRegular)
+} */
+.box-container-instruct .step-instruct-contents{
+    width: 86%;
+    margin: 0 auto;
+    height: 250px;
+}
+.box-container-instruct  .instruct{
+    margin-top: 5%;
+    width: 17%;
+}
+/* .img__instruct>img{
+    margin-left: 5%;
+} */
+
+.box-container-instruct .step-instruct-contents .col.row{
+    width: 165px;
+    height: 100%;
+}
+.box-container-instruct .next{
+    width: 45px;
+ 
+}
+.box-container-instruct .next img{
+    width: 24px;
+}
+/* .next>img{
+    margin-top: 140px;
+    margin-left: 10%;  
+} */
+.box-container-instruct .content__instruct{
+    text-align: center;
+    margin-top: 20px;
+    height: 80px;
+    font-size: 16px;
+    font-family: var(--fontRegular);
+}
+.box-container-instruct .content__img{
+    width: 85%;
+    margin: 0 auto;
+}
+.box-container-instruct .content__img>img{
+    width: 100%;
+    margin: 0 auto;
+}
+.box-container-instruct .img__instruct{
+    /* max-width: 165px; */
+    max-height: 180px;
+}
+.box-container-instruct .img__instruct img{
+    width: 100%; 
+    height: 100%;
+}
+.box-container-instruct .respon-box-step-instruct{
+    font-family: var(--fontBold);
+    display: none;
+}
+
+/* responsive */
+@media only screen and (max-width: 1200px){
+
+    .box-container-instruct .step-instruct-contents{
+        width: 93%;
+    }
+    .box-container-instruct .content__instruct{
+        font-size: 16px;
+    }
+  
+
+    
+}
+@media only screen and (max-width: 1024px){
+    .box-container-instruct .step-instruct-contents{
+        width: 98%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .box-container-instruct .step-instruct-contents{
+      
+        height: 230px;
+    }
+    .box-container-instruct .step-instruct-contents .col.row {
+        width: 145px;
+        height: 100%;
+    }
+ 
+}
+
+@media only screen and (max-width: 768px){
+    .box-container-instruct .step-instruct-contents{
+        display: none;
+    }
+    .box-container-instruct .respon-box-step-instruct{
+
+        display: block;
+    }
+    .box-container-instruct  .tiltle__instruct{
+        font-size: 25px;
+    }
+}
+@media only screen and (max-width: 480px){
+    
+    .box-container-instruct  .tiltle__instruct{
+        font-size: 20px;
+        padding-top: 10px !important;
+    }
+    .box-container-instruct .respon-box-step-instruct h5{
+        font-size: 18px;
+
+    }
+    .box-container-instruct .content__img{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 320px){
+    .box-container-instruct  .tiltle__instruct{
+        font-size: 18px;
+    }
+    .box-container-instruct .respon-box-step-instruct h5{
+        font-size: 16px;
+
+    }
+}

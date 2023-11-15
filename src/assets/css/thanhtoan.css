@@ -1,0 +1,124 @@
+.pay_container {
+ font-weight: 500;
+
+
+}
+.pay_container .input-pay-list{
+    cursor: pointer;
+}
+.pay_container .input-pay-list label{
+    cursor: pointer;
+}
+.pay_container.container{
+    max-width: 1440px;
+}
+.pay_container  .card-title{
+ font-weight: 700;
+    color: var(--colorFont);
+    font-size: 1.2em;
+}
+.pay_container  .card-title.fw-bold{
+    color: var(--colorMain);
+    font-size: 1.3em;
+}
+.pay_container .list-group .list-group-item .fw-bold{
+    color: var(--colorFont);
+ font-weight: 700;
+
+}
+.pay_container .pay-items{
+    display: none;
+}
+.pay_container .active-items-pay{
+    display: block;
+}
+.col-infor-client .text-end.text-danger{
+    color: var(--colorMain) !important;
+
+}
+.col-sum-price .containers.text-center .row{
+    font-size: 0.9em;
+    align-items: baseline;
+
+}
+.col-infor-client .row {
+    font-size: 0.95em;
+}
+@media only screen and (max-width: 992px){
+    .pay_container  {
+        width: 100%;
+    }
+    .pay_container  .row .col-md-4{
+        width: 50%;
+    }
+    .pay_container  .row .col-md-4.col-infor-client{
+        margin-top: 2em;
+        width: 100% !important;
+    }
+    .pay_container .my-5 {
+        margin: 2rem 0 !important;
+    }
+    .col-infor-client .row{
+        font-size: 0.9em;
+    }
+}
+@media only screen and (max-width: 768px){  
+    .pay_container .col-infor-client, .col-sum-price{
+        margin-top: 2em;
+    }
+    .pay_container{
+        margin: 10em auto 4em auto !important;
+    }
+    .pay_container .col-infor-client{
+        margin-top: 2em;
+    }
+    .pay_container  .row .col-md-4{
+        width: 100% !important;
+    }
+    .col-sum-price .containers.text-center{
+        text-align: left !important;
+    }
+
+    .col-sum-price .col-sm.text-start{
+        font-size: 0.9em;
+
+    }
+}
+@media only screen and (max-width: 568px){  
+    .pay_container .my-5 {
+        margin: 1rem 0 !important;
+    }
+    .pay_container{
+        margin: 10em auto 4em auto !important;
+    }
+    .col-infor-client .row{
+        font-size: 0.8em;
+    }
+    .pay_container .card-title{
+        font-size: 0.95em;
+
+    }
+    .col-sum-price .containers.text-center .row{
+        font-size: 0.8em;
+    
+    }
+    .col-sum-price .col-sm-1 {
+        width: 15%;
+    }
+  
+    .col-sum-price .col-sm {
+        width: 85%;
+    }
+}
+@media only screen and (max-width: 400px){  
+    .pay_container{
+        margin: 9em auto 4em auto!important;
+    }
+    .col-sum-price .col-sm-1 {
+        width: 10%;
+    }
+  
+    .col-sum-price .col-sm {
+        width: 90%;
+    }
+}

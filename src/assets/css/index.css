@@ -1,0 +1,1848 @@
+body::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+
+  
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #314461;
+  border-radius: 10px;
+}
+
+/* Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+  font-family: 'Montserrat', sans-serif;
+
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+}
+/* .loading .img-load{
+  width: 23em;
+} */
+.loading .img-load {
+  max-width: 17em;
+  text-align: center;
+  margin: 0 auto;
+  width: 80%;
+
+}
+.loading .img-load img{
+  width: 100%;
+  height: 100%;
+}
+.loading .dots-3 {
+  width: 60px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side,var(--colorMain) 90%,#0000);
+  background: 
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 50%;
+  animation: d3 1s infinite linear;
+}
+.loading-xe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+}
+.selected {
+  background-color: #f0f0f0; /* Màu nền của phần tử được chọn */
+}
+@keyframes d3 {
+    20%{background-position:0%   0%, 50%  50%,100%  50%}
+    40%{background-position:0% 100%, 50%   0%,100%  50%}
+    60%{background-position:0%  50%, 50% 100%,100%   0%}
+    80%{background-position:0%  50%, 50%  50%,100% 100%}
+}
+.app .mt-10{
+  margin-top:11% ;
+}
+.width-main {
+  margin: 10px auto;
+  width: 96%;
+}
+
+.width-main .home {
+}
+
+.banner {
+max-height: 720px;
+  position: relative;
+width: 100%;
+overflow: hidden !important;
+
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+.slide-container{
+  max-height: 720px;
+  width: 100%;
+  /* position: relative; */
+  overflow: hidden !important;
+}
+.slide-container .react-slideshow-fadezoom-wrapper  img{
+  height: 720px;
+  width: 100%;
+  object-fit: cover;
+  position: relative;
+}
+.back-fill-banner{
+   content: '';
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  background-color:rgba(99, 96, 96, 0.4);
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+.react-slideshow-container .default-nav{
+  fill: white;
+  background-color: transparent !important;
+}
+.slide-container .slide-caption{
+  position: absolute;
+  top: 21em;
+  left: 8em;
+  color: white;
+  width: 50%;
+  z-index: 100;
+  font-weight: 700;
+
+  text-shadow: 5px -1px 14px #df7411
+}
+.slide-container .slide-caption h2{
+  font-size: 20px;
+  /* width: 80%; */
+  font-weight: 800;
+
+}
+.slide-container .slide-caption p{
+  font-size: 18px;
+  width: 80%;
+  font-weight: 700;
+}
+.slide-container .slide-caption .img-inner{
+  width: 200px;
+  height: 60px;
+  /* z-index: 20; */
+
+}
+.slide-container .slide-caption  img{
+  width: 200px;
+  height: 60px;
+  object-fit: contain;
+  /* z-index: 20; */
+  
+}
+.react-slideshow-container .nav:first-of-type {
+  left: 50px !important;
+  z-index: 10;
+
+}
+.react-slideshow-container .nav:last-of-type {
+  right: 50px !important;
+  z-index: 10;
+
+}
+.react-slideshow-container {
+
+}
+/* .slide-container::after {
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    background-color:rgba(99, 96, 96, 0.4);
+    z-index: 1;
+    left: 0;
+    top: 0;
+  } */
+  /* .carousel-banner  .carousel-item{
+    width: 100%;
+    max-height: 720px;
+  object-fit: cover;
+
+  }
+  .carousel-banner .fas{
+    font-size: 35px;
+  }
+.carousel-banner .carousel-item img {
+  width: 100%;
+  height: 720px;
+
+  object-fit: cover;
+
+} */
+.width-main-items{
+width: 93%;
+margin: 0 auto;
+}
+/* -----------------------------------------book vé --------------------------------*/
+.book-content_container.container{
+  max-width: 1460px;
+  padding: 0 0;
+}
+.book-content_container{
+  position: relative;
+ 
+}
+.book-contents {
+  position: absolute;
+  min-height: 191px;
+  width: 81%;
+  padding:  0 15px;
+  bottom: -12%;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  margin: auto;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.booking-content{
+  width: 95%;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+.trip-book{
+    display: flex;
+    color: rgb(0, 0, 0);
+    /* margin: 0 15px; */
+}
+
+.trip-book label:before {
+  content: "";
+  display: inline-block;
+  border: 3px solid var(--colorPrimary);
+  /* background-color: #009999; */
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  /* margin-right: 12px; */
+  position: absolute;
+  left: 0;
+    top: 5px;
+  bottom: 1px;
+  /* background-color: #aaa; */
+  /* box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 0px 0px rgba(255, 255, 255, 0.8); */
+}
+
+.trip-book label {
+  display: inline-block;
+  cursor: pointer;
+  /*     font-weight: 700; */
+  position: relative;
+  padding-left: 25px;
+  margin-right: 15px;
+  margin-top: 20px  ;
+  font-size: 18px;
+}
+
+.booking-content input[type="radio"] {
+  display: none;
+}
+
+.booking-content input[type="radio"]:checked + label:before {
+    content: "\2022";
+    color: var(--colorPrimary);
+    font-size: 31px;
+    padding-right: 2px;
+    text-align: center;
+    line-height: 7px;
+}
+.trip-book .form-check{
+  padding: 0 0 !important;
+  margin-right: 15px;
+}
+.form-book-ticket{
+  display: flex;
+  color: rgb(0, 0, 0);
+  /*     font-weight: 500; */
+  justify-content: space-between;
+}
+/* .form-book-ticket .form-control input{
+  border: none;
+  outline: none;
+
+}
+.form-book-ticket .control-location>div{
+  position: relative;
+  width: 250px;
+}
+
+.form-book-ticket .control-location>div>div{
+  position: absolute !important;
+top: 135%  !important;
+min-width: 268px  !important;
+left: -10px !important;
+max-height: inherit !important;
+}
+.form-book-ticket .control-location>div input{
+  width: 100%;
+} */
+.form-book-ticket .form-control:focus{
+  border: none;
+  box-shadow: var(--colorPrimary) 0px 6px 12px -2px,var(--colorPrimary) 0px 3px 7px -3px;
+}
+.form-book-ticket .control-location{
+  position: relative;
+}
+.form-book-ticket .control-location >div{
+  width: 100% ;
+  display: block !important;
+
+}
+.autocomplete-options::-webkit-scrollbar {
+  width: 5px;
+  background-color: #ffffff;
+  border-radius: 5px;
+
+  
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  background: white !important;
+  font-size: 0.9rem !important;
+}
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  /* font: inherit; */
+  font-weight: 500 !important;
+  letter-spacing: inherit;
+  outline: none  !important;
+  border: none !important;
+  color: currentColor;
+  font-size: 0.9em;
+  box-sizing: content-box;
+  background: white;
+  height: 100% !important;
+  margin: 0;
+  -webkit-tap-highlight-color: white;
+  display: block;
+  min-width: 0;
+  width: 100%;
+  -webkit-animation-name: mui-auto-fill-cancel;
+  animation-name: mui-auto-fill-cancel;
+  -webkit-animation-duration: 10ms;
+  animation-duration: 10ms;
+  padding: 12px 10px !important;
+}
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input:hover{
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input:focus{
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.autocomplete-options::-webkit-scrollbar-thumb {
+  background-color: var(--colorPrimary);
+  border-radius: 10px;
+}
+.form-book-ticket .control-location .autocomplete-options{
+  position: absolute;
+  top: 105%;
+  left: 0;
+  border-radius: 5px;
+  width: 100%;
+  z-index: 10;
+  height: 200px;
+  overflow-y: scroll;
+  /* padding-left: 5px; */
+}
+.form-book-ticket .location_booking{
+  padding: 7px 10px;
+}
+.highlighted{
+  background-color: #d6d6d6;
+  
+}
+.form-book-ticket .autocomplete-options{
+  background-color: white;
+}
+
+.form-book-ticket .form-group label{
+  font-size: 16px;
+  margin:15px 0 6px 0;
+}
+.form-book-ticket .form-group input{
+  font-weight: 500;
+}
+.form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+  width: 26%;
+}
+.form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+  width: 14%;
+}
+.form-book-ticket .form-group:nth-child(5){
+  width: 8%;
+}
+
+.form-book-ticket .form-group:nth-child(1)::after{
+  content: ' \2194';
+  position: absolute;
+  top: 60%;
+  font-size: 20px;
+  left: 26.6%;
+}
+.form-group .disabled{
+  transition: all 0.2s linear;
+  background-color: #929498;
+  opacity: 80%;
+  border: none;
+}
+.book-ticket{
+  position: relative;
+}
+.button_search_ticket{
+  padding: 8px 10px;
+    background-color: var(--colorPrimary);
+    width: 100%;
+    font-size: 18px;
+  font-weight: 700;
+
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+/* .book-ticket .button_search_ticket{
+  position: absolute;
+  top: 115px;
+  max-width: 228px;
+  height: 48px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.book-ticket .button_search_ticket button{
+  font-size: 18px;
+      font-weight: 700;
+  padding: 12px 45px  ;
+  border-radius: 10px;
+  background-color:var(--colorRed) ;
+  border: none;
+  color: #FFFFFF;
+
+}
+.book-ticket .button_search_ticket button:hover{
+  color: #FFFFFF;
+
+} */
+
+
+/* -------------------------------------------end book vé -----------------------------------*/
+
+
+/* -----------------------------------------tuyến xe phố biến_popular ----------------------------------------*/
+/* .mt{
+  margin-top: 8em;
+
+} */
+.backWhite-padding{
+  background-color: white;
+  padding: 25px 20px;
+  border-radius: 5px;
+}
+
+.RoutesBus.container {
+  max-width: 1415px; 
+   margin-bottom: 20px;
+}
+.bus_popular .mt-8{
+  margin: 20px 0;
+  height: auto;
+}
+.bus_popular.width-main-items{
+  width: 100%;
+}
+
+/* .title_home_bus{
+  padding-left: 1.5rem!important;
+} */
+.title_home_bus h1{
+  font-size: 23px;
+  color: var(--colorFont);
+    font-weight: 800;
+  }
+.popular-route-card {
+ margin: 0 0;
+  /* width: 295px; */
+  max-height: 403px;
+  width: 22%;
+  /* border: 1px solid gray; */
+  border-radius: 10px ;
+  box-shadow: 1px 3px 3px 5px rgb(227, 224, 224);
+}
+.popular-route-card .img-popular-route-card img{
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  max-height: 195px;
+  height: 100%;
+}
+
+.popular-route-card .bottom{
+  top: 120px;
+  left: 15px;
+}
+.popular-route-card .bottom span{
+      font-weight: 800;
+  font-size: 15px;
+}
+.popular-route-card .my-10{
+  margin: 7px 0;
+  font-size: 13px;
+  padding:5px;
+  cursor: pointer;
+  color: var(--colorGreen);
+}
+.popular-route-card .my-10 .col-item span:first-child, .popular-route-card .my-10 .col-item-price span:first-child{
+      font-weight: 800;
+  font-size: 0.875rem;
+}
+
+/* -----------------------------------------end tuyến xe phố biến_popular ----------------------------------------*/
+
+/* -----------------------------------------Hệ thống đội xe systemBus.----------------------------------------*/
+.SystemBus{
+ margin-top: 40px ;
+
+}
+
+.SystemBus.container{
+  max-width: 1415px;
+
+ }
+.contentsTopFleet{
+  position: relative;
+  margin-top: 20px ;
+
+}
+
+.contentsTopFleet .contents-des{
+  /* position: absolute; */
+  width: 60%;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 17px;
+      font-weight: 500;
+  right: 25%;
+  /* top: 10px; */
+}
+.contents-fleet{
+  position: absolute;
+  bottom: -12%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  align-items:flex-end;
+  width: 50%;
+
+}
+.contents-fleet  .fleet-item {
+  position: relative;
+
+}
+.contents-fleet  .fleet-item a img{
+  height: 150px;
+  /* width: 100%; */
+}
+
+.fleet-item .infor_fleet{ 
+
+/* display: none; */
+
+  position: absolute;
+  top: -55%;
+text-align: left;
+font-size: 17px;
+width: 100%;
+/* margin: 0 auto; */
+
+    font-weight: 500;
+text-align: center;
+color: white;
+padding: 13px 25px;
+display: none;
+
+transition: all 2s ease-in;
+
+}
+.fleet-item .infor_fleet .infor-pad{
+  background-color: var(--colorPrimary);
+  padding: 13px 20px;
+  border-radius: 100px;
+}
+/* .fleet-item:nth-child(2) .infor_fleet{
+  margin-left: 20%;
+} */
+.contents-fleet  .fleet-item:hover  .infor_fleet{
+ /* transform: translateX(0%); */
+ 
+  display: block;
+
+}
+.boxFleet{
+  width: 100%;
+  height: 375px;
+
+    background-size: 1000px 400px;
+    background-position: left 30px;
+    background-repeat: repeat-x; 
+    animation-name: moveskyline;
+    animation-duration: 40s;
+     animation-iteration-count: infinite; 
+    animation-timing-function: linear;
+      -webkit-animation-name: moveskyline; 
+    -webkit-animation-duration: 40s; 
+    -webkit-animation-iteration-count: infinite; 
+     -webkit-animation-timing-function: linear;
+}
+@keyframes  moveskyline{
+  0% {
+    background-position: 0 0;
+}
+100% {
+  background-position: -1980px 0;
+}
+}
+
+/* -----------------------------------------end Hệ thống đội xe systemBus.----------------------------------------*/
+.bus-tour-infor--container.container{
+  margin-top: 40px;
+  max-width: 1415px;
+}
+
+.bus-tour-infor--container .title_home_bus{
+  text-align: center;
+
+}
+.grid-content--infor{
+  display: grid;
+  grid-gap: 20px 30px;
+  width: 90%;
+  margin: 1.5em auto 1em auto;
+}
+.grid-content--infor .grid-item{
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  /* color: white; */
+}
+.grid-content--infor .grid-item p{
+  margin-top: 5px;
+  font-size: 16px;
+
+}
+.grid-content--infor .grid-item i{
+  font-size: 30px;
+  color: var(--colorPrimary);
+}
+.grid-content--infor .grid-item:hover{
+  transform: translateY(-8px);
+  transition: all .4s linear;
+}
+.grid-content--infor .grid-item1{
+  grid-column-start: 1; 
+  grid-column-end: 3;
+  grid-row-start: 1;
+   grid-row-end: 3;
+   height: 400px;
+   object-fit: cover;
+   text-align: center;
+  border-radius: 10px;
+
+}
+.grid-content--infor .grid-item1 img{
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 10px;
+
+}
+.grid-content--infor .grid-item1 img:hover{
+  transform: scale(1.02);
+  transition: all .5s ease;
+}
+.grid-content--infor .grid-item2{
+  grid-column-start: 3; 
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+}
+.grid-content--infor .grid-item3{
+  grid-column-start: 4; 
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+}
+.grid-content--infor .grid-item4{
+  grid-column-start: 3; 
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+ 
+}
+.grid-content--infor .grid-item5{
+  grid-column-start: 4; 
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+}
+/* -----------------------------------------thông tin du lịch touristInformation ----------------------------------------*/
+.TouristInformation{
+  margin-top: 50px;
+
+}
+.TouristInformation.container{
+  overflow: hidden;
+    max-width: 1415px;
+  
+}
+.container-tour-infor{
+  /* height: 293px; */
+
+}
+.container-tour-infor .tour-items .col-tour-item{
+  width: 20.7%;
+  height: 293px;
+}
+.container-tour-infor .tour-items .item-tour-1{
+ 
+  background-image: url('../images/ho-xuan-huong-da-lat-4.webp');
+  background-size: cover;
+}
+/* .carousel-tour.container{
+  max-width: 1368px;
+} */
+.carousel-tour .carousel-item .card-body {
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  position: relative;
+  height: 293px; 
+
+  object-fit: cover;
+  width: 100%;
+
+}
+.carousel-tour .carousel-item .card-body .img-fluid {
+  width: 486px;
+  height: 293px; 
+  border-radius: 10px;
+  object-fit: cover;
+  
+}
+.card-body .title-card{
+  position: absolute;
+  bottom: 10%;
+  font-size: 17px;
+      font-weight: 700;
+  color: white;
+  left: 10%;
+  text-align: center;
+}
+.carousel-tour .carousel-control-prev-icon{
+ color: var(--colorGreen);
+ font-size: 20px;
+ transform: rotate(180deg);
+}
+.carousel-tour .carousel-control-next-icon{
+  color: var(--colorGreen);
+
+  font-size: 20px;
+  /* transform: rotate(180deg);  */
+ }
+ .carousel-tour .carousel-control-prev {
+  left: -5.5%;
+  background: none;
+  color: #636060;
+}
+.carousel-tour .carousel-control-next, .carousel-tour  .carousel-control-prev{
+  width: 10%;
+  opacity: 2;
+}
+.carousel-tour .carousel-control-next {
+  right: -5.5%;
+  background: none;
+
+
+  color: #636060;
+}
+@media (max-width: 768px) {
+  .carousel-tour .carousel-inner .carousel-item > div {
+    display: none;
+  }
+  .carousel-tour .carousel-inner .carousel-item > div:first-child {
+    display: block;
+  }
+}
+
+.carousel-tour .carousel-inner .carousel-item.active,.carousel-tour
+.carousel-inner .carousel-item-start, .carousel-tour
+.carousel-inner .carousel-item-next, .carousel-tour
+.carousel-inner .carousel-item-prev {
+  display: flex;
+  /* transition-duration: 10s; */
+}
+
+/* display 4 */
+@media (min-width: 768px) {
+  .carousel-tour .carousel-inner .carousel-item-right.active,.carousel-tour
+  .carousel-inner .carousel-item-next,.carousel-tour
+  .carousel-item-next:not(.carousel-item-start) {
+    transform: translateX(25%) !important;
+  }
+
+  .carousel-tour  .carousel-inner .carousel-item-left.active,.carousel-tour
+  .carousel-item-prev:not(.carousel-item-end), 
+  .carousel-tour .active.carousel-item-start, .carousel-tour
+  .carousel-item-prev:not(.carousel-item-end) {
+    transform: translateX(-25%) !important;
+  }
+
+  .carousel-tour .carousel-item-next.carousel-item-start,.carousel-tour  .active.carousel-item-end {
+    transform: translateX(0) !important;
+  }
+
+  .carousel-tour .carousel-inner .carousel-item-prev,.carousel-tour
+  .carousel-item-prev:not(.carousel-item-end) {
+    transform: translateX(-25%) !important;
+  }
+}
+/* -----------------------------------------end thông tin du lịch touristInformation ----------------------------------------*/
+
+
+/* -----------------------------------------introduce-information ----------------------------------------*/
+.introduce-web-container{
+  margin: 50px 0;
+  max-height: 300px;
+  height: 90%;
+}
+.introduce-web-container .container{
+  /* background-color: var(--colorMain); */
+  border-radius: 20px;
+ background-repeat: no-repeat;
+    max-width: 1415px;
+    background-position: center;
+    background-size: cover;
+  
+}
+.introduce-web-container h1{
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  padding: 25px 0;
+      font-weight: 800;
+}
+.introduce-web-container h1 span{
+  color: var(--colorPrimary);
+}
+.introduce-web-container .d-flex{
+  width: 70%;
+  margin:  0 auto;
+  padding-bottom: 10px;
+}
+.introduce-web-container .content-items-introduce{
+  width: 25%;
+  
+}
+.introduce-web-container .content-items-introduce .img-des {
+  width: 100%;
+  height: 62px;
+  
+}
+.introduce-web-container .content-items-introduce .img-des img{
+  width: 25%;
+  height: 62px;
+  
+}
+.introduce-web-container .content-items-introduce .introduce-des{
+  margin-top: 10px;
+  width: 71%;
+  color: white;
+  font-size: 14px;
+      font-weight: 700;
+}
+.row-mobile--popularRoute {
+
+  justify-content: space-between;
+}
+/* ----------------------------------------end-introduce-information ----------------------------------------*/
+
+
+
+/* ----------------------------------------RESPONSIVE ----------------------------------------*/
+
+@media only screen and (min-width: 320px) {
+  .app .mt-10{
+    margin-top:3.8em;
+  }
+
+  /* ----------------------------------------tuyến xe phổ biến ----------------------------------------*/
+
+
+.popular-route-card .img-popular-route-card img{
+  width: 100%;
+  height: 165px;
+  max-height: 100%;
+}
+.popular-route-card .bottom {
+  top: 100px;
+  left: 15px;
+}
+
+.popular-route-card .my-10 .col-item span:first-child, .popular-route-card .my-10 .col-item-price span:first-child {
+  font-size: 0.75rem;
+}
+/* -----------------------------------------Hệ thống đội xe systemBus.----------------------------------------*/
+
+.contentsTopFleet .contents-des{
+  width: 80%;
+ 
+}
+
+.boxFleet{
+  height: 250px;
+}
+
+.fleet-item .infor_fleet {
+  display: block;
+  font-size: 12px;
+  /* top: -50%; */
+  /* width: 140px; */
+ }
+ /* .fleet-item:nth-child(2) .infor_fleet {
+  margin-left: 10%;
+} */
+
+/* --------------------------------------book vé-- tìm chuyến xe----------------------------------------*/
+.book-contents{
+  width: 93%;
+  position: relative;
+  max-height: 230px;
+  bottom: -20px !important;
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+.trip-book label{
+  font-size: 14px;
+  margin-top: 10px;
+}
+.booking-content input[type="radio"]:checked + label:before {
+  content: "\2022";
+  font-size: 23px;
+  padding-right: 1px;
+  line-height: 5px;
+}
+.trip-book label:before {
+  width: 13px;
+  height: 13px;
+  bottom: 2px;
+  top: inherit;
+}
+.book-ticket .button_search_ticket{
+  left: 55%;
+  bottom: -35px;
+ 
+  /* top: 115px; */
+}
+
+.form-book-ticket .form-group:nth-child(1)::after {
+  display: none;
+}
+.book-ticket .button_search_ticket button {
+  font-size: 13px;
+  padding: 5px 10px;
+}
+.form-book-ticket .form-group label {
+  font-size: 13px;
+  margin: 5px 0 0 0;
+}
+.form-book-ticket .form-group .form-control{
+  font-size: 11px;
+}
+/* -----------------------------------------lý do tin tưởng webproticket.----------------------------------------*/
+.introduce-web-container .content-items-introduce {
+  width: 50%;
+}
+.introduce-web-container .content-items-introduce .img-des {
+  width: 100%;
+  height: 40px;
+}
+.introduce-web-container .content-items-introduce .img-des img {
+  height: 35px;
+}
+.introduce-web-container .content-items-introduce .introduce-des {
+  font-size: 10px;
+  width: 98%;
+
+}
+.introduce-web-container h1 {
+  font-size: 16px;
+}
+}
+@media only screen and (max-width: 568px){
+  .carousel-banner .carousel-item img {
+    width: 100%;
+    height: 250px !important;
+  }
+}
+
+@media only screen and (max-width: 480px){
+  .carousel-banner .carousel-item img {
+    width: 100%;
+    height: 200px !important;
+  }
+  .RoutesBus.mt {
+    margin-top: 2.5em !important;
+  }
+  .title_home_bus {
+    padding: 0 !important;
+  }
+}
+@media only screen and (max-width: 380px) {
+  .carousel-banner .carousel-item img {
+    width: 100%;
+    height: 130px !important;
+  }
+
+}
+
+@media only screen and (min-width: 480px){
+
+/* ----------------------------------------tuyến xe phổ biến ----------------------------------------*/
+
+/* .popular-route-card {
+  width:45%;
+  
+} */
+.popular-route-card .img-popular-route-card img{
+  width: 100%;
+  height: 155px;
+  max-height: 100%;
+}
+.popular-route-card .bottom {
+  top: 100px;
+  left: 15px;
+}
+
+
+/* --------------------------------------book vé-- tìm chuyến xe----------------------------------------*/
+.book-contents{
+  width: 90%;
+  position: relative;
+  min-height: 270px;
+  bottom: -10px !important;
+  font-size: 14px;
+}
+.RoutesBus.mt {
+  margin-top: 2em !important;
+}
+.trip-book label{
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.trip-book label:before {
+  width: 14px;
+  height: 14px;
+    top: 4px;
+
+}
+
+.booking-content input[type="radio"]:checked + label:before {
+  content: "\2022";
+
+  font-size: 24px;
+  /* padding-right: 1px; */
+
+line-height: 7px
+}
+.book-ticket .button_search_ticket{
+  left: 55%;
+  bottom: -70px;
+
+  /* top: 115px; */
+}
+.form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+  width: 45%;
+}
+.form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+  width: 45%;
+}
+.form-book-ticket .form-group:nth-child(5){
+  width: 45%;
+}
+.book-ticket .button_search_ticket button {
+  font-size: 15px;
+  padding: 10px 25px;
+}
+.form-book-ticket .form-group label {
+  font-size: 15px;
+  margin: 5px 0 6px 0;
+}
+.form-book-ticket .form-group .form-control{
+  font-size: 14px;
+}
+/* ----------------------------------------Hệ thống đội xe ----------------------------------------*/
+
+.contents-fleet  .fleet-item a{
+  width: 100%;
+}
+.fleet-item .infor_fleet {
+  display: block;
+  font-size: 13px;
+  /* top: -50%; */
+  /* width: 170px; */
+ }
+ /* .fleet-item:nth-child(2) .infor_fleet {
+  margin-left: 10%;
+} */
+/* -----------------------------------------lý do tin tưởng webproticket.----------------------------------------*/
+.introduce-web-container .content-items-introduce {
+  width: 50%;
+}
+.introduce-web-container .content-items-introduce .img-des {
+  width: 100%;
+  height: 55px;
+}
+.introduce-web-container .content-items-introduce .img-des img {
+  height: 45px;
+}
+.introduce-web-container .content-items-introduce .introduce-des {
+  font-size: 12px;
+  width: 98%;
+
+}
+}
+@media only screen and (max-width: 1200px){
+  .slide-container .slide-caption{
+    width: 70%;
+  }
+  .navbar-nav .nav-item .nav-link{
+    padding: 14px 14px;
+  }
+  .book-contents{
+    width: 93%;
+  }
+  .button_search_ticket {
+    padding: 8px 6px;
+  }
+
+  .contents-fleet .fleet-item:first-child {
+    width: 30%;
+    height: 100%;
+  
+  }
+  .contents-fleet .fleet-item:first-child img{
+    width: 80%;
+    margin: 0 auto;
+  }
+  .contents-fleet .fleet-item:last-child{
+    width: 35%;
+    height: 100%;
+  }
+  .contents-fleet .fleet-item:last-child img{
+    width: 100%;
+    
+  }
+}
+@media only screen and (max-width: 992px){
+  .slide-container .slide-caption{
+    width: 90%;
+    top: 13em;
+    left: 3em;
+  }
+
+  .book-contents {
+    bottom: -90px;
+  }
+  /* .RoutesBus.mt{
+    margin-top: 11%;
+  } */
+  .row-mobile--popularRoute .popular-route-card{
+    width: 46%;
+    flex-wrap: wrap;
+  }
+  .popular-route-card .img-popular-route-card img {
+    width: 100%;
+    height: 188px;
+  }
+  .banner{
+    max-height: 620px;
+  }
+  .slide-container{
+    max-height: 620px;
+
+  }
+  .slide-container img{
+    height: 620px;
+    
+  }
+  .form-book-ticket{
+    justify-content: center !important;
+  }
+  .form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+    width: 40%;
+    margin: 0 20px;
+  }
+  .form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+    width: 40%;
+    margin: 0 20px;
+  
+  }
+  .form-book-ticket .form-group:nth-child(5){
+    width: 45%;
+    margin-top: 20px;
+  }
+  .form-book-ticket .form-group .form-control{
+    padding: 9px ;
+  }
+  .slide-container .slide-caption h2{
+    font-size: 18px;
+  }
+  .slide-container .slide-caption p{
+    font-size: 16px;
+  }
+  .contents-fleet .fleet-item:first-child {
+    width: 30%;
+    height: 100%;
+  
+  }
+  .contents-fleet .fleet-item:first-child img{
+    width: 80%;
+    margin: 0 auto;
+  }
+  .contents-fleet .fleet-item:last-child{
+    width: 35%;
+    height: 100%;
+  }
+  .contents-fleet .fleet-item:last-child img{
+    width: 100%;
+    
+  }
+  .fleet-item .infor_fleet .infor-pad {
+    padding: 13px 15px;
+    font-size: 13px;
+  }
+  .carousel-tour.container {
+    max-width: 820px;
+}
+.grid-content--infor {
+  display: grid;
+  grid-gap: 10px 20px;
+  width: 100%;
+}
+.grid-content--infor .grid-item1 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+.grid-content--infor .grid-item2 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+
+}
+.grid-content--infor .grid-item3 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  padding: 2em 0;
+}
+.grid-content--infor .grid-item4 {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  padding: 2em 0;
+}
+.grid-content--infor .grid-item5 {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  padding: 2em 0;
+}
+}
+@media only screen and (max-width: 768px){
+  .book-contents {
+    width: 100%;
+}
+  .carousel-tour.container {
+    max-width: 540px;
+}
+  .banner{
+    max-height: 500px;
+
+  }
+  .slide-container {
+    max-height: 500px;
+}
+.slide-container .react-slideshow-fadezoom-wrapper  img{
+  height: 500px;
+}
+.slide-container .slide-caption{
+  top: 21em;
+  width: 80%;
+}
+.slide-container .slide-caption h2{
+  font-size: 17px;
+}
+.slide-container .slide-caption p{
+  font-size: 15px;
+}
+.form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+  width: 40%;
+  margin: 0 20px;
+}
+.form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+  width: 40%;
+  margin: 0 20px;
+
+}
+.form-book-ticket .form-group:nth-child(5){
+  width: 45%;
+  margin-top: 20px;
+}
+  .row-mobile--popularRoute {
+    /* height: 25rem; */
+    white-space: nowrap !important;
+    display: flex;
+    justify-content: start;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.row-mobile--popularRoute .col-mobile {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: block;
+  overflow: hidden;
+
+  white-space: normal;
+}
+::-webkit-scrollbar {
+  background-color: #d7d7d7;
+  /* width: 2px; */
+height: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--colorGreen);
+}
+.row-mobile--popularRoute .popular-route-card{
+  width: 50%;
+}
+.contents-fleet {
+  width: 80%;
+
+}
+
+.contents-fleet .fleet-item:first-child {
+  width: 50%;
+  height: 100%;
+
+}
+.contents-fleet .fleet-item:first-child img{
+  width: 80%;
+  margin: 0 auto;
+}
+.contents-fleet .fleet-item:last-child{
+  width: 50%;
+  height: 100%;
+}
+.contents-fleet .fleet-item:last-child img{
+  width: 100%;
+  
+}
+.grid-content--infor .grid-item p {
+  margin-top: 5px;
+  font-size: 14px;
+  padding: 0 5px;
+
+}
+.book-contents{
+  background-color: rgba(255, 255, 255,1);
+}
+}
+@media only screen and (max-width: 568px){
+  .RoutesBus.mem{
+    margin-top: 3em !important;
+}
+  .SystemBus {
+    margin-top: 30px;
+}
+  .TouristInformation {
+    margin-top: 30px;
+}
+.bus-tour-infor--container.container {
+  margin-top: 30px;
+}
+  .introduce-web-container {
+    margin: 30px 0;
+  }
+  .contents-fleet {
+    bottom: -8%;
+  }
+  .contents-fleet {
+    width: 90%;
+}
+.contentsTopFleet .contents-des{
+  font-size: 13px;
+  width: 100%;
+}
+
+  .form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+    width: 45%;
+    margin: 0 10px;
+  }
+  .form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+    width: 45%;
+    margin: 0 10px;
+  
+  }
+  .form-book-ticket .form-group:nth-child(5){
+    width: 45%;
+    margin-top: 20px;
+  }
+  .row-mobile--popularRoute .popular-route-card{
+    width: 70%;
+  }
+  .popular-route-card .my-10 .col-item span:first-child, .popular-route-card .my-10 .col-item-price span:first-child {
+    font-size: 0.9rem;
+}
+.popular-route-card .my-10 {
+  font-size: 13.5px;
+}
+
+.introduce-web-container .d-flex.align-items-start {
+  width: 90%;
+}
+.react-slideshow-container .nav:first-of-type {
+  left: 20px !important;
+  z-index: 10;
+}
+.react-slideshow-container .nav:last-of-type {
+  right: 20px !important;
+  z-index: 10;
+}
+.slide-container .slide-caption {
+  top: 14em;
+  width: 100%;
+  left: 0em;
+  padding: 0 2em;
+  margin: 0 auto;
+}
+.slide-container .slide-caption .fa-circle-check.ps-2{
+  font-size: 18px !important;
+}
+.slide-container .slide-caption h2 {
+  font-size: 11.5px;
+}
+.slide-container .slide-caption p {
+  display: none;
+}
+.banner {
+  max-height: 300px;
+}
+.slide-container {
+  max-height: 300px;
+}
+.slide-container .react-slideshow-fadezoom-wrapper img {
+  height: 300px;
+}
+.grid-content--infor {
+  display: grid;
+  grid-gap: 10px 10px;
+  width: 100%;
+}
+.grid-content--infor .grid-item2 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  
+}
+.grid-content--infor .grid-item3 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+.grid-content--infor .grid-item4 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 4;
+  grid-row-end: 5;
+}
+.grid-content--infor .grid-item5 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 4;
+  grid-row-end: 5;
+}
+.grid-content--infor .grid-item p {
+  margin-top: 5px;
+  font-size: 13px;
+}
+}
+
+@media only screen and (max-width: 484px){
+  .contents-fleet {
+    width: 100%;
+}
+.contents-fleet .fleet-item a img{
+  height: 130px;
+}
+.fleet-item .infor_fleet{
+  padding: 13px 10px;
+}
+  .form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+    width: 44%;
+    margin: 0 6px;
+  }
+  .form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+    width: 44%;
+    margin: 0 6px;
+  
+  }
+  .form-book-ticket .form-group:nth-child(5){
+    width: 55%;
+    margin-top: 20px;
+  }
+  .button_search_ticket {
+    padding: 8px 10px;
+    background-color: var(--colorPrimary);
+    width: 100%;
+    font-size: 16px;
+  }
+  .booking-content{
+    width: 100% !important;
+  }
+  .trip-book{
+    margin-left: 10px;
+  }
+}
+@media only screen and (max-width: 400px){
+  .backWhite-padding{
+    padding: 15px 10px
+  }
+  .contents-fleet .fleet-item a img{
+    height: 120px;
+  }
+  .fleet-item .infor_fleet .infor-pad{
+    font-size: 10px;
+  }
+
+  .row-mobile--popularRoute .popular-route-card{
+    width: 98%;
+  }
+  .button_search_ticket {
+    padding: 8px 5px;
+    font-size: 14px;
+  }
+  .trip-book{
+    margin-left: 0px;
+  }
+}
+@media only screen and (min-width: 769px){
+  .app .mt-10{
+    margin-top: 4.5em;
+  }
+
+/* ----------------------------------------tuyến xe phổ biến ----------------------------------------*/
+/* .popular-route-card {
+  width:45%;
+} */
+
+
+.popular-route-card .my-10 .col-item span:first-child, .popular-route-card .my-10 .col-item-price span:first-child{
+      font-weight: 800;
+  font-size: 0.875rem;
+}
+/* --------------------------------------book vé-- tìm chuyến xe----------------------------------------*/
+.book-contents{
+  width: 80%;
+  position: absolute;
+  min-height: 270px;
+   bottom: 7px !important;
+}
+.RoutesBus.mt{
+  margin-top:   2em !important;
+}
+.book-ticket .button_search_ticket{
+  left: 55%;
+  bottom: -70px;
+  /* top: 115px; */
+}
+.trip-book label:before {
+  width: 16px;
+  height: 16px;
+  left: 0;
+    top: 5px;
+  bottom: 1px;
+
+}
+.booking-content input[type="radio"]:checked + label:before {
+  content: "\2022";
+
+  font-size: 31px;
+  padding-right: 2px;
+  text-align: center;
+  line-height: 7px;
+}
+.trip-book label{
+  margin-top: 20px;
+}
+
+
+.trip-book label,.book-ticket .button_search_ticket button{
+  font-size: 17px;
+}
+/* ----------------------------------------Hệ thống đội xe ----------------------------------------*/
+
+.contents-fleet {
+  width: 100%;
+  bottom: -8%;
+  justify-content: center;
+}
+
+.boxFleet{
+  height: 350px;
+}
+.contents-fleet  .fleet-item a img{
+  /* max-height: 170px; */
+  /* width: 100%; */
+
+  height: 100%;
+}
+.contents-fleet  .fleet-item a{
+  width: 100%;
+}
+.fleet-item .infor_fleet {
+  display: none;
+  font-size: 17px;
+  /* width: 210px; */
+ }
+ /* .fleet-item:nth-child(1) .infor_fleet{
+  left: 5%;
+ }
+ .fleet-item:nth-child(2) .infor_fleet {
+  margin-left: 15%;
+} */
+/* -----------------------------------------lý do tin tưởng webproticket.----------------------------------------*/
+.introduce-web-container .container{
+  background-size: cover;
+}
+.introduce-web-container .content-items-introduce {
+  width: 25%;
+}
+.introduce-web-container .content-items-introduce .img-des {
+  width: 100%;
+  height: 62px;
+}
+.introduce-web-container .content-items-introduce .introduce-des {
+  font-size: 13px;
+  width: 90%;
+
+}
+.introduce-web-container h1 {
+  font-size: 18px;
+}
+.container-tour-infor .col-md-3 {
+  /* flex: 0 0 auto; */
+  width: 50%;
+}
+.introduce-web-container .content-items-introduce .img-des img {
+  height: 40px;
+}
+}
+@media only screen and (min-width: 992px){
+  .app .mt-10{
+    margin-top: 4.4em;
+  }
+  /* .RoutesBus.mt {
+    margin-top: 8% !important;
+} */
+  .container-tour-infor .col-md-3 {
+    /* flex: 0 0 auto; */
+    width: 25%;
+  }
+/* -----------------------------------------Hệ thống đội xe systemBus.----------------------------------------*/
+
+.boxFleet{
+  height: 375px;
+}
+.contents-fleet  .fleet-item a img{
+  height: 170px;
+  width: 100%;
+  /* object-fit: contain; */
+}
+
+.contentsTopFleet .contents-des{
+  width: 60%;
+ 
+}
+/* .fleet-item:nth-child(1) .infor_fleet{
+  left:10%;
+ } */
+ 
+/* ----------------------------------------tuyến xe phổ biến ----------------------------------------*/
+.popular-route-card{
+  width: 23%;
+  max-height: 450px;
+}
+.popular-route-card .bottom {
+  top: 120px;
+  left: 15px;
+}
+.popular-route-card .img-popular-route-card img{
+  width: 100%;
+  height: 195px;
+  max-height: 100%;
+}
+
+ /* --------------------------------------book vé-- tìm chuyến xe----------------------------------------*/
+.book-contents{
+  width: 90%;
+  min-height: 175px;
+  bottom: 20px !important;
+  
+
+}
+.trip-book label{
+  margin-top: 20px;
+}
+.trip-book label,.book-ticket .button_search_ticket button{
+  font-size: 18px;
+}
+.form-book-ticket .form-group label {
+  font-size: 16px;
+  margin: 15px 0 6px 0;
+}
+.book-ticket .button_search_ticket{
+  left:0;
+  top: 115px;
+  bottom: auto;
+}
+.form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+  width: 20%;
+}
+.form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+  width: 15%;
+}
+.form-book-ticket .form-group:nth-child(5){
+  width: 20%;
+}
+.form-book-ticket .form-group:nth-child(1)::after{
+  content: ' \2194';
+  position: absolute;
+  top: 60%;
+  font-size: 20px;
+  left: 26.6%;
+}
+.form-book-ticket .form-group .form-control{
+  font-size: 0.9rem;
+  padding: 10px 10px;
+  border: none;
+}
+.book-ticket .button_search_ticket button{
+  padding: 12px 45px;
+}
+/* -----------------------------------------lý do tin tưởng webproticket.----------------------------------------*/
+.introduce-web-container .content-items-introduce {
+  width: 25%;
+}
+.introduce-web-container .content-items-introduce .img-des {
+  width: 100%;
+  height: 62px;
+}
+.introduce-web-container .content-items-introduce .introduce-des {
+  font-size: 14px;
+  width: 71%;
+
+}
+.introduce-web-container .content-items-introduce .img-des img {
+  height: 70%;
+}
+}
+ @media only screen and (min-width: 1200px){
+  .contents-fleet .fleet-item:first-child {
+    width: 23%;
+    height: 100%;
+  
+  }
+  .contents-fleet .fleet-item:first-child img{
+    width: 80%;
+    margin: 0 auto;
+  }
+  .contents-fleet .fleet-item:last-child{
+    width: 27%;
+    height: 100%;
+  }
+  .app .mt-10{
+    margin-top: 5.3em;
+  }
+  .form-book-ticket .form-group:nth-child(1), .form-book-ticket .form-group:nth-child(2){
+    width: 22%;
+  }
+  .form-book-ticket .form-group:nth-child(3), .form-book-ticket .form-group:nth-child(4){
+    width: 16%;
+  }
+  .form-book-ticket .form-group:nth-child(5){
+    width: 16%;
+  }
+  /* .fleet-item:nth-child(1) .infor_fleet{
+    left:15%;
+   }
+   .fleet-item:nth-child(2) .infor_fleet {
+    margin-left: 15%;
+} */
+.introduce-web-container .content-items-introduce .img-des img {
+  height: 52px;
+}
+}

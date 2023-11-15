@@ -1,0 +1,341 @@
+
+
+.forms-login-container{
+   
+    width: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    font-weight: 500;
+ }
+ .forms-login-container .overlay{
+    width: 170%;
+    height: 170%;
+    /* position: relative; */
+    position: absolute;
+ 
+    /* backdrop-filter: blur(1px); */
+    z-index: 2;
+    filter: blur(13px);
+    background-repeat: no-repeat;
+    background-size: cover;
+ }
+ 
+ .forms-login-container .login-gg-fb a{
+    font-size: 25px;
+    width: fit-content;
+    margin: 0 1em;
+
+ }
+ .forms-login-container .login-gg-fb a i{
+    color: white;
+ }
+ .forms-login-container .login-gg-fb a:hover i{
+    color: var(--colorMain);
+
+ }
+ .forms-login-container .login-container{
+    position: relative;
+    max-width: 1150px;
+    z-index: 3;
+    width: 100%;
+    height: 580px;
+    /* background-image: url(dark-sunset.jpg); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 55px;
+    color: white;
+    font-weight: 300;
+ 
+ }
+ .forms-login-container .login-container.signup-container{
+    height: 680px;
+
+ }
+ .forms-login-container .login-container>div:first-child{
+    max-width: 330px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 55px 0;
+    padding-bottom: 70px;
+ }
+ .forms-login-container .login-container .img-fluid{
+    width: 80%;
+ }
+ .forms-login-container .logo span{
+    font-family: 'Kaushan Script', cursive;
+    font-size: 23px;
+ }
+ .forms-login-container .logo i{
+    color:rgb(255, 255, 255);
+    font-size: 34px;
+ }
+ 
+ .forms-login-container .register > div:first-child{
+    font-size: 32px;
+    max-width: 300px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 20px;
+ }
+ .forms-login-container .register > p{
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgb(197, 202, 206);
+    margin-bottom: 24px;
+ }
+ .forms-login-container .register .social{
+    margin-left: -20px;
+ }
+ .forms-login-container .register .social a{
+    margin-left: 20px;
+ }
+ .forms-login-container .register .social  i{
+    color:white;
+    font-size: 15px;
+ }
+ 
+ .forms-login-container .register .social a:hover i
+ {
+    color: red;
+ }
+ 
+ .forms-login-container .form-login{
+    width: 50%;
+    /* max-width: 48%; */
+    height: 100%;
+    backdrop-filter: blur(8px);
+    background-color: rgba(54, 52, 52, 0.2);
+    /* display: flex; */
+    /* align-items: center; */
+    padding:100px 40px;
+ }
+ .forms-login-container .form-login.form-signup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+ }
+.forms-login-container .form-login.form-signup  .form-group .eyes-pass{
+    top: 0;
+ }
+ .forms-login-container .form-login .form-group{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    position: relative;
+ }
+ .forms-login-container .form-login .form-group
+.eyes-pass{
+  position: absolute;
+  right: 10px;
+  top: 26px;
+
+}
+.eyes-pass i{
+  border: none !important;
+  font-size: 17px !important;
+  padding-top: 16px !important;
+
+
+}
+ .forms-login-container .form-login .f-term a{
+    margin-top: 10px;
+    text-decoration: none;
+    color: aliceblue;
+    font-size: 0.9em;
+ }
+
+ .forms-login-container .f-term a:hover{
+    color: var(--colorPrimary);
+ }
+ 
+ .forms-login-container .form-login .form .form-group input{
+    background-color: transparent;
+    outline: none;
+    padding: 9px 10px;
+    border: none;
+    border-bottom: 1px solid rgba(159, 171, 175, 0.534);
+    /* margin-top: 10px; */
+    color: white;
+    font-size: 15px;
+ }
+ .forms-login-container .form-login .form .form-group input:focus{
+    background-color: transparent;
+    box-shadow:none;
+    border-bottom:2px solid;
+    border-color: var(--colorPrimary);
+ }
+ .forms-login-container .form-login .form .form-group input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255, 255, 255, 0.658);
+    opacity: 1; /* Firefox */
+  }
+  
+  .forms-login-container  .form-login .form .form-group .form-label{
+    color: rgba(255, 255, 255, 0.975);
+    font-size: 14px;
+  }
+ 
+  .forms-login-container .form-login .form .heading{
+    font-size: 30px;
+    margin-top: 7px;
+    text-align: center;
+    font-weight: 700;
+ }
+ 
+ .forms-login-container .spacer{
+    width: 100%;
+    height: 50px;
+ }
+ 
+ 
+ .forms-login-container .form-login .form .sign-up{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+ }
+ .forms-login-container .form-login .form .sign-up>div{
+   width: 50%;
+   text-align: center;
+
+ }
+ .forms-login-container .form-login .form .sign-up button{
+    background-color: var(--colorMain);
+    color: rgb(238, 227, 227);
+    font-weight: 700;
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    text-align: center;
+    padding: 8px 5px;
+    border-radius: 5px;
+ }
+ 
+ .forms-login-container .form-login .form .sign-up button:hover{
+    background-color: rgb(143, 24, 24);
+    cursor: pointer;
+ }
+ .forms-login-container .form-login .form .sign-up>div i{
+    position: absolute;
+    top: 50%;
+    right: 7%;
+    transform: translateY(-50%);
+    /* transform: translateX(50%); */
+    font-size: 12px;
+ }
+ 
+ 
+ .forms-login-container .sign-up a{
+    /* display: block; */
+    margin-left: 35px;
+    color: rgb(190, 189, 187);
+    font-size: 14px;
+    width: 50%;
+    text-underline-position: under;
+    /* align-items: center; */
+ }
+ 
+ .forms-login-container .sign-up a:hover{
+    color: var(--colorPrimary);
+ }
+ .logo-mobile-login{
+    display: none;
+ }
+ @media only screen and (max-width: 992px) {
+    .forms-login-container .form-login {
+        width: 60%;
+        padding: 100px 25px;
+    }
+    .forms-login-container .register > div:first-child{
+        font-size: 25px;
+    }
+ }
+ @media only screen and (max-width: 768px) {
+    .forms-login-container .form-login {
+        width: 75%;
+        padding: 100px 25px;
+    }
+    .forms-login-container .register > div:first-child{
+        font-size: 25px;
+    }
+    .forms-login-container .login-container{
+        padding-left: 10px;
+    }
+    .forms-login-container .login-container>div:first-child {
+        max-width: 250px;
+    }
+    .forms-login-container .form-login .form .sign-up{
+        flex-wrap: wrap;
+    }
+    .forms-login-container .form-login .form .sign-up>div {
+        width: 100%;
+    }
+    .forms-login-container .form-login .form .sign-up a {
+        margin-top: 10px;
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+
+    }
+ }
+ @media only screen and (max-width: 568px) {
+    .forms-login-container .form-login .form-group input {
+        width: 100%;
+    }
+    .logo-mobile-login{
+        display: block;
+        text-align: center;
+     }
+     .logo-mobile-login img{
+        max-width: 150px;
+        
+     }
+     .forms-login-container .login-container {
+        padding: 0px 5px ;
+    }
+     .forms-login-container .login-container>div:first-child {
+    display: none;
+    }
+    .forms-login-container .register > div:first-child {
+        font-size: 22px;
+    }
+    .forms-login-container .form-login .form .heading{
+        text-align: center;
+    }
+    .forms-login-container .form-login {
+        width: 100%;
+        padding: 10px 25px;
+    }
+    .forms-login-container.forms-signup-container {
+        width: 100%;
+        height: 100vh;
+    }
+    .forms-login-container.forms-signup-container .logo-mobile-login {
+        margin-top: 43px;
+    }
+    .forms-login-container.forms-signup-container .form .sign-up a{
+      padding-bottom: 2em;
+    }
+    .forms-login-container.forms-signup-container  .form-login .form-group{
+        margin: 10px 0 ;
+    }
+    .forms-login-container.forms-signup-container .login-gg-fb{
+        padding: 0.2em 0;
+    }
+    .forms-login-container .form-login .form .heading{
+        margin-top: 0;
+    }
+ }

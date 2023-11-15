@@ -1,0 +1,140 @@
+/* banner */
+.contact-container .banner-contact{
+    width: 80%;
+    height: 20rem;
+    margin: 0 auto;
+
+}
+.contact-container.container{
+
+        max-width: 1415px;
+}
+.contact-container .backWhite-padding{
+    margin-top: 1em;
+}
+.contact-container .banner-contact>img{
+    border-radius: 10px;
+}
+/* contact__address */
+/* .contact-container .contact__address{
+    width: 10%;
+} */
+.contact-container .title{
+    color: var(--colorFont);
+ 
+    font-size: 1.6rem;
+    font-weight:700 !important;
+}
+.contact-container p{
+       color: var(--colorFont);
+
+    font-size: 1.2rem;
+    font-weight:700 !important;
+}
+.contact-container .map>iframe{
+    width: 100%;
+    /* height: 1.1rem; */
+}
+.contact-container .col-5 {
+    flex: 0 0 auto;
+    width: 47%;
+    margin: 0 10px;
+}
+/* form */
+.contact-container .icon-email{
+    color: var(--colorPrimary);
+}
+.contact-container span{
+    
+    font-size: 1.2rem;
+    margin-left: 5px;
+    font-weight:700 !important;
+}
+.contact-container input,textarea{
+    width: 97%;
+    outline: none;
+    padding: 12px 10px;
+    background-color: #e9e7e7;
+    opacity: 90%;
+    border-radius: 8px;
+    border: none;
+    font-weight:700 !important;
+}
+.contact-container .btn-send .submit{
+    width: 21%;
+    background-color: var(--colorPrimary);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    color: #ffffff;
+    font-size: 1.15rem;
+    
+    font-weight:700 !important;
+}
+.btn-send button{
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 480px){
+    .contact-container .banner-contact{
+        display: none;
+    }
+    .contact-container .title {
+        font-size: 1.4rem !important;
+    }
+    .contact-container p {
+        font-size: 1rem !important;
+    }
+    .contact-container span{
+    
+        font-size: 0.9rem;
+    }
+    .contact-container .btn-send .submit{
+        width: 40%;
+        font-size: 1rem;
+    }
+   
+    .contact-container .banner-contact {
+        height: 9rem  !important;
+        object-fit: cover;
+        width: 100% !important;
+    }
+    .contact-container .banner-contact >img{
+        object-fit: fill  !important;
+    }
+    .contact-container .mt-5 {
+        margin-top: 10px !important;
+    }
+}
+@media only screen and (max-width: 768px){  
+    .contact-container .title {
+        font-size: 1.7rem;
+    }
+    .contact-container p {
+        font-size: 1.3rem;
+    }
+    .contact-container span{
+    
+        font-size: 1.1rem;
+    }
+    .contact-container .banner-contact {
+        height: 11rem;
+        object-fit: cover;
+        width: 90%;
+    }
+    .contact-container .banner-contact >img{
+        object-fit: cover;
+    }
+    .contact-container .mt-5 {
+        margin-top: 10px !important ;
+    }
+}
+ @media only screen and (max-width: 992px){
+    .contact-container .col-5 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    
+ }
+  @media only screen and (min-width: 1200px){
+
+  }

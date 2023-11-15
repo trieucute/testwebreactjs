@@ -1,0 +1,477 @@
+@import url(./global.css);
+.routes-bus-container.container{
+    max-width: 1440px;
+    padding-top: 1em;;
+}
+
+.routes-bus-container h5{
+    font-size:22px ;
+font-weight: 800;
+    color: var(--colorFont);
+}
+.form-group .form-control{
+    border: 1px solid #AAAAAA;
+}
+.routes-bus-container .date_go{
+    font-size:20px ;
+font-weight: 700;
+
+}
+.contents-items-choose{
+    width: 90%;
+    margin: 0 auto;
+}
+.contents-items-choose.container{
+    max-width: 1440px;
+
+}
+.contents-items-choose .items-FloorDown .row,  .contents-items-choose .items-FloorUp .row{
+    width: 90%;
+    margin: 0 auto;
+}
+.items-content-floor .items-content-floor-row{
+    width: 33.3%;
+}
+/* .items-content-floor .items-content-floor-row:first-child .d-flex:last-child {
+    width: 50%;
+    text-align: right;
+} */
+.items-content-floor-row .name-chair{
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+/* .selected-span , .selected-path{
+    color: var(--colorMain);
+    fill: var(--colorMain);
+} */
+.available-seat path, .available-seat .name-chair{
+    color: #A1CCD1;
+    fill: #A1CCD1;
+    cursor: pointer;
+}
+.Chosen-seat path, .Chosen-seat .name-chair{
+    color: #AEACAC;
+    fill: #AEACAC;
+    fill-opacity:0.8 ;
+    cursor:no-drop;
+}
+.available-seat .selected-span, .available-seat .selected-path{
+    color: var(--colorMain);
+    fill: var(--colorMain);
+}
+.contents-items-choose h5{
+font-weight: 700;
+    color: var(--colorFont);
+    font-size: 1.1em;
+}
+.contents-items-choose span b{
+    font-size:0.9em;
+
+}
+.contents-items-choose {
+   font-weight: 500;
+}
+
+.contents-items-choose h6{
+font-weight: 700;
+    color: var(--colorMain);
+    font-size: 0.8em;
+}
+.contents-items-choose > .row >.col-md-8{
+    /* padding: 1em 2em; */
+
+}
+.items-Floor-des{
+    font-size: 0.8em;
+}
+.contents-items-choose .form-group label{
+    font-size: 0.9em;
+font-weight: 700;
+    color: var(--colorFont);
+}
+.contents-items-choose .form-group .form-control{
+    font-size: 0.9em;
+
+}
+.contents-items-choose .items-contents .border-bt{
+    border-bottom: 1px solid #C5C1C1;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.contents-items-choose .pickUp-dropOff-location-contents .form-group{
+    width: 50%;
+}
+.contents-items-choose .pickUp-dropOff-location-contents .form-group >div{
+    width: 100%;
+    display: block;
+    position: relative !important;
+}
+.contents-items-choose .pickUp-dropOff-location-contents .form-group >div >div{
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    min-height: 150px;
+    z-index: 10;
+    min-width: 284px !important;
+    width: 90%  !important;
+    /* max-width: 400px; */
+}
+.contents-items-choose .pickUp-dropOff-location-contents .form-group .option-select-PD{
+    width: 100%;
+
+}
+.form-group .option-select-PD .small-address{
+    font-size: 11.5px;
+    display: -webkit-box;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;  /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.form-group .option-select-PD .medium-name{
+    font-size: 14px;
+    font-weight: 700;
+}
+.contents-items-choose .pickUp-dropOff-location-contents .form-group label{
+    width: 100%;
+}
+.contents-items-choose .pickUp-dropOff-location-contents .form-group .form-control{
+    width: 90%;
+}
+.Client-information-contents .form-control{
+    width: 90%;
+}
+.btn-handle{
+font-weight: 700;
+    font-size: 1em;
+}
+.btn-handle .btn:first-child a{
+    text-decoration: none;
+    color: var(--colorMain);
+
+}
+.btn-handle .btn a{
+    text-decoration: none;
+    color: white;
+
+}
+.btn-handle .btn:last-child{
+    background-color: var(--colorMain);
+    color: white;
+    font-size: 0.9em;
+    padding: 5px 25px;
+}
+.btn-handle .btn:first-child{
+    background-color: white;
+    color: var(--colorRed);
+    padding: 5px 40px;
+    font-size: 0.9em;
+    border: 1px solid #C5C1C1;
+}
+.items-terms-notes h5{
+    color: var(--colorMain);
+}
+.items-terms-notes .mt-4{
+    font-size: 0.9em;
+}
+.infor_bus_router{
+    width: 60%;
+    background-color: white;
+    z-index: 1;
+    top: 3em;
+    display: none;
+    left: 37%;
+    border-radius: 10px;
+    border: 1px solid #C5C1C1;
+    max-height: 500px;
+}
+.infor_bus_router.active-busInfor{
+    display: block;
+
+}
+.infor_bus_router .row{
+    max-height: 430px;
+
+}
+
+.infor_bus_router .row .items_infor_bus_router ul li{
+    text-align: justify;
+    font-size: 0.9em;
+    list-style: initial;
+   font-weight: 500;
+}
+.steps-booking-contents{
+      background-color: var(--colorPrimary);
+      /* position: fixed; */
+      display: none;
+}
+.steps-booking-contents .tabs-step{
+    /* background-color: var(--colorMain); */
+    color: white;
+    /* border-radius: 100%; */
+
+}
+
+.steps-booking-contents .number-step{
+    left: 7px;
+    position: absolute;
+    top: -2px;
+   color: white;
+   font-size: 13px;
+    
+}
+.steps-booking-contents .border-step{
+    border-bottom: 1px solid #eaeaea;
+}
+.contents-items-choose .chair-chosen{
+    display: none;
+}
+.button_conti-step {
+    margin-top: 2.5em;
+    display:none ;
+}
+.steps-booking-contents{
+    font-size: 0.9em;
+font-weight: 700;
+}
+.steps-booking-contents .tabs-step{
+    padding: 0 2px;
+}
+.steps-booking-contents .active-step svg circle {
+    fill: var(--colorMain)
+    
+}
+.steps-booking-contents .active-step .number-step {
+    color: white;
+}
+.contents-items-choose .infor-bus-contents .card-body .row {
+    font-size: 0.85em;
+}
+.contents-items-choose .infor-bus-contents .card-body .row .text-end.text-danger {
+    color: var(--colorMain) !important;
+}
+@media only screen and (max-width:1200px) {
+    .contents-items-choose .items-FloorDown .row,  .contents-items-choose .items-FloorUp .row{
+        width: 100% ;
+    }
+    .contents-items-choose{
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+@media only screen and (max-width:992px) {
+    .contents-items-choose .items-FloorDown .row,  .contents-items-choose .items-FloorUp .row{
+        width: 100% ;
+    }
+    .contents-items-choose .col-md-8{
+        width: 100%;
+
+    }
+    .contents-items-choose .col-4 {
+        width: 100%;
+        margin-top: 1.2em;
+    }
+
+}
+
+
+@media only screen and (max-width:768px) {
+
+    .contents-items-choose .col-4 {
+        padding-left: 0;
+        margin-top: -1.5em;
+    }
+    
+    .routes-bus-container{
+        position: fixed;
+        background-color: white;
+        z-index: 10;
+        left: 0;
+        width: 100%;
+        top: 4.4em;
+    }
+    .button_conti-step{
+        display: block;
+    }
+    .steps-booking-contents{
+        display: block;
+        
+  }
+
+  .contents-items-choose .items-choose{
+    display: none;
+  }
+  .contents-items-choose .items-choose.active-step-item{
+   
+    display: block;
+  }
+  .border-bt{
+    display: none;
+  }
+  .contents-items-choose{
+    margin-top: 12.5em;
+  }
+  .contents-items-choose > .row >.col-md-8{
+    border: none;
+  }
+
+  .contents-items-choose .pickUp-dropOff-location-contents .form-group {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.contents-items-choose .pickUp-dropOff-location-contents .form-group .form-control {
+    width: 100%;
+}
+.contents-items-choose .items-chair{
+    margin-top: 1em;
+}
+.contents-items-choose .chair-chosen{
+    display: block;
+}
+
+  .Client-information-contents .col-6{
+    width: 100%;
+  }
+  .Client-information-contents .items-terms-notes{
+    margin-top: 1em;
+  }
+  .Client-information-contents .submit-checkbox{
+    align-items: baseline !important ;
+  }
+  .Client-information-contents .form-control {
+    width: 100%;
+}
+
+.infor_bus_router {
+
+    top:4em;
+}
+.steps-booking-contents .tabs-step{
+    /* padding: 0 5px; */
+    font-size: 12px;
+}
+.routes-bus-container h5{
+    font-size: 1.1em;
+}
+.routes-bus-container .date_go{
+    font-size: 0.9em;
+
+}
+.infor_bus_router .row .items_infor_bus_router ul li{
+    font-size: 0.85em;
+}
+.infor_bus_router h5{
+    font-size: 0.95em;
+}
+.infor_bus_router h6{
+    font-size: 0.85em;
+}
+}
+
+@media only screen and (max-width:560px) {
+    .contents-items-choose{
+        margin-top: 11.5em;
+      }
+
+    .contents-items-choose h5{
+        font-size: 1em;
+    }
+    .contents-items-choose .form-group label{
+        font-size: 0.85em;
+        
+    }
+    .contents-items-choose span b{
+        font-size: 0.8em;
+
+    }
+    .contents-items-choose .form-group .form-control {
+        font-size: 0.85em;
+    }
+    .contents-items-choose .col-4{
+        margin-top: -0.5em;
+    }
+    .steps-booking-contents .number-step{
+        font-size: 11px;
+        top: -1px;
+    }
+    .routes-bus-container.container{
+        padding-top: 5px;
+    }
+    .routes-bus-container{
+        top:3.7em;
+    }
+    .routes-bus-container .w-25 img{
+        width: 100% !important;
+    }
+    .routes-bus-container h5 {
+        font-size: 0.9em;
+     
+    }
+    .routes-bus-container .date_go {
+        font-size: 0.8em;
+        
+    }
+   
+    .contents-items-choose > .row >.col-md-8 {
+        padding: 1em 0.5em;
+    }
+    .contents-items-choose .items-chair {
+        margin-top: 1em !important;
+    }
+    .contents-items-choose .infor-bus-contents{
+        padding: 0 0;
+    }
+    .steps-booking-contents .tabs-step{
+        padding: 0 5px;
+        font-size: 11px;
+    }
+    .items-FloorUp{
+        margin-top: 1em;
+    }
+    .submit-checkbox .text{
+        font-size: 0.8em;
+    }
+    .items-terms-notes h5 {
+        font-size: 1em;
+    }
+    .items-terms-notes .mt-4{
+        margin-top: 1em !important;
+        font-size: 0.8em;
+    }
+    .infor_bus_router {
+        width: 80%;
+        left: 16%;
+    }
+    .infor_bus_router .row .items_infor_bus_router ul li{
+        font-size: 0.8em;
+    }
+    .contents-items-choose .infor-bus-contents .card-body .row {
+        font-size: 0.8em;
+    }
+}
+@media only screen and (max-width:400px) {
+    .infor_bus_router .row .items_infor_bus_router ul li{
+        font-size: 0.7em;
+    }
+
+    .infor_bus_router h5{
+        font-size: 0.9em;
+    }
+    .contents-items-choose{
+        margin-top: 11.5em;
+      }
+      .submit-checkbox .text {
+        font-size: 0.7em;
+    }
+}
+@media only screen and (max-width:340px) {
+    .steps-booking-contents {
+        font-size: 0.7em;
+    }
+    .steps-booking-contents .number-step {
+        left: 7px;
+        /* top: 0; */
+    }
+}

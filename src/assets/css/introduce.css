@@ -1,0 +1,95 @@
+.introduce-contents .container{
+    max-width: 1400px;
+}
+.introduce-contents .banner2{
+    max-height: 550px;
+    
+}
+.introduce-contents .title-intro{
+    font-weight: 700;
+    color: var(--colorPrimary);
+}
+.introduce-contents .imgs-bus--Intro .col-xl-3{
+    width: 28%;
+}
+.introduce-contents .banner-intro{
+    max-height:515px;
+    margin-bottom: 30px;
+}
+.introduce-contents .banner-intro .container{
+    max-width: 1440px;
+}
+.introduce-contents .banner-intro img{
+    max-height:515px;
+    width: 100%;
+    object-fit: cover;
+}
+.introduce-contents .lh-base{
+        font-weight: 500;
+    font-size: 16px;
+}
+.introduce-contents .infor-text2{
+    max-width: 70%;
+    margin: 0 auto;
+        font-weight: 500;
+    font-size: 16px;
+}
+@media only screen and (max-width: 480px){
+    /* .introduce-contents .img-fluid:nth-child(1){
+        min-height: 9em !important;
+    } */
+    .introduce-contents .banner2{
+         max-height: 15em !important;
+    }
+    .introduce-contents .lh-base{
+        font-size: 16px;
+        padding: 0 0 !important;
+    }
+    .introduce-contents .infor-text2{
+        max-width: 100%;
+
+        font-size: 15px;
+    }
+}
+@media only screen and (max-width: 576px){
+    .img-des-bus--first img{
+        margin:  0 auto !important;
+    }
+    .introduce-contents .imgs-bus--Intro .col-xl-3 {
+        width: 33%;
+        padding: 0;
+    }
+    .introduce-contents .container.mt-5{
+        padding: 0;
+    }
+}
+@media only screen and (max-width: 768px){
+    .introduce-contents .container{
+        max-width: 750px;
+}
+    /* .introduce-contents .img-fluid:nth-child(1){
+        max-height: 21em;
+    } */
+    .introduce-contents .banner2{
+        max-height: 21em  ;
+    }
+    .introduce-contents .infor-text2 {
+        max-width: 90%;
+    }
+    .img-des-bus--first img{
+        height: 16em !important;
+    }
+}
+@media only screen and (max-width: 992px){
+    .order-sm-first.ps-5{
+        padding-left: 0 !important;
+    }
+}
+@media only screen and (min-width: 1200px){
+    /* .introduce-contents .img-fluid:nth-child(1){
+        max-height: 25em;
+    } */
+    /* .introduce-contents .banner2{
+        max-height: 27em;
+    } */
+}

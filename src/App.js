@@ -27,7 +27,22 @@ import ChangePassword from './pages/auth/changePassword';
 import ForgotPassword from './pages/auth/forgotPassword';
 import ResetPassword from './pages/auth/resetPassword';
 import PostDetail from './pages/layouts/postDetail';
-import Test from './pages/layouts/test';
+// import Test from './pages/layouts/test';
+
+import LoadingNews from './pages/newslist';
+import TestRoute from './pages/testRoute';
+import Showroute from './pages/showroute';
+import AdminLogin from './componets/admin/adminLogin';
+import IndexAdmin from './pages/admin';
+
+import DashBoard from './pages/admin/dashboard';
+import RouteAdmin from './pages/admin/route/route';
+import NotFoundPage from './pages/notFound';
+import AddNewsForm from './pages/admin/news/addNew';
+import NewsList from './pages/admin/news/news';
+import UserList from './pages/admin/user/user';
+// import Editor from './pages/admin/news/edit';
+
 
 // import Slideshows from './componets/home/slide';
 // import Indexs from './pages/layouts/auth';
@@ -38,22 +53,30 @@ function App() {
     <>
     
     <Routes>
-      <Route element={<Index/>}>
+
+      <Route    element={<Index/>}>
+   
+
+
           <Route path='/' element={<Home/>}/>
           <Route path='/gioithieu' element={<Introduce/>}/>
           <Route path='/tuyendung' element={<Recruitment/>}/>
           <Route path='/tintuc' element={<Posts/>}/>
           <Route path='/thuexe' element={<Thuexe/>}/>
           <Route path='/lienhe' element={<Contact/>}/>
-          <Route path='/test' element={<Test/>}/>
+          {/* <Route path='/test' element={<Test/>}/> */}
 
           <Route path='/lichtrinh' element={<RoutersBus/>}/>
 
           <Route path='/lichtrinh1chieu' element={<RoutersBusSingle/>}/>
+          <Route path='/lichtrinh1chieu/:location' element={<RoutersBusSingle/>}/>
+
           <Route path='/test' element={<ChairChoose/>}/>
  
           <Route path='/tinchitiet' element={<PostDetail/>}/>
           <Route path='/datve1chieu' element={<BookTicketPageSingle/>}/>
+          <Route path='/datve1chieu/:id' element={<BookTicketPageSingle/>}/>
+
           <Route path='/datve' element={<BookTicketPage/>}/>
           <Route path='/thanhtoan1chieu' element={<PaymentSingle/>}/>
           <Route path='/thanhtoan' element={<Payment/>}/>
@@ -70,10 +93,15 @@ function App() {
           <Route path='/user/change_password' element={<ChangePassword/>}/>
 
           {/* <Route path='/callback' element={<Navigate to="/" />} /> */}
+
       </Route>
       
       <Route path='/login' element={<Signin/>}/>
-      {/* <Route path='/logins' element={<Indexs/>}/> */}
+
+      <Route path='/news' element={<LoadingNews/>}/>
+      <Route path='/route' element={<TestRoute/>}/>
+      <Route path='/showroute' element={<Showroute/>}/>
+      <Route path='/showroute?' element={<Showroute/>}/>
 
       <Route path='/signup' element={<Signup/>}/>
       <Route exact path="/auth/google" element={<LoginGG/>} />
@@ -82,7 +110,23 @@ function App() {
 
       {/* <Route exact path="/testlogin"    element={<Testlogin/>}/> */}
 
-    </Routes>
+      {/* <Route path='/editor'  element={<Editor/>} /> */}
+
+
+        <Route path='/admin'  element={<AdminLogin/>} />
+        <Route  element={<IndexAdmin />}>
+    {/* Nested routes bên trong /admin */}
+              <Route path='/admin/dashboard'  element={<DashBoard />} />
+              <Route path='/admin/route' element={<RouteAdmin />} />
+              <Route path='/admin/user' element={<UserList/>} />
+              <Route path='/admin/news' element={<NewsList />} />
+              <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
+
+  
+  </Route> 
+            
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     
     </>
   );

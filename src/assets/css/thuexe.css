@@ -1,0 +1,237 @@
+.rent-car-container .img-fluid{
+    height: 25em;
+}
+
+.rent-car-container .container{
+    max-width: 1400px;
+}
+.banner-rentCar img{
+    height: 27em;
+    object-fit: cover;
+}
+.rent-car-container .order-sm-first{
+  padding-left: 5em;
+}
+.rent-car-container .order-sm-later{
+  padding-right: 5em;
+}
+.rent-car-container .contents-fleet{
+        width: 25%;
+        margin: 0 auto;
+        bottom: -36%;
+        text-align: center;
+}
+
+.rent-car-container .text-start{
+  font-size: 15px;
+}
+.rent-car-container .container b{
+        font-weight: 700;
+    color: var(--colorPrimary);
+}
+.rent-car-container .title-rent{
+  margin-bottom:2em ;
+}
+.rent-car-container .title-rent b{
+        font-weight: 800;
+        color: var(--colorPrimary);
+        text-shadow: 5px -1px 14px #fdceaf
+
+}
+.rent-car-container p{
+        font-weight: 500;
+
+}
+.rent-car-container button{
+        font-weight: 700;
+    background-color: var(--colorRed);
+    border: none;
+    padding: 8px 17px;
+}
+.rent-car-container .infor_fleet{
+    background-color: var(--colorPrimary);
+    color: white;
+    border-radius: 100px;
+        font-weight: 500;
+    padding: 13px 25px;
+    display: none;
+}
+.rent-car-container .contents-fleet-rent .fleet-item-rent:hover .infor_fleet{
+    display: block;
+}
+.rent-car-container .contents-fleet .fleet-item {
+    width: 100%;
+}
+.rent-car-container .contents-fleet .fleet-item a img{
+    /* width: 100%; */
+    height: 100%;
+}
+/* .modal.fade .modal-dialog {
+
+    transform: translate(0,-24px);
+} */
+.contents-fleet-rent{
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
+}
+.modal::-webkit-scrollbar {
+    width: 8px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+  
+    
+  }
+  
+ .modal::-webkit-scrollbar-thumb {
+    background-color: #314461;
+    border-radius: 10px;
+  }
+  
+  /* Firefox */
+  .modal {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+  .modal-rent-car   .modal-title {
+
+    font-weight: bold;
+
+  }
+  .modal-rent-car form{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .modal-rent-car form .form-group{
+    width: 46%;
+    float: left;
+    margin: 5px 0;
+  }
+  .modal-rent-car form .form-group:last-child{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .modal-rent-car form .form-group:last-child button{
+    width: 100%;
+
+  }
+  .modal-rent-car .modal-body {
+    padding: 0 15px;
+  }
+/*   .modal-title {
+        font-weight: 700;
+    
+  } */
+  .modal-rent-car .form-label{
+    font-size: 15px;
+    /* font-weight: bold; */
+    font-weight: 700;
+    margin-bottom: 0.3em;
+  }
+  .modal-rent-car .form-control{
+    font-size: 14px;
+    padding: 0.3rem 0.75rem;
+    border-color: #dee2e6;
+    
+  }
+  .modal-rent-car .form-select{
+    font-size: 14px;
+    padding: 0.3rem 2.25rem 0.3rem 0.75rem;
+  }
+  .modal-rent-car .form-control:focus,  .modal-rent-car .form-select:focus {
+    border-color: #dee2e6;
+    outline: none;
+    box-shadow: none;
+}
+@media only screen and (max-width: 480px){
+    /* .rent-car-container .contents-fleet{
+       display: none;
+} */
+.boxFleet-rentCar .text-center.mt-4{
+  font-size: 14px;
+  margin: 0 0 10px 0 !important;
+}
+.rent-car-container .boxFleet{
+    display: none;
+
+}
+.rent-car-container .img-fluid{
+    object-fit: cover;
+    height: 15em !important;
+}
+.modal-dialog {
+    width: 90% !important;
+    margin: 0 auto;
+}
+.modal-title{
+    font-size: 17px;
+}
+.modal-dialog label , .modal-dialog input , .modal-dialog select{
+    font-size: 15px;
+
+}
+.modal-rent-car form .form-group{
+    width: 49%;
+    float: left;
+    margin: 5px 0;
+  }
+  .modal-rent-car .form-label {
+    font-size: 14px;
+  }
+  .modal-rent-car .form-control {
+    font-size: 13px;
+  }
+  .modal-rent-car .form-select {
+    font-size: 13px;
+  }
+}
+@media only screen and (max-width: 768px){  
+    .rent-car-container .boxFleet{
+        display: none;
+    
+    }
+    .rent-car-container .img-fluid{
+        object-fit: cover;
+        height: 19em;
+    }
+    /* .modal.fade .modal-dialog {
+
+        transform: translate(0,3px);
+    } */
+    .modal-dialog {
+        width: 70%;
+        margin: 0 auto;
+    }
+    .modal.show .modal-dialog{
+        transform: translate(0,8px);
+    }
+}
+ @media only screen and (max-width: 992px){
+    .rent-car-container .contents-fleet{
+        bottom: -80% !important;
+}
+.rent-car-container .img-fluid{
+    object-fit: cover;
+    height: 20em;
+}
+.rent-car-container .order-sm-first{
+  padding-right: 1em;
+  padding-left: 1em;
+}
+.rent-car-container .order-sm-later{
+  padding-right: 1em;
+  padding-left: 1em;
+}
+ }
+
+ @media only screen and (max-width: 1500px){
+    .rent-car-container .contents-fleet{
+        bottom: -60% ;
+}
+  
+  }

@@ -1,0 +1,311 @@
+.login-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+
+  background-size: cover;
+  background-position: center;
+  background-color: #8b8b8b;
+  font-family: var(--fontRegular);
+
+}
+.login-container .w-85-login{
+  margin: 0 auto;
+  width: 85%;
+}
+.login-box--centents {
+  background-color: #febd7dcc;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5);
+  padding: 27px 20px;
+
+  width: 95%;
+  margin: 0 auto;
+  
+}
+
+.form-login{
+  /* padding: 20px; */
+
+}
+
+.login-container h1 {
+  color: white; /* Màu chữ */
+  text-shadow: 2px 2px 2px #060148, 1px -1px 1px #060148;
+  font-family: var(--fontExtraBold);
+
+  font-size: 50px;
+  padding-bottom: 30px;
+}
+
+.form-login .form-group input {
+  border-radius: 5px 0 0 5px;
+  display: block;
+  width: 91%;
+  padding: 11px 14px;
+  outline: none;
+  border: 2px solid white;
+}
+.form-login .form-group{
+  margin-bottom: 20px;
+
+}
+.form-login .form-group .relative-input{
+  position: relative;
+}
+.form-login .form-group i{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: white;
+  padding-left: 13px;
+  padding-right: 13px;
+  border-radius: 0 5px 5px 0;
+  padding-top: 13px;
+ height: 100%;
+ color: rgb(188, 187, 187);
+  border-left: 1px solid rgb(190, 190, 190);
+  font-size: 23px;
+}
+.form-login .form-group .fa-key{
+  padding-left: 10px
+}
+.form-login .login-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px; 
+  border: none;
+  color: #fff;
+  background-color: #2E8A99; /* Màu của nút Login */
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 17px;
+  font-family: var(--fontBold);
+
+}
+
+.form-loginp {
+  text-align: center;
+  margin-top: 16px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+}
+
+.social-login a i{
+  margin: 5px;
+}
+
+.login-box--centents .facebook-button,
+.login-box--centents .google-button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  color: #fff;
+  background-color: #2E95F4; /* Màu của Facebook */
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: var(--fontRegular);
+}
+
+.login-box--centents .google-button {
+  background-color: #2E8A99; /* Màu của Google */
+}
+
+.login-box--centents .image {
+  width: 100%;
+  height: 100%;
+}
+
+.login-box--centents .image img {
+  width: 50%;
+  height: 50%;
+  /* box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5); */
+}
+
+.login-box--centents .container-line {
+  margin: auto;
+  position: relative;
+  width: 200px;
+  height: 70px;
+}
+
+.login-box--centents .container-line .line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #D9D9D9;
+}
+
+.login-box--centents .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box--centents .circle p {
+  font-size: 16px;
+  color: #0E2954;
+  margin: 0;
+  font-weight: bold;
+
+}
+
+.login-box--centents .form-login label {
+  margin-right: 10px;
+  color: white;
+
+}
+.options {
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.options input{
+  margin-right: 12px;
+}
+.options a{
+  text-decoration: none;
+  color: white;
+  float: right;
+  text-align: right;
+}
+.options a:hover{
+  color: #2E8A99;
+  transition: 0.2s linear;
+}
+.login-box--centents .login-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box--centents .login-btn p {
+  color: white;
+  margin: 0;
+}
+
+.login-box--centents .login-btn a{
+  border: none;
+  color: #2E8A99;
+  cursor: pointer;
+ 
+  padding-left: 10px;
+}
+.login-box--centents .login-btn a:hover{
+  color:white;
+  transition: 0.2s linear;
+ 
+}
+.login-box--centents .login-btn:last-child{
+  margin-top: 10px;
+  font-family: var(--fontBold);
+}
+.login-box--centents .form-group
+.eyes-pass{
+  position: absolute;
+  right: 50px;
+  top: 0;
+
+}
+.eyes-pass i{
+  border: none !important;
+  font-size: 17px !important;
+  padding-top: 16px !important;
+
+
+}
+
+@media only screen and (max-width: 1400px) {
+  .login-box--centents .image{
+    height: 474px;
+
+  }
+
+}
+@media only screen and (max-width: 992px) {
+  .login-container .container {
+    max-width: 915px;
+}
+  .login-box--centents {
+    width: 100%;
+  }
+  .login-box--centents .image{
+    height: 489px;
+
+  }
+  .login-box--centents .image img{
+    object-fit: cover;
+
+   }
+   .form-login{
+    padding: 10px;
+    box-shadow:none
+  }
+  .login-box--centents .container-line {
+    height: 56px;
+  }
+  .login-box--centents .facebook-button, .login-box--centents .google-button {
+    padding: 10px 5px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .login-box--centents .image {
+    display: none;
+}
+.form-login .form-group input {
+
+  width: 93%;
+}
+.form-login{
+  padding: 20px 0;
+}
+.login-container h1 {
+  font-size: 40px;
+}
+}
+@media only screen and (max-width: 576px) {
+
+  .login-container .w-85-login {
+    /* margin: 0 auto; */
+    width: 98%;
+}
+  .login-box--centents .circle p {
+    font-size: 13px;
+  }
+  .login-box--centents .facebook-button, .login-box--centents .google-button {
+    padding: 10px 5px;
+    border: none;
+    font-size: 13px;
+  }
+  .form-login{
+    font-size: 15px;
+    padding: 20px 0;
+  }
+  .form-login{
+      box-shadow: none;
+      /* padding: 0; */
+  }
+  
+  .login-container h1 {
+      font-size: 30px;
+      padding-bottom: 10px;
+  }
+  
+
+} 

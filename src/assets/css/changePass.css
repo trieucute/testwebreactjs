@@ -1,0 +1,96 @@
+.changePass-container.container{
+    max-width: 1440px;
+    padding: 1em 0 3em 0;
+ font-weight: 500;
+}
+.changePass-container h3{
+    
+ font-weight: 800;
+    color: white;
+    margin-bottom: 40px;
+}
+.form-change{
+    width: 43%;
+    backdrop-filter: blur(8px);
+    background-position: center right;
+    background-color: rgba(54, 52, 52, 0.2);
+    margin: 0 auto;
+    padding: 2em 4em;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.form-change .form-group{
+    margin: 20px 10px;
+}
+.form-change .form-group:last-child{
+    margin: 30px 10px 15px 10px;
+}
+.form-change .form-group label{
+   font-weight: 700;
+    margin-bottom: 5px;
+    color: white;
+}
+.form-change .form-control{
+    font-size: 15px;
+    color: #ffffff;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    height: 45px;
+    border: none;
+    background: transparent;
+    padding: 0 5px;
+    border-bottom: 1px solid gainsboro !important;
+}
+.form-change .form-control:focus {
+    color: white;
+    background: transparent;
+    border-color: transparent;
+    outline: 0;
+
+}
+.form-change .button_change{
+    padding: 9px 40px;
+    border-radius: 5px;
+   font-weight: 700;
+
+    color: white;
+    background-color: var(--colorMain);
+    outline: none;
+    border: none;
+}
+.form-change .button_change:hover,
+.form-change .button_change:active{
+    transition: all 0.1s ease;
+    box-shadow: 0 0 0 0.3rem  var(--colorMain);
+
+}
+.changePass-container .form-group{
+    position: relative;
+}
+.changePass-container .eyes-pass{
+    top: 27px;
+    position: absolute;
+    right: 12px;
+    color: white;
+}
+@media only screen and (max-width: 992px) {
+    .form-change{
+        width: 70%;
+        margin: 0 auto;
+    }
+}
+@media only screen and (max-width: 568px) {
+    .form-change{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .form-change{
+        width: 90%;
+        margin: 0 auto;
+        padding: 2em 1em;
+
+    }
+}

@@ -236,6 +236,10 @@
 .detail-news-container .text1{
     font-size: 16px;
 }
+.detail-news-container .text1 img{
+    max-width: 100%;
+    height: auto;
+}
 .detail-news-container .img-detail-news{
     font-size: 16px;
     font-style: italic;

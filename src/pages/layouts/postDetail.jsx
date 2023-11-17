@@ -32,6 +32,12 @@ const PostDetail = () => {
     navigate(`/tinchitiet/${id}`)
     dispatch(fetchPostDetail(id));
   }
+  const handlnewslist= ()=>{
+    // window.load()
+    window.scrollTo(0, 0);
+    navigate(`/tintuc`)
+   
+  }
   function formatDateNews(inputDate) {
     const date = new Date(inputDate);
     const day = date.getDate();
@@ -68,7 +74,7 @@ const PostDetail = () => {
                   <div className="" dangerouslySetInnerHTML={{ __html: postDetail.content }}/>
                   <p className="text-end mt-5">Sưu tầm</p>
                   <div className="back-news text-start">
-                    <a className="btn-watch btn-back-news" href="/tintuc">
+                    <a className="btn-watch btn-back-news" onClick={handlnewslist} style={{cursor:"pointer"}}>
                       <i
                         className="fa-solid fa-angles-left"
                         style={{ paddingRight: 10 }}
@@ -156,7 +162,7 @@ const PostDetail = () => {
             <div className="row m-0 justify-content-between">
               {currentRelatedNews?.map((item, index) => (
                 <div className="items-relate-news col-xl-3 col-lg-3 col-sm-6 ">
-                  <a className="card " style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px", border: "none" }} href="/tintuc">
+                  <a className="card " style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",cursor:"pointer", border: "none" }}  onClick={()=>handlnewsDetail(item.id)} >
                     <img alt=""
                       src={item.imgs}
                       className="img-fluid"

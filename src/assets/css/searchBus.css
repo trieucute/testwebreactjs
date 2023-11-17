@@ -165,12 +165,12 @@
     font-size: 0.9rem;
     border: none;
     outline: none;
-    color: white;
+    
     border-radius: 10px;
     background-color: var(--colorMain);
    font-weight: 700;
 }
-.btn-choose button a{
+.btn-choose button {
     text-decoration: none;
     color:var(--colorMain);
 
@@ -209,7 +209,7 @@
     transition-delay: .2s;
   }
   
-  .btn-choose button:hover a{
+  .btn-choose:hover button {
     color: #fff;
   }
   

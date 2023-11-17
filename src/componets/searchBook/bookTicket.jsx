@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../axios-client";
 import { useDispatch, useSelector } from 'react-redux';
-import {  searchTrip, updateSearchData } from '../../reduxTool/routesBookingSlice';
+import {  updateSearchData } from '../../reduxTool/routesBookingSlice';
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from 'react-autocomplete';
 import Notification from "../../pages/NotificationTrip";
@@ -201,7 +201,7 @@ const Book = () => {
 
   const fetchDataProvinces = () => {
     axiosClient
-      .get(`/station`)
+      .get(`/station/province`)
       .then((response) => {
         const data = response.data.data;
         console.log(data);
@@ -266,6 +266,7 @@ const Book = () => {
     const startLocation = formData.start_location;
     const endLocation = formData.end_location;
     const date = formData.date;
+    console.log(date);
  // Kiểm tra nếu start_location và end_location giống nhau
  if (startLocation === endLocation) {
   setMessLocation(true);
@@ -274,7 +275,7 @@ const Book = () => {
 
     setSelectedDate(new Date(formData.date));
 
-    dispatch(searchTrip({ startLocation, endLocation, date }));
+    // dispatch(searchTrip({ startLocation, endLocation, date }));
     dispatch(updateSearchData(formData));
 
     navigate(`/lichtrinh1chieu/?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=1`);

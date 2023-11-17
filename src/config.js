@@ -25,12 +25,10 @@ export function formatDate(dateString) {
     const hours = duration.hours();
     const minutes = duration.minutes();
     // const seconds = duration.seconds();
-  
-    return {
-      hours,
-      minutes,
+
+    return  `${hours} giờ ${minutes} phút`
     //   seconds
-    };
+    
   }
   
   export  function TimeHM(timeStr) {

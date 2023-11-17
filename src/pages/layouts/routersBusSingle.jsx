@@ -8,11 +8,12 @@ import Slideshow from "../../componets/home/slideshow";
 import { formatDate, calculateTimeDifference, TimeHM } from "../../config";
 // import TestRoute from './testRoute';
 import { useDispatch, useSelector } from 'react-redux';
-import {  setSelectedTrip, updateSearchData } from '../../reduxTool/routesBookingSlice';
+import {   setSelectedTrip, updateSearchData, tripsdata } from '../../reduxTool/routesBookingSlice';
 import Loading from '../loadingTrip.js';
 
 import { format } from 'date-fns';
 import { useNavigate } from "react-router-dom";
+import axiosClient from "../../axios-client.js";
 const RoutersBusSingle = () => {
   useEffect(() => {
     tabs();
@@ -25,29 +26,48 @@ const RoutersBusSingle = () => {
     window.onscroll = function() {scrollFunction()};
     
   }, []);  
+
   const dispatch = useDispatch();
-  const routeData = useSelector((state) => state.tripReducer.data);
-  const loading = useSelector((state) => state.tripReducer.loading);
-  const error = useSelector((state) => state.tripReducer.error);
+  const [loading, setIsLoading]=useState(false)
+  // const routeData = useSelector((state) => state.tripReducer.data);
+  // const loading = useSelector((state) => state.tripReducer.loading);
+  // const error = useSelector((state) => state.tripReducer.error);
   const formData = useSelector((state) => state.tripReducer.formData);
   // const selectedTrip = useSelector((state) => state.setSeletedTrip)
-
   const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
+  const urlParams = new URLSearchParams(queryString);
+  
+  const startLocation = urlParams.get('start_location');
+  const endLocation = urlParams.get('end_location');
+  const dateOld=urlParams.get('date');
+  const date = format(new Date( urlParams.get('date')), 'dd/MM/yyyy');
 
-const startLocation = urlParams.get('start_location');
-const endLocation = urlParams.get('end_location');
-const date = format(new Date( urlParams.get('date')), 'dd/MM/yyyy');
 // const timedate=  format(new Date( time), 'dd/MM/yyyy');
+const routeData = useSelector((state) => state.tripReducer.trips);
+
 useEffect(() => {
-  // dispatch(searchTrip({ startLocation, endLocation, time }));
+setIsLoading(true)
+  axiosClient.get(`/trip/search?start_location=${startLocation}&end_location=${endLocation}&date=${dateOld}&amount=1`)
+  .then(res=>{
+    console.log('search', res.data);
+    // setRouteData(res.data.data);
+    dispatch(tripsdata(res.data.data)); // Lưu dữ liệu vào state.tripsdata
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+  })
+  .catch(e=>{
+    console.error(e)
+  })
+  // dispatch(searchTrip({ startLocation, endLocation, dateOld }));
   dispatch(updateSearchData({
     start_location: startLocation,
     end_location: endLocation,
-    date: date
+    date: dateOld
   }));
 // 
-}, [dispatch, startLocation, endLocation, date]);
+}, [dispatch, startLocation, endLocation, dateOld]);
 
 // if (loading) {
 //   return <Loading/>;
@@ -86,14 +106,14 @@ const handleChooseTrip=(id)=>{
       </svg>
     </button>
     {/*-----END  Button Filter mobile -----*/}
-    {
+    {/* {
   error ?  <div className=" backWhite-padding " style={{margin:"5em 0"}}>
 
   <h1 style={{fontSize:"1.5em", textAlign:"center", fontWeight:"700"}}>Không có chuyến xe từ {startLocation} đến {endLocation} vào ngày  {date}</h1>
-</div> : (
+</div> : ( */}
 
 
-    loading ? <Loading /> :(
+ {   loading ? <Loading /> :(
    
     <div className="search-bus-routers container my-4 ">
       <div className="content-search-bookTicket row justify-content-center ">
@@ -222,6 +242,9 @@ const handleChooseTrip=(id)=>{
               index++;
             const { car } = item;
             const {schedule}= item;
+            const {end_station}= item;
+            const {start_station}= item;
+
 
             let resultend = [];
             let resultstart = [];
@@ -262,7 +285,7 @@ const handleChooseTrip=(id)=>{
                         <i className="fa-solid fa-circle" />
                       </span>
                       <div className=" border-b-2 border-dotted mr-2" />
-                      <div className="text-center travel_time">  {Object.values(calculateTimeDifference( timeStartName, timeEndName)).join(":")} giờ</div>
+                      <div className="text-center travel_time">  {Object.values(calculateTimeDifference( timeStartName, timeEndName))}</div>
                       <div className=" border-b-2 border-dotted ml-2" />
                       <span className="icon-dotArrive">
                         <i className="fa-solid fa-location-dot" />
@@ -271,8 +294,8 @@ const handleChooseTrip=(id)=>{
                     <span className="time_arrive">{TimeHM(timeEndName)}</span>
                   </div>
                   <div className="items-bus-station d-flex w-100">
-                    <h5 className="w-50 ">  {firstStartName} </h5>
-                    <h5 className="w-50 text-end">  {firstEndName} </h5>
+                    <h5 className="w-50 ">  {start_station.name} </h5>
+                    <h5 className="w-50 text-end">  {end_station.name} </h5>
                   </div>
                   <div className="d-flex w-100 mt-2 align-items-center flex-wrap">
                     <div className="item-about-bus w-75">
@@ -293,7 +316,7 @@ const handleChooseTrip=(id)=>{
                       </ul>
                     </div>
                     <div className="btn-choose w-25 text-end">
-                      <button className="" type="button" onClick={()=>handleChooseTrip(item.id)} style={{color:"white"}}>Chọn chuyến
+                      <button className="" type="button" onClick={()=>handleChooseTrip(item.id)} >Chọn chuyến
                         {/* <a href={`/datve1chieu/${item.id}`} >Chọn chuyến</a> */}
                       </button>
                     </div>
@@ -317,8 +340,9 @@ const handleChooseTrip=(id)=>{
 
 </div>
    )
-   )
-  }
+}
+   {/* )
+  } */}
   {/*------Bộ lộc và Kết quả tìm kiếm chuyến xe -  Search Filter and Search Bus Routers-----*/}
 
 

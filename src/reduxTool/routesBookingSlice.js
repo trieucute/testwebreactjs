@@ -2,19 +2,19 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosClient from '../axios-client';
-
+import { format } from 'date-fns'; 
 // Tạo action creator sử dụng createAsyncThunk để gửi yêu cầu API
 export const searchTrip = createAsyncThunk('trip/search', async ({ startLocation, endLocation, date }) => {
+  // const dateFormat = format(new Date(date), 'yyyy-MM-dd');
   const response = await axiosClient.get(`/trip/search?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=1`);
-console.log(response.data);
+  console.log(response.data);
   return response.data;
 });
-
 // Tạo slice
 const tripSlice = createSlice({
   name: 'trip',
   initialState: {
-    trips: [],
+    trips: null,
     loading: false,
     error: null,
     formData: {
@@ -25,6 +25,14 @@ const tripSlice = createSlice({
     selectedTrip: null,
   },
   reducers: {
+    tripsdata: (state, action) => {
+      // Lưu thông tin các chuyến đi 
+      // return action.payload;
+      state.loading = false;
+      
+      state.trips = action.payload;
+
+    },
     updateSearchData: (state, action) => {
       // Cập nhật dữ liệu form trong Redux store dựa trên thông tin được truyền qua action
       state.formData = action.payload;
@@ -58,5 +66,5 @@ const tripSlice = createSlice({
 },
 });
 
-export const { updateSearchData,setSelectedTrip, clearSelectedTrip } = tripSlice.actions;
+export const { updateSearchData,setSelectedTrip, clearSelectedTrip ,tripsdata } = tripSlice.actions;
 export default tripSlice.reducer;

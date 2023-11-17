@@ -12,7 +12,7 @@ import { TimeHM, formatDate } from '../../config';
 import Notification from '../NotificationTrip';
 import { useStateContext } from '../../context/ContextProvider';
 import Loading from '../loadingTrip';
-import { setFormData, setUserData } from '../../reduxTool/dataTicketSlice';
+import { postPayment, setFormData, setUserData } from '../../reduxTool/dataTicketSlice';
 
 
 const BookTicketPageSingle  = () => {
@@ -83,18 +83,25 @@ const BookTicketPageSingle  = () => {
         console.log(tripId);
    const [tripDetail,setTripDetail]= useState([])
    const [selectedSeats, setSelectedSeats] = useState([]);
+   const [selectedSeatIds, setSelectedSeatIds] = useState([]);
    const [showFullMessage, setShowFullMessage] = useState(false);
    const handleSeatClick = (seat) => {
-    if (seat.status !== 'booked') {
+    if (seat.status !== 'booked' && seat.status !== 'pending') {
       const seatIndex = selectedSeats.indexOf(seat.position);
+      const seatId = selectedSeatIds.indexOf(seat.id);
       if (seatIndex === -1 && selectedSeats.length < 5) {
         // Nếu chưa được chọn và số lượng ghế đã chọn chưa đạt tới giới hạn (5)
         setSelectedSeats([...selectedSeats, seat.position]);
+        setSelectedSeatIds([...selectedSeatIds, seat.id]);
       } else if (seatIndex !== -1) {
         // Nếu đã được chọn, loại bỏ khỏi mảng
         const newSelectedSeats = [...selectedSeats];
+        const newSelectedSeatIds = [...selectedSeatIds];
         newSelectedSeats.splice(seatIndex, 1);
+        newSelectedSeatIds.splice(seatId, 1);
         setSelectedSeats(newSelectedSeats);
+        setSelectedSeatIds(newSelectedSeatIds);
+        
       }
       else {
         setShowFullMessage(true); // Hiển thị thông báo khi đã chọn đủ 5 ghế
@@ -104,10 +111,11 @@ const BookTicketPageSingle  = () => {
       }, 4000);
     }
   }
+
   };
 
    console.log(selectedSeats)
-
+   console.log('seatid', selectedSeatIds);
    const { token } = useStateContext();
    const [user, setUser] = useState({});
    const [isLoading, setIsLoading] = useState(true); // Biến trạng thái để kiểm soát việc hiển thị
@@ -118,8 +126,10 @@ const BookTicketPageSingle  = () => {
       useEffect(()=>{
         window.scrollTo(0, 0);
         if (!tripId) {
-          navigate('/lichtrinh1chieu/?'); // Điều hướng đến đường dẫn tìm kiếm chuyến xe của bạn
+          // navigate('/lichtrinh1chieu/?'); // Điều hướng đến đường dẫn tìm kiếm chuyến xe của bạn
+          window.history.back()
           return; // Dừng các thao tác tiếp theo nếu không có tripId
+
         }
         // setIsLoading(true);
         const fetchData = async () => {
@@ -177,8 +187,6 @@ const BookTicketPageSingle  = () => {
     const [email, setEmail] = useState('');
     const [phoneNum, setPhoneNum] = useState('');
     const [isChecked, setIsChecked] = useState(false);
-    const formData = useSelector((state) => state.dataTicket.formData);
-    const userData = useSelector((state) => state.dataTicket.userData);
     const dispatch = useDispatch()
     const handlePay=(e)=>{
       e.preventDefault();
@@ -202,18 +210,41 @@ const BookTicketPageSingle  = () => {
     if(name ==='' || email ==="" || phoneNum===""){
         alert('Vui lòng nhập đầy đủ thông tin khách hàng');
     return; // Dừng việc xử lý nếu không có giá trị trong input
-    }
-  
-    
+    }    
      // Lưu dữ liệu vào Redux store bằng cách dispatch các actions
-     dispatch(setFormData({pickupValue, dropoffValue, selectedSeats}));
-     dispatch(setUserData({ name, email, phoneNum }));
+    //  dispatch(setFormData({pickupValue, dropoffValue}));
+    //  dispatch(setUserData({ name, email, phoneNum }));
     //  console.log('formData ', formData ,'userData',userData);
+    const seatIds = selectedSeatIds.reduce((acc, seat, index) => {
+      acc[`seat_id[${index}]`] = seat;
+      return acc;
+    }, {});
+  
+    const data = {
+      email: email,
+      trip_id: tripId,
+      name: name,
+      phone_number: phoneNum,
+      pickup_location: pickupValue,
+      dropoff_location: dropoffValue,
+      ...seatIds, // Thêm seatIds vào dữ liệu gửi đi
+    };
+    dispatch(postPayment(data))
+  .then((response) => {
+    // Xử lý kết quả thành công nếu cần
+    const payLink= response.payload.data
+    console.log(payLink);
+    window.location=`${payLink}`
+    // navigate(`${payLink}`)
+  })
+  .catch((error) => {
+    // Xử lý lỗi nếu có
+    console.error(error)
+  });
     }
     useEffect(() => {
-      console.log('formData:', formData);
-      console.log('userData:', userData);
-    }, [formData, userData]);
+
+    }, []);
 
 
     return (
@@ -399,10 +430,14 @@ const BookTicketPageSingle  = () => {
                                 <div className='row px-4 py-3 '>
                                 {showFullMessage&& <Notification message="Đã chọn đủ số ghế!" />}
                                     {/*-------------------- SỐ GHẾ TẦNG DƯỚI--------------------------*/}
-                                    <div className='items-FloorDown col-sm-4 '>
+                                    {/* <div className='items-FloorDown col-sm-4 '>
                                         <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
-                                        <div className='row items-content-floor'>
-                                        {tripDetail&& tripDetail.seats &&
+                                        <div className='row items-content-floor'> */}
+                                        {tripDetail && tripDetail.car && tripDetail.car.type === "phòng đôi" && (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
+                                          <div className='row items-content-floor'>
+                                        {tripDetail.seats &&
                                             tripDetail.seats
                                               .filter(seat => seat.position.startsWith('A'))
                                               .sort((a, b) => {
@@ -411,11 +446,12 @@ const BookTicketPageSingle  = () => {
                                                 return positionA - positionB;
                                               })
                                               .map(seat => (
-                                                <div className={`items-content-floor-row ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' ? 'Chosen-seat' : ''}`}
+                                                
+                                                <div className={`items-content-floor-row items-content-floor-double ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}
                                                     key={seat.id}
                                                     onClick={() => handleSeatClick(seat)}
                                                     >
-                                                  <div className='d-flex justify-content-between m-auto py-1' >
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
                                                     <div className='position-relative'>
                                                       <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
                                                         <path
@@ -429,23 +465,109 @@ const BookTicketPageSingle  = () => {
                                                     </div>
                                                   </div>
                                                 </div>
+                                               
                                               ))
-                                         
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                                {tripDetail && tripDetail.car && tripDetail.car.type === "giường nằm" && (
+                                     <div className='items-FloorDown col-sm-4 '>
+                                     <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
+                                     <div className='row items-content-floor'>
+                                       { tripDetail.seats &&
+                                            tripDetail.seats
+                                              .filter(seat => seat.position.startsWith('A'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                             
+                                                <div className={`items-content-floor-row ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked'|| seat.status === 'pending' ? 'Chosen-seat' : ''}`}
+                                                    key={seat.id}
+                                                    onClick={() => handleSeatClick(seat)}
+                                                    >
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                         className={selectedSeats.includes(seat.position) ? 'selected-path' : ''}
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute ${selectedSeats.includes(seat.position) ? 'selected-span' : ''}`} style={{ fontSize: "0.6em", top: "3px" }}>{seat.position}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                
+                                              ))
+                                              }
+                                             </div>
+                                   
+                                                    </div>
                                         
                                              
-                                        }
-
-                                        </div>
+                                              )}
+                                          {tripDetail && tripDetail.car && tripDetail.car.type === "ghế" && (
+                                                  <div className='items-FloorDown col-sm-3 '>
+                                                  {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
+                                                  <div className='row items-content-floor'>
+                                        {tripDetail.seats &&
+                                            tripDetail.seats
+                                              .filter(seat => seat.position.startsWith('A'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                          
+                                                <div className={`items-content-floor-row items-content-floor-chair ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}
+                                                    key={seat.id}
+                                                    onClick={() => handleSeatClick(seat)}
+                                                    >
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                         className={selectedSeats.includes(seat.position) ? 'selected-path' : ''}
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute ${selectedSeats.includes(seat.position) ? 'selected-span' : ''}`} style={{ fontSize: "0.6em", top: "3px" }}>{seat.position}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                 
+                                              ))
+                                              }
+                                           </div>
                                    
-                                    </div>
+                                                    </div>
+                                             
+                                              )}
+                                        
+                                     
                                     {/*----------------END---- SỐ GHẾ TẦNG DƯỚI --------------------------*/}
 
 
                                     {/*-------------------- SỐ GHẾ TẦNG TRÊN--------------------------*/}
-                                    <div className='items-FloorUp col-sm-4'>
+                                    {/* <div className='items-FloorUp col-sm-4'>
                                         <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
-                                        <div className='row items-content-floor'>
-                                        {tripDetail&& tripDetail.seats &&
+                                        <div className='row items-content-floor'> */}
+                                        {tripDetail && tripDetail.car && tripDetail.car.type === "phòng đôi" && (
+                                              <div className='items-FloorUp col-sm-4'>
+                                              <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
+                                              <div className='row items-content-floor'>
+                                        {tripDetail.seats &&
                                             tripDetail.seats
                                               .filter(seat => seat.position.startsWith('B'))
                                               .sort((a, b) => {
@@ -454,11 +576,12 @@ const BookTicketPageSingle  = () => {
                                                 return positionA - positionB;
                                               })
                                               .map(seat => (
-                                                <div className={`items-content-floor-row ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''} ${seat.status === 'Available' ? 'available-seat' : ''}`}
+                                            
+                                                <div className={`items-content-floor-row items-content-floor-double ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}
                                                     key={seat.id}
                                                     onClick={() => handleSeatClick(seat)}
                                                     >
-                                                  <div className='d-flex justify-content-between m-auto py-1' >
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
                                                     <div className='position-relative'>
                                                       <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
                                                         <path
@@ -472,14 +595,123 @@ const BookTicketPageSingle  = () => {
                                                     </div>
                                                   </div>
                                                 </div>
+                                                
+                                              ))
+                                              }
+                                        </div>
+                                                </div>
+                                             
+                                              )}
+                                    {tripDetail && tripDetail.car && tripDetail.car.type === "giường nằm" && (
+                                       <div className='items-FloorUp col-sm-4'>
+                                       <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
+                                       <div className='row items-content-floor'>
+                                       {tripDetail.seats &&
+                                            tripDetail.seats
+                                              .filter(seat => seat.position.startsWith('B'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                               
+                                                <div className={`items-content-floor-row ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''} ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}
+                                                    key={seat.id}
+                                                    onClick={() => handleSeatClick(seat)}
+                                                    >
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                         className={selectedSeats.includes(seat.position) ? 'selected-path' : ''}
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute ${selectedSeats.includes(seat.position) ? 'selected-span' : ''}`} style={{ fontSize: "0.6em", top: "3px" }}>{seat.position}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                
                                               ))
                                          
-                                        
+                                              }
+                                             </div>
+                                                </div>
+                                              )}
+                                    {tripDetail && tripDetail.car && tripDetail.car.type === "ghế" && (
+                                                  <div className='items-FloorDown col-sm-3 '>
+                                                  {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
+                                                  <div className='row items-content-floor'>
+                                                  <div className={`items-content-floor-row items-content-floor-chair`} style={{visibility:'hidden'}}>
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                      
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute `} style={{ fontSize: "0.6em", top: "3px" }}></span>
+                                                    </div>
+                                                  </div>
+                                                  </div>
+                                                  <div className={`items-content-floor-row items-content-floor-chair`}  style={{visibility:'hidden'}}>
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path                                                       
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute`} style={{ fontSize: "0.6em", top: "3px" }}></span>
+                                                    </div>
+                                                  </div>
+                                                  </div>
+
+                                        {tripDetail.seats &&
+                                            tripDetail.seats
+                                              .filter(seat => seat.position.startsWith('B'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                          
+                                                <div className={`items-content-floor-row items-content-floor-chair ${selectedSeats.includes(seat.position) ? 'selected-seat' : ''}  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}
+                                                    key={seat.id}
+                                                    onClick={() => handleSeatClick(seat)}
+                                                    >
+                                                  <div className='d-flex justify-content-center m-auto py-1' >
+                                                    <div className='position-relative'>
+                                                      <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                         className={selectedSeats.includes(seat.position) ? 'selected-path' : ''}
+                                                          d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                         
+                                                          fillOpacity="0.8"
+                                                        />
+                                                      </svg>
+                                                      <span    className={`name-chair position-absolute ${selectedSeats.includes(seat.position) ? 'selected-span' : ''}`} style={{ fontSize: "0.6em", top: "3px" }}>{seat.position}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                 
+                                              ))
+                                              }
+                                           </div>
+                                   
+                                                    </div>
                                              
-                                        }
-                             
-                                        </div>
-                                    </div>
+                                              )}
+                                        {/* </div>
+                                    </div> */}
                                     {/*----------------END---- SỐ GHẾ TẦNG TRÊN--------------------------*/}
 
                                                        {/* {/*-------------------- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}

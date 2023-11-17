@@ -32,6 +32,12 @@ font-weight: 700;
 .items-content-floor .items-content-floor-row{
     width: 33.3%;
 }
+.items-content-floor .items-content-floor-row.items-content-floor-double{
+    width: 50%;
+}
+.items-content-floor .items-content-floor-row.items-content-floor-chair{
+    width: 50%;
+}
 /* .items-content-floor .items-content-floor-row:first-child .d-flex:last-child {
     width: 50%;
     text-align: right;

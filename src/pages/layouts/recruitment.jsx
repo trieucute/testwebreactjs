@@ -3,6 +3,8 @@ import "../../assets/css/tuyendung.css";
 import avatar1 from "../../assets/images/avatarnv1.jpg";
 import avatar2 from "../../assets/images/avatarnv2.jpg";
 import Pagination from "../../componets/pagination";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchjob } from "../../reduxTool/jobSlide";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -11,42 +13,47 @@ const  Recruitment= () => {
     window.scrollTo(0, 0);
   }, []);
   // Danh sách items của bạn
-  const itemListVacancies = [
-    { id: 1, name: "Lái xe KHÁCH GIƯỜNG NẰM" , salary:'Từ 25.000.000 VND đến 30.000.000 VND', location:'Lâm Đồng',deadlineDate:'30/02/2024' },
-    { id: 2, name: "Lái xe trung chuyển khách VP Bảo Lộc" , salary:'Từ 9.000.000 VND đến 11.000.000 VND', location:'Lâm Đồng',deadlineDate:'30/02/2024' },
-    { id: 3, name: "Tiếp nhận khách TPHCM" , salary:'Từ 7.000.000 VND đến 10.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
-    { id: 4, name: "Tổng đài viên TPHCM" , salary:'Từ 7.000.000 VND đến 10.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
-    { id: 5, name: "Nhân viên Giao nhận hàng tại kho VP Bảo Lộc" , salary:'Từ 7.000.000 VND đến 8.000.000 VND', location:'Lâm Đồng',deadlineDate:'30/12/2023' },
-    { id: 6, name: "Lái xe Trung chuyển hàng Tp HCM" , salary:'Từ 12.000.000 VND đến 13.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
-    { id: 7, name: "Lái xe Trung chuyển hàng Tp HCM" , salary:'Từ 12.000.000 VND đến 13.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
-
-
-  ];
+  // const itemListVacancies = [
+  //   // { id: 1, name: "Lái xe KHÁCH GIƯỜNG NẰM" , salary:'Từ 25.000.000 VND đến 30.000.000 VND', location:'Lâm Đồng',deadlineDate:'30/02/2024' },
+  //   // { id: 2, name: "Lái xe trung chuyển khách VP Bảo Lộc" , salary:'Từ 9.000.000 VND đến 11.000.000 VND', location:'Lâm Đồng',deadlineDate:'30/02/2024' },
+  //   // { id: 3, name: "Tiếp nhận khách TPHCM" , salary:'Từ 7.000.000 VND đến 10.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
+  //   // { id: 4, name: "Tổng đài viên TPHCM" , salary:'Từ 7.000.000 VND đến 10.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
+  //   // { id: 5, name: "Nhân viên Giao nhận hàng tại kho VP Bảo Lộc" , salary:'Từ 7.000.000 VND đến 8.000.000 VND', location:'Lâm Đồng',deadlineDate:'30/12/2023' },
+  //   // { id: 6, name: "Lái xe Trung chuyển hàng Tp HCM" , salary:'Từ 12.000.000 VND đến 13.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
+  //   // { id: 7, name: "Lái xe Trung chuyển hàng Tp HCM" , salary:'Từ 12.000.000 VND đến 13.000.000 VND', location:'Hồ Chí Minh',deadlineDate:'30/12/2023' },
+  // ];
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Số lượng items hiển thị trên mỗi trang
 
-  // const firstVisibleItemRef = useRef(null); // Tham chiếu của phần tử đầu tiên trong trang hiện tại
+  const firstVisibleItemRef = useRef(null); // Tham chiếu của phần tử đầu tiên trong trang hiện tại
 
   useEffect(() => {
- window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
    
     // Cuộn đến phần tử đầu tiên của trang hiện tại khi currentPage thay đổi
-    // if (firstVisibleItemRef.current) {
-    //   window.scrollTo(0, 500);
-    //   // firstVisibleItemRef.current.scrollTo(0, 500);
+    if (firstVisibleItemRef.current) {
+      window.scrollTo(0, 500);
+      firstVisibleItemRef.current.scrollTo(0, 500);
      
-    // }
+    }
+
   }, [currentPage]);
 
-
+  const {job, isLoading} = useSelector (state => state.job)
+  const itemListVacancies = job.data
+  console.log(job);
+  useEffect(()=>{
+    dispatch(fetchjob())
+  },[])
+  
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = itemListVacancies.slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentItems = itemListVacancies?.slice(indexOfFirstItem, indexOfLastItem);
   return (
     <div className='mt-10'>
 <div className="container recruitment-containers ">
@@ -151,7 +158,7 @@ const  Recruitment= () => {
       </h1>
       {/* <div className="image-line2" /> */}
       <div className="vacancies-contents">
-      {currentItems.map((item, index) => (
+      {/* {currentItems.map((item, index) => (
    <div className="items-vacancies" key={item.id}  >
    <div className="row align-items-center m-0">
      <div className="col p-0">
@@ -181,11 +188,41 @@ const  Recruitment= () => {
    </div>
  </div>
 
-      ))}
+      ))} */}
+{currentItems?.map((item, index) => (
+   <div className="items-vacancies" key={item.id}  >
+   <div className="row align-items-center m-0">
+     <div className="col p-0">
+       <div className="row m-0">
+         <div className="col-12 title-position">
+           {item.title}
+         </div>
+         <div className="col-12 ps-4">
+           <i className="fas fa-sack-dollar" />
+           {item.salary.toLocaleString('vi', {style : 'currency', currency : 'VND'})}
+         </div>
+         <div className="col-12 ps-4">
+           <i className="fas fa-location-dot" />
+           {item.location}
+         </div>
+         <div className="col-12 ps-4">
+           <i className="fas fa-clock" />
+            {item.description}
+         </div>
+       </div>
+     </div>
+     <div className="col-md-3 p-0">
+       <div className="b-email">
+         Gửi CV trực tiếp về Email: <b>ticketproweb@gmail.com</b>{" "}
+       </div>
+     </div>
+   </div>
+ </div>
 
+      ))}
 <Pagination
   itemsPerPage={itemsPerPage}
-  totalItems={itemListVacancies.length}
+  totalItems={itemListVacancies?.length}
   paginate={paginate}
   
 />

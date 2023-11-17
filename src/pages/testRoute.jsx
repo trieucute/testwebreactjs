@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { searchTrip, updateSearchData } from '../reduxTool/routesBookingSlice';
+
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../axios-client';
 import Autocomplete from 'react-autocomplete';

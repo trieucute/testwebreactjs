@@ -8,7 +8,7 @@ import jobReducer from './jobSlide'
 // import routesBookingReducer from './formdata'
 export const store=configureStore({
     reducer:{
-        newsReducer,
+        news:newsReducer,
         tripReducer,
         authAdmin: authReducer,
         dataTicket:dataTicketReducer,

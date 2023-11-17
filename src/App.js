@@ -73,7 +73,7 @@ function App() {
 
           <Route path='/test' element={<ChairChoose/>}/>
  
-          <Route path='/tinchitiet' element={<PostDetail/>}/>
+          <Route path='/tinchitiet/:idNews' element={<PostDetail/>}/>
           <Route path='/datve1chieu' element={<BookTicketPageSingle/>}/>
           <Route path='/datve1chieu/:id' element={<BookTicketPageSingle/>}/>
 

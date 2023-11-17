@@ -15,8 +15,8 @@ const Header = () => {
       {/* <a class="navbar-brand" href="#">Navbar</a> */}
       <a
         className="navbar-brand"
-        href="index.html"
-        title="GetAway - "
+        href="/"
+        title="TicketProWeb "
         rel="home"
       >
         <img

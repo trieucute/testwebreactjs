@@ -98,7 +98,10 @@ const Signin = () => {
     window.scrollTo(0, 0);
     return () => clearTimeout(timer);
   }, []);
-
+  const navigate= useNavigate()
+  const hanleNavigateLogin =()=>{
+    navigate('/signup')
+  }
     return (
       <AuthWrapper>
           {loading ? (
@@ -197,7 +200,7 @@ const Signin = () => {
             <button className="form-submit" type='submit'>Đăng nhập</button>
          
           </div>
-          <a href="/signup">Bạn chưa có tài khoản?</a>
+          <a onClick={hanleNavigateLogin}>Bạn chưa có tài khoản?</a>
         </div>
       
         

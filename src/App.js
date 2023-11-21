@@ -41,6 +41,15 @@ import NotFoundPage from './pages/notFound';
 import AddNewsForm from './pages/admin/news/addNew';
 import NewsList from './pages/admin/news/news';
 import UserList from './pages/admin/user/user';
+import UpdateInfor from './pages/auth/updateInfor';
+import TripList from './pages/admin/trips/tripList';
+import AddNewTrip from './pages/admin/trips/newTrip';
+import CarList from './pages/admin/car/carList';
+import AddNewCar from './pages/admin/car/newCar';
+import StationsList from './pages/admin/stations/stationsList';
+import AddNewStation from './pages/admin/stations/newStation';
+import TicketList from './pages/admin/ticket/ticketList';
+import AddNewTicket from './pages/admin/ticket/newTicket';
 // import Editor from './pages/admin/news/edit';
 
 
@@ -91,6 +100,7 @@ function App() {
 
 
           <Route path='/user/change_password' element={<ChangePassword/>}/>
+          <Route path='/user/update' element={<UpdateInfor/>}/>
 
           {/* <Route path='/callback' element={<Navigate to="/" />} /> */}
 
@@ -120,9 +130,17 @@ function App() {
               <Route path='/admin/route' element={<RouteAdmin />} />
               <Route path='/admin/user' element={<UserList/>} />
               <Route path='/admin/news' element={<NewsList />} />
-              <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
+        
 
-  
+              <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
+              <Route path='/admin/trips' element={<TripList />} />
+              <Route path='/admin/trips/addnew' element={<AddNewTrip />} />
+              <Route path='/admin/cars' element={<CarList />} />
+              <Route path='/admin/cars/addnew' element={<AddNewCar/>} />
+              <Route path='/admin/stations' element={<StationsList />} />
+              <Route path='/admin/stations/addnew' element={<AddNewStation/>} />
+              <Route path='/admin/tickets' element={<TicketList />} />
+              <Route path='/admin/tickets/addnew' element={<AddNewTicket/>} />
   </Route> 
             
         <Route path="*" element={<NotFoundPage />} />

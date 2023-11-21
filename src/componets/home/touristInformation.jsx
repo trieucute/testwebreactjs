@@ -10,11 +10,67 @@ import doicat from '../../assets/images/doi-cat-mui-ne-2.jpg'
 import { fetchnews } from "../../reduxTool/newsSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
 
 
 
 const TouristInformation = () => {
- 
+  const settings = {
+    // dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    autoplay:true,
+    autoplaySpeed: 3000, 
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          infinite: false,
+          // dots: true
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          initialSlide: 0
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      }
+    ],
+
+  };
+  function CustomPrevArrow(props) {
+    const { onClick } = props;
+    return (
+      <button onClick={onClick} className="slick-prev">
+        <i className="fa-solid fa-caret-left"></i>
+      </button>
+    );
+  }
+
+  function CustomNextArrow(props) {
+    const { onClick } = props;
+    return (
+      <button onClick={onClick} className="slick-next">
+        <i className="fa-solid fa-caret-right"></i>
+      </button>
+    );
+  }
   const dispatch = useDispatch();
 
   const { news, isLoading } = useSelector(state => state.news)
@@ -37,11 +93,37 @@ const handleNewsdetail=(id)=>{
       <div className="title_home_bus">
         <h1>Thông tin du lịch</h1>
       </div>
-      <div className="container-tour-infor">
+      <div className="container-tour-infor touristInformation-container ">
         {/* {/* <div class="tour-items d-flex justify-content-evenly ">
                                   
                               </div> * /} */}
-        <div
+                              <div className="touristInformation mt-4 mb-3">
+                                <Slider {...settings}>
+        {currentItemsinf?.map((item, index) => (
+            <div key={index} className='slider-bus'>
+              <div className=" popular-route-cards cursor-pointer position-relative d-flex flex-column  p-0">
+                <div className="img-popular-route-card">
+                  <img      src={item.imgs} alt={item.title} className="img-fluid" />
+                </div>
+                <div className="position-absolute bottom z-10 text-white text-start text-bus" >
+                  {/* <form action="">
+                    <input type="text" name="start_location" value={route.start_station} />
+                    <input type="text" name="end_location" value={route.end_station}/>
+                    <input type="text" name="start_location" value={formattedDate}/>
+                  <button type='button' onClick={()=>handleChooses(route.start_station, route.end_station,formattedDate)}>ok</button>
+                  </form> */}
+                    <a className="title-card" onClick={()=>handleNewsdetail(item.id)} style={{cursor:"pointer"}}>
+                          <div>{item.title}</div>
+                          </a>
+         
+                </div>
+              </div>
+            </div>
+          ))}
+
+      </Slider>
+      </div>
+        {/* <div
           id="myCarousel"
           className="carousel carousel-tour slide container"
           data-bs-ride="carousel"
@@ -71,62 +153,7 @@ const handleNewsdetail=(id)=>{
                 ))}
               </>
             )}
-            {/* <div className="carousel-item">
-            <div className="col-md-3">
-              <div className="card card-body">
-                <img className="img-fluid" src={thacpe} alt="" />
-                <div className="title-card">Thác Prenn</div>
-              </div>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <div className="col-md-3">
-              <div className="card card-body">
-                <img
-                  className="img-fluid"
-                  src={caubt}
-                  alt=""
-                />
-                <div className="title-card">Cầu Bàn Tay</div>
-              </div>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <div className="col-md-3">
-              <div className="card card-body">
-                <img
-                  className="img-fluid"
-                  src={nuilangbi}
-                  alt=""
-                />
-                <div className="title-card">Núi Lang biang</div>
-              </div>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <div className="col-md-3">
-              <div className="card card-body">
-                <img
-                  className="img-fluid"
-                  src={doicat}
-                  alt=""
-                />
-                <div className="title-card">Đồi cát Mũi Né</div>
-              </div>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <div className="col-md-3">
-              <div className="card card-body">
-                <img
-                  className="img-fluid"
-                  src={chodalat}
-                  alt=""
-                />
-                <div className="title-card">Chợ Đà Lạt</div>
-              </div>
-            </div>
-          </div> */}
+
           </div>
           <button
             className="carousel-control-prev"
@@ -150,7 +177,7 @@ const handleNewsdetail=(id)=>{
             </span>
             <span className="visually-hidden">Next</span>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
 

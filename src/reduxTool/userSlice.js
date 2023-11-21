@@ -1,4 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axiosClient from "../axios-client";
+export  const fetchuserAdmin = createAsyncThunk("user/fecthusers", async () => {
+  try {
+      const user = await axiosClient.get("/user")
+      return user.data
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 
 const userAdminSlice=createSlice({

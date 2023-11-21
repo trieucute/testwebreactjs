@@ -166,6 +166,9 @@ const Signup = () => {
             }
         }
     }, [message]);
+    const hanleNavigateLogin =()=>{
+      navigate('/login')
+    }
     return (
         <AuthWrapper>
         <div>
@@ -299,7 +302,7 @@ const Signup = () => {
                       <button className="form-submit" type='submit'>Đăng ký</button>
                    
                     </div>
-                    <a href="/login">Bạn đã có tài khoản?</a>
+                    <a  onClick={hanleNavigateLogin}>Bạn đã có tài khoản?</a>
                   </div>
                 
                   

@@ -98,7 +98,7 @@ const MenuSidebar =() => {
     </div>
   </header>
   <div  className={isNavVisible ? 'l-navbar show' : 'l-navbar'} id="nav-bar">
-    <nav className="nav">
+    <nav className="nav nav-bar">
       <div>
         {" "}
         <a href="/" className="nav_logo">
@@ -119,13 +119,14 @@ const MenuSidebar =() => {
         <span className="nav_name">Quản lý người dùng</span>
         
         </NavLink>
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/route" aria-current="false">
-        <i class="fas fa-route"></i>
-        <span className="nav_name">Quản lý tuyến đường</span>
+        <NavLink activeclassname='active'  className="nav_link" to="/admin/cars" aria-current="false">
+        <i class="fas fa-bus"></i>
+        <span className="nav_name">Quản lý xe khách</span>
         
         </NavLink>
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/trip" aria-current="false">
-        <i class="fas fa-bus"></i>
+        <NavLink activeclassname='active'  className="nav_link" to="/admin/trips" aria-current="false">
+        
+        <i class="fas fa-route"></i>
         <span className="nav_name">Quản lý chuyến xe</span>
         
         </NavLink>
@@ -135,7 +136,7 @@ const MenuSidebar =() => {
         <span className="nav_name">Quản lý nhà xe</span>
         
         </NavLink> */}
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/station" aria-current="false">
+        <NavLink activeclassname='active'  className="nav_link" to="/admin/stations" aria-current="false">
         {/* <i class="fas fa-bus"></i> */}
         <i class="fas fa-location-dot"></i>
         <span className="nav_name">Quản lý bến xe</span>
@@ -146,7 +147,7 @@ const MenuSidebar =() => {
         <span className="nav_name">Quản lý thuê xe</span>
         
         </NavLink>
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/ticket" aria-current="false">
+        <NavLink activeclassname='active'  className="nav_link" to="/admin/tickets" aria-current="false">
         <i class="fas fa-ticket"></i>
         <span className="nav_name">Quản lý vé</span>
         

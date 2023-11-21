@@ -809,11 +809,8 @@ transition: all 2s ease-in;
     max-width: 1415px;
   
 }
-.container-tour-infor{
-  /* height: 293px; */
 
-}
-.container-tour-infor .tour-items .col-tour-item{
+/* .container-tour-infor .tour-items .col-tour-item{
   width: 20.7%;
   height: 293px;
 }
@@ -822,9 +819,7 @@ transition: all 2s ease-in;
   background-image: url('../images/ho-xuan-huong-da-lat-4.webp');
   background-size: cover;
 }
-/* .carousel-tour.container{
-  max-width: 1368px;
-} */
+
 .carousel-tour .carousel-item .card-body {
   border: none;
   border-radius: 10px;
@@ -876,7 +871,7 @@ transition: all 2s ease-in;
   color: var(--colorGreen);
 
   font-size: 20px;
-  /* transform: rotate(180deg);  */
+
  }
  .carousel-tour .carousel-control-prev {
   left: -5.5%;
@@ -908,10 +903,10 @@ transition: all 2s ease-in;
 .carousel-inner .carousel-item-next, .carousel-tour
 .carousel-inner .carousel-item-prev {
   display: flex;
-  /* transition-duration: 10s; */
+
 }
 
-/* display 4 */
+
 @media (min-width: 768px) {
   .carousel-tour .carousel-inner .carousel-item-right.active,.carousel-tour
   .carousel-inner .carousel-item-next,.carousel-tour
@@ -934,7 +929,101 @@ transition: all 2s ease-in;
   .carousel-item-prev:not(.carousel-item-end) {
     transform: translateX(-25%) !important;
   }
+} */
+.touristInformation-container .touristInformation{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
+.touristInformation .img-popular-route-card img{
+  border-radius: 10px;
+  height: 265px;
+  object-fit: cover;
+}
+.touristInformation .text-bus{
+  background-color: rgba(5, 5, 5, 0.5);
+  bottom: 0;
+  padding: 15px 10px;
+  font-weight: 700;
+  font-size: 0.9em;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+}
+.touristInformation-container .slick-slider {
+  /* position: relative; */
+  display: block;
+  box-sizing: border-box;
+  user-select: none;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Định dạng phần tử slide */
+.touristInformation-container .slick-slide {
+  float: left;
+  min-height: 1px;
+  display: inline-block;
+}
+
+/* Định dạng phần tử thể hiện nội dung của mỗi slide */
+.touristInformation-container .title-card{
+  text-decoration: none;
+  color: white;
+  /* padding: 1em 0.5em; */
+  display: -webkit-box;
+  line-height: 1.5;
+  font-size: 14px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center;
+}
+.touristInformation-container .title-card:hover{
+  text-decoration: underline;
+  /* color: white; */
+}
+.touristInformation-container .slick-slide .slider-bus {
+  text-align: center;
+  padding: 0 8px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  background-color: #fff;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); */
+}
+
+/* Định dạng các nút điều hướng (prev, next) */
+.touristInformation-container .slick-prev,
+.touristInformation-container .slick-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  font-size: 30px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.touristInformation-container .slick-prev{
+  left: 0;
+}
+.touristInformation-container .slick-next {
+  right: 0
+}
+/* Hiệu ứng hover cho các nút điều hướng */
+.touristInformation-container .slick-prev:hover,
+.touristInformation-container .slick-next:hover {
+  color: #636060;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+}
+
 /* -----------------------------------------end thông tin du lịch touristInformation ----------------------------------------*/
 
 

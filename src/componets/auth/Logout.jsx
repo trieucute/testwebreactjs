@@ -61,7 +61,9 @@ console.log(token);
         setIsLoading(false); 
       })
   }, [])
-
+const handleUpdateInfor=()=>{
+  navigate('/user/update');
+}
   return (
     <>
 
@@ -99,7 +101,7 @@ console.log(token);
         </a>
         <ul className="dropdown-menu" aria-labelledby="navbarDropdown" style={{border:"none", boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"}}>
           <li>
-            <button className="dropdown-item" type='button' >
+            <button className="dropdown-item" type='button' onClick={handleUpdateInfor}>
               Cập nhật thông tin
             </button>
           </li>

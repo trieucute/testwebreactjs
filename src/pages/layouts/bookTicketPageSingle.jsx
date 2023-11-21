@@ -119,7 +119,10 @@ const BookTicketPageSingle  = () => {
    const { token } = useStateContext();
    const [user, setUser] = useState({});
    const [isLoading, setIsLoading] = useState(true); // Biến trạng thái để kiểm soát việc hiển thị
-
+   const [name, setName] = useState('');
+   const [email, setEmail] = useState('');
+   const [phoneNum, setPhoneNum] = useState('');
+   const [isChecked, setIsChecked] = useState(false);
   // useEffect(()=>{
 
   // })
@@ -151,6 +154,7 @@ const BookTicketPageSingle  = () => {
               const userResponse = await axiosClient.get("/user/profile", userInfor);
               const userData = userResponse.data.data;
               setUser(userData);
+          
             }
   
             setIsLoading(false); // Dừng hiển thị "Loading..." khi đã tải xong dữ liệu
@@ -166,6 +170,7 @@ const BookTicketPageSingle  = () => {
         fetchData();
        
       },[tripId, token])
+  
     //   console.log(tripDetail.seats.position);
     const [pickupValue, setPickupValue] = useState('');
     const [dropoffValue, setDropoffValue] = useState('');
@@ -183,10 +188,8 @@ const BookTicketPageSingle  = () => {
         setSelectedDropoff(item);
       }
     };
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNum, setPhoneNum] = useState('');
-    const [isChecked, setIsChecked] = useState(false);
+
+
     const dispatch = useDispatch()
     const handlePay=(e)=>{
       e.preventDefault();
@@ -207,7 +210,8 @@ const BookTicketPageSingle  = () => {
       alert('Vui lòng chấp nhận điều khoản và chính sách bảo mật của WebProTicket');
       return;
     }
-    if(name ==='' || email ==="" || phoneNum===""){
+    if (Object.keys(user).length === 0 && (name === '' || email === '' || phoneNum === '')) {
+
         alert('Vui lòng nhập đầy đủ thông tin khách hàng');
     return; // Dừng việc xử lý nếu không có giá trị trong input
     }    
@@ -243,8 +247,12 @@ const BookTicketPageSingle  = () => {
   });
     }
     useEffect(() => {
-
-    }, []);
+      if (Object.keys(user).length !== 0) {
+        setName(user.name || '');
+        setPhoneNum(user.phone || '');
+        setEmail(user.email || '');
+      }
+    }, [user]);
 
 
     return (
@@ -907,15 +915,15 @@ const BookTicketPageSingle  = () => {
                                                 <div action="">
                                                 <div className="form-group">
                                                         <label  className='mb-2'>Họ và tên</label>
-                                                        <input type="text" className="form-control" name='name' placeholder="Họ tên" value={user.name || name} onChange={(e)=>setName(e.target.value)}/>
+                                                        <input type="text" className="form-control" name='name' placeholder="Họ tên" value={name } onChange={(e)=>setName(e.target.value)}/>
                                                     </div>
                                                     <div className="form-group mt-3">
                                                         <label  className='mb-2'>Số điện thoại</label>
-                                                        <input type="number" className="form-control" placeholder="Số điện thoại" name='phone_number' value={user.phone_number || phoneNum } onChange={(e)=>setPhoneNum(e.target.value)}/>
+                                                        <input type="number" className="form-control" placeholder="Số điện thoại" name='phone_number' value={phoneNum } onChange={(e)=>setPhoneNum(e.target.value)}/>
                                                     </div>
                                                     <div className="form-group mt-3">
                                                         <label  className='mb-2'>Email</label>
-                                                        <input type="email" className="form-control" placeholder="Email" name="email"  value={user.email || email} onChange={(e)=>setEmail(e.target.value)}/>
+                                                        <input type="email" className="form-control" placeholder="Email" name="email"  value={email} onChange={(e)=>setEmail(e.target.value)}/>
                                                     </div>
                                                     
                                                 </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
 import user from '../../../assets/images/avatarnv1.jpg'
@@ -7,6 +7,10 @@ const CarList = () => {
     const navigate = useNavigate();
     const handleAdd=()=>{
     navigate('/admin/cars/addnew')
+    }
+    const [showAddChair, setShowAddChair]= useState(false)
+    const handleshowAddChair =()=>{
+    setShowAddChair(!showAddChair)
     }
     return (
         <div>
@@ -97,7 +101,7 @@ const CarList = () => {
               <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane px-1 fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                  {/* <h5>Giá ghế</h5> */}
-                 <div className="row px-4 py-3 ">
+                 <div className="row px-4 py-3 justify-content-center ">
                       {/* {/*-------------------- SỐ GHẾ TẦNG DƯỚI--------------------------* /} */}
                       <div className="items-FloorDown col-sm-4 ">
                         <h5 className="text-center" style={{ fontSize: "1em" }}>
@@ -131,6 +135,19 @@ const CarList = () => {
                               >
                                 A01
                               </span>
+                              <div className='hover-chair position-absolute'>
+                                <table className='table'>
+                                  <tr>
+                                  <th>A01</th>
+                                  <th>Giường nằm</th>
+                                  <th>500.000 đ</th>
+                                  <th>
+                                  <i class="fas fa-pen-to-square"></i>
+                                 <i class="fas fa-trash"></i>
+                                  </th>
+                                  </tr>
+                                </table>
+                              </div>
                             </div>
                             <div
                               className=" position-relative chair-item-go"
@@ -158,6 +175,19 @@ const CarList = () => {
                               >
                                 A02
                               </span>
+                              <div className='hover-chair position-absolute'>
+                                <table className='table'>
+                                  <tr>
+                                  <th>A02</th>
+                                  <th>Giường nằm</th>
+                                  <th>500.000 đ</th>
+                                  <th>
+                                  <i class="fas fa-pen-to-square"></i>
+                                 <i class="fas fa-trash"></i>
+                                  </th>
+                                  </tr>
+                                </table>
+                              </div>
                             </div>
                             <div
                               className=" position-relative chair-item-go"
@@ -185,6 +215,19 @@ const CarList = () => {
                               >
                                 A03
                               </span>
+                              <div className='hover-chair position-absolute'>
+                                <table className='table'>
+                                  <tr>
+                                  <th>A03</th>
+                                  <th>Giường nằm</th>
+                                  <th>500.000 đ</th>
+                                  <th>
+                                  <i class="fas fa-pen-to-square"></i>
+                                 <i class="fas fa-trash"></i>
+                                  </th>
+                                  </tr>
+                                </table>
+                              </div>
                             </div>
                           </div>
                           <div className="d-flex  justify-content-between  m-auto py-1">
@@ -1113,7 +1156,7 @@ const CarList = () => {
                         </div>
                       </div>
                              {/* {/*-------------------- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}
-                             <div className="items-Floor-des col-sm-4">
+                             {/* <div className="items-Floor-des col-sm-4">
                         <div className="row mt-4 flex-column">
                           <div className="item-des row mx-0 my-2 ">
                           
@@ -1126,17 +1169,46 @@ const CarList = () => {
                         
          
                     
-                          {/* <div className='col text-start ps-0'  style={{fontWeight:"700"}}>Giá tầng trên: 500.000 đ</div> */}
+                          <div className='col text-start ps-0'  style={{fontWeight:"700"}}>Giá tầng trên: 500.000 đ</div>
 
                           
                        
                           </div>
                    
                         </div>
-                      </div>
+                      </div> */}
                       {/* {/*------------------END --- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}
                       </div>
+                      <button type='button' className='btn btn-primary' onClick={handleshowAddChair}>Thêm ghế</button>
+                   {showAddChair &&  <div className='formaddchair mt-4'>
+                        <form action="" className='row m-0'>
+                          <div className='form-group col'>
+                            <label htmlFor="">Tên ghế</label>
+                            <input type="text" className='form-control' />
+                          </div>
+                          <div className='form-group  col'>
+                            <label htmlFor="">Tầng</label>
+                            <select name="" id="" className='form-select'>
+                              <option value="">Tầng 1</option>
+                              <option value="">Tầng 2</option>
+
+                            </select>
+                          </div>
+                          <div className='form-group col'>
+                            <label htmlFor="">Giá ghế</label>
+                            <input type="text" className='form-control' />
+                          </div>
+                          <div className='form-group col'>
+                            <label htmlFor="">Loại ghế</label>
+                            <input type="text" className='form-control' />
+                          </div>
+                          <div className='form-group text-center mt-4'>
+                            <button type='button' className='btn-add'>Thêm ghế mới</button>
+                          </div>
+                        </form>
+                      </div> }
                 </div>
+                
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                   <div className='rate-contents modal-rateCar'>
                   <div className='row m-0 item-rate'>

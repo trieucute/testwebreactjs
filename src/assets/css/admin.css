@@ -383,7 +383,27 @@
     overflow-y: scroll;
     height:500px ; 
 }
+.tab-contents-car .hover-chair{
+    width: 230px;
+    z-index: 10;
+    font-size: 12px;
+    top: -32px;
+    left: 0;
+    display: none;
+}
+.tab-contents-car .chair-item-go:hover .hover-chair{
+    display: block;
+}
 
+.tab-contents-car .hover-chair table th{
+    padding: 0 ;
+}
+.tab-contents-car .hover-chair table th:first-child{
+    padding-left: 5px;
+}
+.tab-contents-car .hover-chair table th i{
+    background-color: transparent;
+}
 /* ------------------stations----------- */
 .addNew-stations .addNew-contents {
     width: 80%;

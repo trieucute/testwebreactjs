@@ -90,11 +90,20 @@ const AddNewTrip = () => {
           </select>
           </div>
           <div  className='form-group pe-0'>
+          <label htmlFor={`diemTra${div.id}`}>Thời gian đón</label>
+          <input type="time" className='form-control' />
+          </div>
+          <div  className='form-group ps-0'>
           <label htmlFor={`diemTra${div.id}`}>Điểm trả</label>
           <select id={`diemTra${div.id}`} className='form-select'>
             <option value="">Bến xe Miền Tây (Hồ Chí Minh)</option>
             <option value="">Bến xe Miền Đông (Hồ Chí Minh)</option>
           </select>
+          </div>
+         
+          <div  className='form-group pe-0'>
+          <label htmlFor={`diemTra${div.id}`}>Thời gian trả</label>
+         <input type="time" className='form-control' />
           </div>
             {/* Nút xóa chỉ hiển thị cho các div không phải div đầu tiên */}
             {div.id !== 0 && (

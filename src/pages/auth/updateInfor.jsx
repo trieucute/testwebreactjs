@@ -1,23 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import user from '../../assets/images/usernoavatar.png'
 import { useStateContext } from '../../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { fetchUserProfile } from '../../reduxTool/authSlice';
+import axiosClient from '../../axios-client';
 const UpdateInfor = () => {
-    const { user, setUser,token } = useStateContext();
+    const {setUser, token } = useStateContext();
     const navigate= useNavigate()
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [message, setMessage]=useState(null)
+    const [updateinf, setUpdateinf]= useState({
+        email:'',
+        name:"",
+        phone_number:"",
+        avatar:"",
+        address:"",
+    })
+    const handleUpdateUser = async (e) => {
+        e.preventDefault();
+        if(updateinf.name==='' || updateinf.address ===''|| updateinf.phone_number===''){
+            setMessage('Vui lòng nhập đầy đủ thông tin!')
+            return
+        }
+        try {
+            const response = await axiosClient.put('/user', updateinf, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+     
+            setMessage('Cập nhật thông tin thành công')
+            // alert("Cập nhật thành công")
+            // Handle the response, update UI, etc.
+            console.log(response.data); // Log the response data or handle it accordingly
+            dispatch(fetchUserProfile(token))
+            .then((res)=>{
+                console.log(res);
+                // setUser(res.payload.data)
+                setUpdateinf(res.payload.data)
+            })
+            .catch((err)=>{
+                console.error(err)
+              
+            })
+        } catch (err) {
+            console.error(err);
+            const response = err.response;
+            const errors = response.data.errors;
+            if(response){
+                if(errors.phone_number =="The phone number has already been taken."){
+                setMessage("Số điện thoại đã được sử dụng!");
+                console.log(errors.phone_number);
+                } else if(errors.phone_number=="The phone number field must be at least 10 characters."){
+                    setMessage("Số điện thoại ít nhất 10 số!");
+                    // console.log(errors.phone_number);
+                }
+            }
+        
+        }
+    };
+ 
+    const handleOnChange = (e) => {
+        const { name, value } = e.target;
+        setUpdateinf({
+            ...updateinf,
+            [name]: value,
+        });
+    };
     useEffect(()=>{
     dispatch(fetchUserProfile(token))
     .then((res)=>{
         console.log(res);
         setUser(res.payload.data)
+        setUpdateinf(res.payload.data)
     })
     .catch((err)=>{
         console.error(err)
+      
     })
     // console.log(    dispatch(fetchUserProfile(token)));
+
     if(token){
         // setLoading(true)
         console.log(token);
@@ -31,37 +94,48 @@ const UpdateInfor = () => {
             <div className='updateInfor-container container pt-2'>
                 <div className='backWhite-padding mb-4 '>   
                 <h5 className=''>Cập nhật thông tin</h5>
-                <form action="">
+                <form action="" onSubmit={handleUpdateUser}>
                     <div className='row m-0 justify-content-between'>
                         <div className='col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12'>
                             <div className='img-user'>
-                            <div className='img-updateinf'><img src={user.avatar} alt="" className='img-fuild'/></div>
+                            <div className='img-updateinf'><img src={updateinf.avatar} alt="" className='img-fuild'/></div>
                             <div className='form-group'>
                                 <label htmlFor="">Đổi ảnh </label>
-                                <input type="file" className="form-control"/>
+                                <input type="file" className="form-control" name='avatar'  onChange={handleOnChange}/>
                                 </div>
                             </div>
                         </div>
                         <div className='col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12'>
                             <div className='form-group'>
                                 <label htmlFor="">Email</label>
-                                <input type="email" name='email' readOnly disabled value={user.email} className='form-control disabled'/>
+                                <input type="email" name='email' readOnly disabled value={updateinf.email} className='form-control disabled'  onChange={handleOnChange}/>
                             </div>
                             <div className='form-group'>
                                 <label htmlFor="">Họ và tên</label>
-                                <input type="text" name='name' value={user.name} className='form-control' />
+                                <input type="text" name='name' value={updateinf.name} className='form-control'  onChange={handleOnChange} />
                             </div>
                             <div className='form-group'>
                                 <label htmlFor="">Số điện thoại</label>
-                                <input type="number" name='phone_number' value={user.phone_number} className='form-control'/>
+                                <input type="number" name='phone_number' value={updateinf.phone_number} className='form-control'  onChange={handleOnChange}/>
                             </div>
                             <div className='form-group'>
                                 <label htmlFor="">Địa chỉ</label>
-                                <input type="text" name='address' value={user.address} className='form-control'/>
+                                <input type="text" name='address' value={updateinf.address} className='form-control'  onChange={handleOnChange}/>
                             </div>
                             <div className='form-group'>
                                 <button type='submit'>Cập nhật</button>
                             </div>
+                            {message && <>
+                                <div className="form-group"  style={{
+                                                color: "rgb(230, 57, 70)",
+                                                fontWeight: "700",
+                                                marginTop: 5,
+                                                fontSize: "0.8em",
+                                                textAlign: "left",
+                                            }}>
+                                    {message}
+                                </div>
+                            </>}
                         </div>
                     </div>
                 </form>

@@ -41,7 +41,7 @@ const  Recruitment= () => {
   }, [currentPage]);
 
   const {job, isLoading} = useSelector (state => state.job)
-  const itemListVacancies = job.data
+  const itemListVacancies = job
   console.log(job);
   useEffect(()=>{
     dispatch(fetchjob())

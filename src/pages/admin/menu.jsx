@@ -157,12 +157,12 @@ const MenuSidebar =() => {
         <span className="nav_name">Quản lý tin tức</span>
         
         </NavLink>
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/job" aria-current="false">
+        <NavLink activeclassname='active'  className="nav_link" to="/admin/jobs" aria-current="false">
         <i class="fas fa-users-viewfinder"></i>
         <span className="nav_name">Quản lý tuyển dụng</span>
         
         </NavLink>
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/comment" aria-current="false">
+        <NavLink activeclassname='active'  className="nav_link" to="/admin/comments" aria-current="false">
         <i class="fas fa-comment"></i>
         <span className="nav_name">Quản lý bình luận</span>
         

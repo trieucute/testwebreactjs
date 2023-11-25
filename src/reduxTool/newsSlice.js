@@ -89,7 +89,7 @@ const newsSlice = createSlice({
 export const fetchnews = createAsyncThunk("news/fetchnews", async () =>{
     try {
         const news = await axiosClient.get("/news")
-        console.log(news);
+        // console.log(news);
         return news.data
     } catch (error) {
         console.log(error);

@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
+import Tooltip from '@mui/material/Tooltip';
 const TripList = () => {
     const navigate = useNavigate();
     const handleAddTrip=()=>{
     navigate('/admin/trips/addnew')
+    }
+    const [showAddStart, setShowAddStart]= useState(false);
+    const [showAddEnd, setShowAddEnd]= useState(false);
+
+    const handleAddStart=()=>{
+      setShowAddStart(!showAddStart)
+    }
+    const handleAddEnd=()=>{
+      setShowAddEnd(!showAddEnd)
     }
     return (
         <div>
@@ -97,7 +107,7 @@ const TripList = () => {
 
 {/* <!-- Modal --> */}
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style={{maxWidth:"700px"}}>
+  <div class="modal-dialog modal-dialog-centered" style={{maxWidth:"750px"}}>
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Xe Limousine phương trang </h5>
@@ -123,7 +133,7 @@ const TripList = () => {
             </div>
           </div>
         </div>
-        <div className="row px-4 py-3 ">
+        <div className="row px-4 py-3  tab-contents-car">
                       {/* {/*-------------------- SỐ GHẾ TẦNG DƯỚI--------------------------* /} */}
                       <div className="items-FloorDown col-sm-4 ">
                         <h5 className="text-center" style={{ fontSize: "1em" }}>
@@ -131,8 +141,9 @@ const TripList = () => {
                         </h5>
                         <div className="row">
                           <div className="d-flex  justify-content-between  m-auto py-1">
+                          <Tooltip title="Ghế: A01, Loại: Giường nằm, Giá: 500.000đ" placement="top" arrow>
                             <div
-                              className=" position-relative "
+                              className=" position-relative chair-item-go "
                               style={{ cursor: "no-drop" }}
                             >
                               <svg
@@ -153,7 +164,15 @@ const TripList = () => {
                               >
                                 A01
                               </span>
-                            </div>
+                        
+      
+   
+                              {/* <div className='hover-chair position-absolute' style={{width:"270px", backgroundColor:"grey"}}>
+                                <span>Ghế: A01,  Loại: Giường nằm, Giá: 500.000đ</span>
+                              </div> */}
+                            </div> 
+                              </Tooltip>
+                              <Tooltip title="Ghế: A02, Loại: Giường nằm, Giá: 500.000đ" placement="top" arrow>
                             <div
                               className=" position-relative"
                               style={{ cursor: "no-drop" }}
@@ -177,6 +196,7 @@ const TripList = () => {
                                 A02
                               </span>
                             </div>
+                            </Tooltip>
                           </div>
                           <div className="d-flex  justify-content-between  m-auto py-1">
                             <div
@@ -1073,6 +1093,7 @@ const TripList = () => {
                             <th></th>
                             <th>Điểm đón</th>
                             <th>Địa chỉ</th>
+                            <th>thời gian</th>
                             </tr>  
                             </thead>
                             <tbody>
@@ -1080,14 +1101,37 @@ const TripList = () => {
                                 <td>1</td>
                                 <td>Văn Phòng Đà Nẵng </td>
                                 <td>75 Thanh Tịnh, Phường Hòa Minh, Liên Chiểu, Đà Nẵng</td>
+                                <td>10:00</td>
                               </tr>
                               <tr>
                                 <td>2</td>
                                 <td>Cổng chính </td>
                                 <td>201 Tôn Đức Thắng, Phường Hòa Minh, Liên Chiểu, Đà Nẵng</td>
+                                <td>10:30</td>
                               </tr>
                             </tbody>
                           </table>
+                          <button className='btn btn-primary' onClick={handleAddStart}>Thêm điểm đón</button>
+                          {showAddStart && 
+                        <div className='form-add-start-end'>
+                          <form action="" className='row m-0 '>
+                            <div className='form-group w-50'>
+                              <label htmlFor="">Điểm đón</label>
+                              <select name="" id="" className='form-select'>
+                                <option value="">Cổng chính</option>
+                                <option value="">Cổng phụ</option>
+                              </select>
+                            </div>
+                            <div className='form-group w-50'>
+                              <label htmlFor="">Thời gian đón</label>
+                             <input type="time" className='form-control' />
+                            </div>
+                            <div className='form-group text-center mt-3'>
+                            <button className='btn-add' type='button'>Thêm</button>
+                            </div>
+                          </form>
+                        </div>
+                          }
                         </div>
                       </div>
                       <div className='row mt-3 mx-0'>
@@ -1099,6 +1143,7 @@ const TripList = () => {
                             <th></th>
                             <th>Điểm trả</th>
                             <th>Địa chỉ</th>
+                            <th>thời gian</th>
                             </tr>  
                             </thead>
                             <tbody>
@@ -1106,14 +1151,37 @@ const TripList = () => {
                                 <td>1</td>
                                 <td>Cổng chính </td>
                                 <td>292 Đinh Bộ Lĩnh, Phường 26, Bình Thạnh, Hồ Chí Minh</td>
+                                <td>22:00</td>
                               </tr>
                               <tr>
                                 <td>2</td>
                                 <td>Cổng 3 Bến Xe Miền Tây </td>
                                 <td>292 Đinh Bộ Lĩnh, Phường 26, Bình Thạnh, Hồ Chí Minh</td>
+                                <td>23:00</td>
                               </tr>
                             </tbody>
                           </table>
+                          <button className='btn btn-primary' onClick={handleAddEnd}>Thêm điểm trả</button>
+                          {showAddEnd && 
+                        <div className='form-add-start-end'>
+                          <form action="" className='row m-0 '>
+                            <div className='form-group w-50'>
+                              <label htmlFor="">Điểm trả</label>
+                              <select name="" id="" className='form-select'>
+                                <option value="">Cổng chính</option>
+                                <option value="">Cổng phụ</option>
+                              </select>
+                            </div>
+                            <div className='form-group w-50'>
+                              <label htmlFor="">Thời gian trả</label>
+                             <input type="time" className='form-control' />
+                            </div>
+                            <div className='form-group text-center mt-3'>
+                            <button className='btn-add' type='button'>Thêm</button>
+                            </div>
+                          </form>
+                        </div>
+                          }
                         </div>
                       </div>
       </div>

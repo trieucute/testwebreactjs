@@ -7,6 +7,8 @@ import avatar from "../../assets/images/usernoavatar.png"
 import { useEffect, useState } from 'react';
 import axiosClient from "../../axios-client";
 import {useStateContext} from "../../context/ContextProvider.jsx";
+import { fetchUserProfile } from '../../reduxTool/authSlice.js';
+import { useDispatch } from 'react-redux';
 
 function Logout() {
   // const [user, setUser] = useState(null);
@@ -43,22 +45,34 @@ console.log(token);
   const handleChangePassword =()=>{
     navigate('/user/change_password')
   }
+  const dispatch= useDispatch()
   useEffect(() => {
     const userInfor = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
-    axiosClient.get("/user/profile", userInfor)
-      .then((resp) => {
-        const data = resp.data.data;
-        console.log(data);
-        setUser(data);
-        setIsLoading(false); 
+    // axiosClient.get("/user/profile", userInfor)
+    //   .then((resp) => {
+    //     const data = resp.data.data;
+    //     console.log(data);
+    //     setUser(data);
+    //     setIsLoading(false); 
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setIsLoading(false); 
+    //   })
+      dispatch(fetchUserProfile(token))
+      .then((res)=>{
+          console.log(res);
+          setUser(res.payload.data)
+          setIsLoading(false); 
+          // setUpdateinf(res.payload.data)
       })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false); 
+      .catch((err)=>{
+          console.error(err)
+          setIsLoading(false); 
       })
   }, [])
 const handleUpdateInfor=()=>{

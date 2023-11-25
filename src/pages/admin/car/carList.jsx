@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
 import user from '../../../assets/images/avatarnv1.jpg'
-
+import Tooltip from '@mui/material/Tooltip';
 const CarList = () => {
     const navigate = useNavigate();
     const handleAdd=()=>{
@@ -109,6 +109,13 @@ const CarList = () => {
                         </h5>
                         <div className="row px-3">
                           <div className="d-flex  justify-content-between  m-auto py-1">
+                          <Tooltip title={
+                                    <div><span> Ghế: A01, Loại: Giường nằm, Giá: 500.000đ  </span>
+                                       <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                      <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                 </div>}
+                                  placement="top" arrow>
+                                 
                           <div
                               className=" position-relative chair-item-go"
                               style={{ cursor: "pointer" }}
@@ -135,20 +142,15 @@ const CarList = () => {
                               >
                                 A01
                               </span>
-                              <div className='hover-chair position-absolute'>
-                                <table className='table'>
-                                  <tr>
-                                  <th>A01</th>
-                                  <th>Giường nằm</th>
-                                  <th>500.000 đ</th>
-                                  <th>
-                                  <i class="fas fa-pen-to-square"></i>
-                                 <i class="fas fa-trash"></i>
-                                  </th>
-                                  </tr>
-                                </table>
-                              </div>
+                         
                             </div>
+                            </Tooltip>
+                            <Tooltip title={
+                                    <div><span> Ghế: A02, Loại: Giường nằm, Giá: 500.000đ  </span>
+                                       <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                      <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                 </div>}
+                                  placement="top" arrow>
                             <div
                               className=" position-relative chair-item-go"
                               style={{ cursor: "pointer" }}
@@ -175,20 +177,15 @@ const CarList = () => {
                               >
                                 A02
                               </span>
-                              <div className='hover-chair position-absolute'>
-                                <table className='table'>
-                                  <tr>
-                                  <th>A02</th>
-                                  <th>Giường nằm</th>
-                                  <th>500.000 đ</th>
-                                  <th>
-                                  <i class="fas fa-pen-to-square"></i>
-                                 <i class="fas fa-trash"></i>
-                                  </th>
-                                  </tr>
-                                </table>
-                              </div>
+                           
                             </div>
+                            </Tooltip>
+                            <Tooltip title={
+                                    <div><span> Ghế: A03, Loại: Giường nằm, Giá: 500.000đ  </span>
+                                       <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                      <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                 </div>}
+                                  placement="top" arrow>
                             <div
                               className=" position-relative chair-item-go"
                               style={{ cursor: "pointer" }}
@@ -215,20 +212,9 @@ const CarList = () => {
                               >
                                 A03
                               </span>
-                              <div className='hover-chair position-absolute'>
-                                <table className='table'>
-                                  <tr>
-                                  <th>A03</th>
-                                  <th>Giường nằm</th>
-                                  <th>500.000 đ</th>
-                                  <th>
-                                  <i class="fas fa-pen-to-square"></i>
-                                 <i class="fas fa-trash"></i>
-                                  </th>
-                                  </tr>
-                                </table>
-                              </div>
+                           
                             </div>
+                            </Tooltip>
                           </div>
                           <div className="d-flex  justify-content-between  m-auto py-1">
                           <div
@@ -1184,24 +1170,26 @@ const CarList = () => {
                         <form action="" className='row m-0'>
                           <div className='form-group col'>
                             <label htmlFor="">Tên ghế</label>
-                            <input type="text" className='form-control' />
+                            <input type="text" className='form-control' placeholder='A19...' style={{fontSize:'14px'}}/>
                           </div>
-                          <div className='form-group  col'>
+                          {/* <div className='form-group  col'>
                             <label htmlFor="">Tầng</label>
                             <select name="" id="" className='form-select'>
                               <option value="">Tầng 1</option>
                               <option value="">Tầng 2</option>
 
                             </select>
-                          </div>
+                          </div> */}
                           <div className='form-group col'>
                             <label htmlFor="">Giá ghế</label>
-                            <input type="text" className='form-control' />
+                            <input type="number" className='form-control'  placeholder='500.000' />
                           </div>
                           <div className='form-group col'>
                             <label htmlFor="">Loại ghế</label>
-                            <input type="text" className='form-control' />
+                            <input type="text" className='form-control'  placeholder='Giường nằm vip...' />
                           </div>
+                          <span className='mt-2'>* Bắt đầu bằng A là tầng dưới và B là tầng trên </span>
+
                           <div className='form-group text-center mt-4'>
                             <button type='button' className='btn-add'>Thêm ghế mới</button>
                           </div>

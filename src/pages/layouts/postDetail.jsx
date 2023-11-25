@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { fetchPostDetail, fetchlastest, fetchnews, fetchpopular } from '../../reduxTool/newsSlice';
 import { useEffect } from 'react';
 import Loading from '../loadingTrip';
-import { formatDate } from '../../config';
+import { formatDate, formatDateNews } from '../../config';
 
 const PostDetail = () => {
   const dispatch = useDispatch();
   const { news, popularNews, lastestNews, postDetail, isLoading } = useSelector(state => state.news)
 
-  const itemList = news.data
+  const itemList = news
   const { idNews } = useParams();
 
   useEffect(() => {
@@ -38,18 +38,7 @@ const PostDetail = () => {
     navigate(`/tintuc`)
    
   }
-  function formatDateNews(inputDate) {
-    const date = new Date(inputDate);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Tháng bắt đầu từ 0, nên cần +1
-    const year = date.getFullYear();
-  
-    const formattedDay = day < 10 ? '0' + day : day;
-    const formattedMonth = month < 10 ? '0' + month : month;
-  
-    return `${formattedDay}/${formattedMonth}/${year}`;
-  }
-  
+
   return (
     <div className='mt-10'>
       <>

@@ -38,3 +38,16 @@ export function formatDate(dateString) {
     return gioPhut;
   }
   
+  export   function formatDateNews(inputDate) {
+    // ví dụ  "2023-11-16T01:03:11.000000Z",
+    const date = new Date(inputDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Tháng bắt đầu từ 0, nên cần +1
+    const year = date.getFullYear();
+  
+    const formattedDay = day < 10 ? '0' + day : day;
+    const formattedMonth = month < 10 ? '0' + month : month;
+  
+    return `${formattedDay}/${formattedMonth}/${year}`;
+  }
+  

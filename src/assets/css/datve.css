@@ -187,14 +187,52 @@ font-weight: 700;
     background-color: white;
     z-index: 1;
     top: 3em;
-    display: none;
+    /* display: none; */
     left: 37%;
     border-radius: 10px;
     border: 1px solid #C5C1C1;
-    max-height: 500px;
+    max-height: 550px;
+    overflow: hidden;
 }
 .infor_bus_router.active-busInfor{
-    display: block;
+    /* display: block; */
+
+}
+.comment-contents{
+
+}
+.all-cmt-items{
+    height: 400px;
+    overflow-y: auto;
+}
+.all-cmt-items::-webkit-scrollbar {
+    width: 5px;
+    background-color: #cccccc;
+    border-radius: 5px;
+  
+    
+  }
+  
+  .all-cmt-items::-webkit-scrollbar-thumb {
+    background-color: var(--colorMain);
+    border-radius: 5px;
+  }
+.all-cmt-items .items-cmt{
+    padding: 10px 0;
+    border-bottom: 1px dashed #C5C1C1;
+
+}
+.all-cmt-items .items-cmt:last-child{
+    border-bottom: none;
+}
+.sum-star{
+    border-bottom: 1px solid gainsboro;
+}
+.btn-star-xe{
+    padding: 5px 15px;
+    background-color: var(--colorMain);
+    color: white;
+    margin-right: 10px;
 
 }
 .infor_bus_router .row{
@@ -208,6 +246,42 @@ font-weight: 700;
     list-style: initial;
    font-weight: 500;
 }
+.infor_bus_router .nav-link{
+    color: black;
+    font-size: 14px;
+    font-weight: 700
+}
+.infor_bus_router .nav-link.active{
+    color: var(--colorMain);
+}
+.infor-bus-content::-webkit-scrollbar {
+    width: 5px;
+    background-color: #cccccc;
+    border-radius: 5px;
+  
+    
+  }
+  
+  .infor-bus-content::-webkit-scrollbar-thumb {
+    background-color: var(--colorMain);
+    border-radius: 5px;
+  }
+  .utilities-contents  .items-utilities{
+    background-color: antiquewhite;
+    padding: 10px;
+    font-size: 14px;
+  }
+  .utilities-contents  .items-utilities:last-child{
+    background-color: transparent;
+  }
+
+.utilities-contents  .items-utilities i{
+    padding-right: 10px;
+    color: var(--colorMain);
+  }
+  .items-utilities .text-main-item{
+    font-weight: 700;
+  }
 .steps-booking-contents{
       background-color: var(--colorPrimary);
       /* position: fixed; */

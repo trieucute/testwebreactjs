@@ -35,34 +35,13 @@ const AddNewCar = () => {
         <input type="number"  className='form-control' />
           </div>
       
-          <div className='form-group'>
-          <label htmlFor="">Số Tầng</label>
-          <select name="" id=""     className='form-select'>
-              <option value="">1 tầng</option>
-              <option value="">2 tầng</option>
-
-          </select>
-          </div>
-          {/* <div className='form-group'>
-          <label htmlFor="">Giá phòng đơn</label>
-        <input type="number"  className='form-control' />
-          </div>
-          <div className='form-group'>
-          <label htmlFor="">Giá phòng đôi</label>
-        <input type="number"  className='form-control' />
-          </div> */}
+    
+  
           <div className='form-group'>
           <label htmlFor="">Hình</label>
         <input type="file"  className='form-control' />
           </div>
-          <div className='form-group'>
-          <label htmlFor="">Tài xế</label>
-          <select name="" id=""     className='form-select'>
-              <option value="">Nguyễn Văn A</option>
-              <option value="">Nguyễn Văn B</option>
-
-          </select>
-          </div>
+       
        
    
 

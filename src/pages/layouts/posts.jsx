@@ -9,7 +9,7 @@ import Loading from "../loadingTrip";
 const Posts= () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Số lượng items hiển thị trên mỗi trang
+  const itemsPerPage = 5; // Số lượng items hiển thị trên mỗi trang
 
   const firstVisibleItemRef = useRef(null); // Tham chiếu của phần tử đầu tiên trong trang hiện tại
 
@@ -26,8 +26,8 @@ const Posts= () => {
   }, [currentPage]);
 
   const { news, popularNews, lastestNews, isLoading } = useSelector(state => state.news)
-  const itemList = news.data
-  console.log(news);
+  const itemList = news
+  console.log('news',news);
   console.log(isLoading);
   useEffect(() => {
     console.log("dispatch");

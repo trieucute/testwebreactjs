@@ -74,7 +74,7 @@ const TouristInformation = () => {
   const dispatch = useDispatch();
 
   const { news, isLoading } = useSelector(state => state.news)
-  const List = news.data
+  const List = news
   useEffect(() => {
     slide()
   }, [news])

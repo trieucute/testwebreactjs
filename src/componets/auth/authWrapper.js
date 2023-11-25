@@ -13,6 +13,7 @@ function AuthWrapper({ children }) {
     // Kiểm tra token ở đây và thực hiện điều hướng (redirect) nếu cần
     if (token) {
       // navigate('/');
+
       window.history.back();
     }
   }, [navigate, token]);

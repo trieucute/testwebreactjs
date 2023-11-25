@@ -13,6 +13,7 @@ import Notification from '../NotificationTrip';
 import { useStateContext } from '../../context/ContextProvider';
 import Loading from '../loadingTrip';
 import { postPayment, setFormData, setUserData } from '../../reduxTool/dataTicketSlice';
+import Comments from './comment';
 
 
 const BookTicketPageSingle  = () => {
@@ -60,6 +61,10 @@ const BookTicketPageSingle  = () => {
         });
    
       };
+      const [isInforVisible, setIsInforVisible] = useState(false);
+      const showInforne=()=>{
+        setIsInforVisible(!isInforVisible)
+      }
       const showInforBus=()=>{
         
         let InforBus= document.getElementById('infor_bus_router');
@@ -126,6 +131,9 @@ const BookTicketPageSingle  = () => {
   // useEffect(()=>{
 
   // })
+  const handleCancel =()=>{
+    window.history.back()
+  }
       useEffect(()=>{
         window.scrollTo(0, 0);
         if (!tripId) {
@@ -160,7 +168,7 @@ const BookTicketPageSingle  = () => {
             setIsLoading(false); // Dừng hiển thị "Loading..." khi đã tải xong dữ liệu
             
             tabsStepMobile();
-            showInforBus();
+            // showInforBus();
           } catch (error) {
             console.error(error);
             setIsLoading(false); // Dừng hiển thị "Loading..." khi gặp lỗi trong quá trình tải dữ liệu
@@ -357,19 +365,34 @@ const BookTicketPageSingle  = () => {
                                     <h5>Chọn ghế</h5>
                                 {/* ---------------------------THÔNG TIN XE --------------------------*/}
 
-                                    <h6 className=' position-relative' id='infor_bus_router' style={{cursor:"pointer"}}>Thông tin xe</h6>
+                                    <h6 className=' position-relative' id='infor_bus_router' style={{cursor:"pointer"}} onClick={showInforne}>Thông tin xe</h6>
                                     
-                                    <div className='position-absolute infor_bus_router ' >
+                               {isInforVisible &&      <div className='position-absolute infor_bus_router ' >
                                         <div className='py-3'>
-                                            <div className='d-flex justify-content-between px-3 pb-2'>
-                                                <h5 >Chính sách</h5>
-                                                <span className='pe-1' id='close-infor' style={{cursor:"pointer"}}>
+                                        <div className='d-flex justify-content-between px-3 pb-2'>
+                                        <ul class="nav nav-tabs mb-1" id="pills-tab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                              <button class="nav-link active" id="pills-main-tab" data-bs-toggle="pill" data-bs-target="#pills-main" type="button" role="tab" aria-controls="pills-main" aria-selected="true">Chính sách</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                              <button class="nav-link" id="pills-car-tab" data-bs-toggle="pill" data-bs-target="#pills-car" type="button" role="tab" aria-controls="pills-car" aria-selected="false">Hình ảnh xe</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                              <button class="nav-link" id="pills-utilities-tab" data-bs-toggle="pill" data-bs-target="#pills-utilities" type="button" role="tab" aria-controls="pills-utilities" aria-selected="false">Tiện ích</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                              <button class="nav-link" id="pills-star-tab" data-bs-toggle="pill" data-bs-target="#pills-star" type="button" role="tab" aria-controls="pills-star" aria-selected="false">Đánh giá</button>
+                                            </li>
+                                          </ul>
+                                          <span className='pe-1' id='close-infor' style={{cursor:"pointer"}}  onClick={showInforne}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512" style={{fill:'#cececf'}}>
                                                         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" />
                                                     </svg>
                                                 </span>
-                                           </div>
-                                           <div className='row overflow-auto' style={{width:"95%", margin:"0 auto"}}>
+                                            </div>
+                                          <div class="tab-content" id="pills-tabContent">
+                                       <div class="tab-pane px-1 fade show active" id="pills-main" role="tabpanel" aria-labelledby="pills-main-tab">
+                                          <div className='row overflow-auto infor-bus-content' style={{width:"95%", margin:"0 auto"}}>
                                                 <div className='items_infor_bus_router '>
                                                     <h6>Chính sách huỷ vé</h6>
                                                     <ul>
@@ -429,11 +452,58 @@ const BookTicketPageSingle  = () => {
                                                     </ul>
                                                 </div>
                                            </div>
+                                           </div>
+                                           <div class="tab-pane fade" id="pills-star" role="tabpanel" aria-labelledby="pills-star-tab">
+                                           {tripDetail && tripDetail.car &&
+                                                  <Comments id={tripDetail.car.id}/>
+                                           
+                                         
+                                          }
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-utilities" role="tabpanel" aria-labelledby="pills-utilities-tab">
+                                              <div className='utilities-contents px-3'>
+                                                <div className='row mx-0 flex-column items-utilities my-2'>
+                                                  <div className='col text-main-item'><i class="fas fa-language"></i>Nhân viên sử dụng tiếng anh</div>
+                                                  <div className='col'>Nhân viên phòng vé, tài xế , phụ xe có thể giao tiếp bằng tiếng anh với hành khách.</div>
+                                                </div>
+                                                <div className='row mx-0 flex-column  items-utilities  my-2'>
+                                                  <div className='col text-main-item'><i class="fas fa-rotate-right"></i>Dây đai an toàn</div>
+                                                  <div className='col'>Trên xe có trang bị dây đai an toàn cho hành khách khi ngồi trên xe</div>
+                                                </div>
+                                                <div className='row mx-0 flex-column  items-utilities  my-2'>
+                                                  <div className='col text-main-item'><i class="fas fa-pump-medical" ></i>Khử trùng xe</div>
+                                                  <div className='col'>Nhà xe có thực hiện phun khử trùng Nano Bạc lên xe nhằm bảo vệ an toàn cho hành khách mùa Covid</div>
+                                                </div>
+                                                <div className='row mx-0 flex-column items-utilities  my-2'>
+                                                  <div className='col text-main-item'><i class="fas fa-glass-water"></i>Nước uống</div>
+                                                  <div className='col'>Nhà xe có phục vụ nước cho hành khách</div>
+                                                </div>
+                                                <div className='row mx-0 flex-column items-utilities my-2'>
+                                                  <div className='col text-main-item'><i class="fas fa-hammer"  ></i>Búa phá kính</div>
+                                                  <div className='col'>Dùng để phá kính ô tô thoát hiểm trong trường hợp khẩn cấp.</div>
+                                                </div>
+                                                <div className="row mx-0  items-utilities  my-2">
+                                                  <div className='col text-main-item'><i class="fa-solid fa-wifi"></i> Wifi</div>
+                                                  <div className='col text-main-item'><i class="fa-solid fa-snowflake"></i>Điều hoà</div>
+                                                  <div className='col text-main-item'><i class="fa-solid fa-rug"></i>Chăn đắp</div>
+
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-car" role="tabpanel" aria-labelledby="pills-car-tab">
+                                             <div className='car-container-tabs'>
+                                              {tripDetail &&tripDetail.car && <>
+                                                <img src={tripDetail.car.primary_img} alt="" />
+                                              </>}
+                                             </div>
+                                            </div>
+                                           </div>
                                         </div>
                                     </div>
-                                {/* ------------------------END---THÔNG TIN XE --------------------------*/}
-
+                                // {/* ------------------------END---THÔNG TIN XE --------------------------*/}
+ }
                                 </div>
+                               
 
                                 <div className='row px-4 py-3 '>
                                 {showFullMessage&& <Notification message="Đã chọn đủ số ghế!" />}
@@ -1064,8 +1134,8 @@ const BookTicketPageSingle  = () => {
                             {/* --------------------------- NÚT BẤM ĐẾN TRANG THANH  TOÁN --------------------------*/}
 
                             <div className="col justify-content-between d-flex mt-4 btn-handle">
-                  <button className="btn">
-                    <a href="..">Huỷ</a>
+                  <button className="btn" type='button' onClick={handleCancel}>
+                    Huỷ
                   </button>
                   <button className="btn" onClick={handlePay}>Thanh toán
                     {/* <a href="/thanhtoan1chieu">Thanh toán</a> */}

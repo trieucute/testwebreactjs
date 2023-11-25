@@ -50,6 +50,10 @@ import StationsList from './pages/admin/stations/stationsList';
 import AddNewStation from './pages/admin/stations/newStation';
 import TicketList from './pages/admin/ticket/ticketList';
 import AddNewTicket from './pages/admin/ticket/newTicket';
+import CommentList from './pages/admin/comments/cmtList';
+import AddNewComment from './pages/admin/comments/newComt';
+import JobList from './pages/admin/jobs/jobList';
+import AddNewJob from './pages/admin/jobs/newJob';
 // import Editor from './pages/admin/news/edit';
 
 
@@ -118,29 +122,26 @@ function App() {
       <Route exact path="/forgot_password" element={<ForgotPassword/>} />
       <Route exact path="/reset_password" element={<ResetPassword/>} />
 
-      {/* <Route exact path="/testlogin"    element={<Testlogin/>}/> */}
-
-      {/* <Route path='/editor'  element={<Editor/>} /> */}
-
-
-        <Route path='/admin'  element={<AdminLogin/>} />
-        <Route  element={<IndexAdmin />}>
-    {/* Nested routes bên trong /admin */}
-              <Route path='/admin/dashboard'  element={<DashBoard />} />
-              <Route path='/admin/route' element={<RouteAdmin />} />
-              <Route path='/admin/user' element={<UserList/>} />
-              <Route path='/admin/news' element={<NewsList />} />
-        
-
-              <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
-              <Route path='/admin/trips' element={<TripList />} />
-              <Route path='/admin/trips/addnew' element={<AddNewTrip />} />
-              <Route path='/admin/cars' element={<CarList />} />
-              <Route path='/admin/cars/addnew' element={<AddNewCar/>} />
-              <Route path='/admin/stations' element={<StationsList />} />
-              <Route path='/admin/stations/addnew' element={<AddNewStation/>} />
-              <Route path='/admin/tickets' element={<TicketList />} />
-              <Route path='/admin/tickets/addnew' element={<AddNewTicket/>} />
+      <Route path='/admin'  element={<AdminLogin/>} />
+      <Route  element={<IndexAdmin />}>
+  {/* Nested routes bên trong /admin */}
+            <Route path='/admin/dashboard'  element={<DashBoard />} />
+            <Route path='/admin/route' element={<RouteAdmin />} />
+            <Route path='/admin/user' element={<UserList/>} />
+            <Route path='/admin/news' element={<NewsList />} />
+            <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
+            <Route path='/admin/trips' element={<TripList />} />
+            <Route path='/admin/trips/addnew' element={<AddNewTrip />} />
+            <Route path='/admin/cars' element={<CarList />} />
+            <Route path='/admin/cars/addnew' element={<AddNewCar/>} />
+            <Route path='/admin/stations' element={<StationsList />} />
+            <Route path='/admin/stations/addnew' element={<AddNewStation/>} />
+            <Route path='/admin/tickets' element={<TicketList />} />
+            <Route path='/admin/tickets/addnew' element={<AddNewTicket/>} />
+            <Route path='/admin/comments' element={<CommentList />} />
+            <Route path='/admin/comments/addnew' element={<AddNewComment/>} />
+            <Route path='/admin/jobs' element={<JobList/>} />
+            <Route path='/admin/jobs/addnew' element={<AddNewJob/>} />
   </Route> 
             
         <Route path="*" element={<NotFoundPage />} />

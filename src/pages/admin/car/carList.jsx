@@ -88,6 +88,9 @@ const CarList = () => {
     }
     return stars;
   };
+
+
+  // edit
     return (
         <div>
          {carData.loading ? (
@@ -144,7 +147,7 @@ const CarList = () => {
                   <button type='button' className='btn btn-primary ' data-bs-toggle="modal" data-bs-target="#exampleModal"   onClick={() => handleViewDetail(item.comment, item.id, item.type)}>Xem chi tiết</button>
                   </td>
                   <td >
-                    <i class="fas fa-pen-to-square"></i>
+                    <i class="fas fa-pen-to-square" onClick={()=>handleEdit(item.id)}></i>
                     <i class="fas fa-trash"></i>
                     </td>
                 </tr> 

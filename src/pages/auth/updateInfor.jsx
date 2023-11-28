@@ -9,12 +9,13 @@ const UpdateInfor = () => {
     const {setUser, token } = useStateContext();
     const navigate= useNavigate()
     const dispatch = useDispatch();
-    const [message, setMessage]=useState(null)
+    const [message, setMessage]=useState(null);
+    const [img,setImg]= useState('')
     const [updateinf, setUpdateinf]= useState({
         email:'',
         name:"",
         phone_number:"",
-        avatar:"",
+        avatar:null,
         address:"",
     })
     const handleUpdateUser = async (e) => {
@@ -23,10 +24,12 @@ const UpdateInfor = () => {
             setMessage('Vui lòng nhập đầy đủ thông tin!')
             return
         }
+
         try {
-            const response = await axiosClient.put('/user', updateinf, {
+            const response = await axiosClient.post('/user/update', updateinf, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
                 },
             });
      
@@ -52,30 +55,39 @@ const UpdateInfor = () => {
      
             if(response){
                 const errors = response.data.errors;
-                if(errors.phone_number =="The phone number has already been taken."){
-                setMessage("Số điện thoại đã được sử dụng!");
-                console.log(errors.phone_number);
-                } else if(errors.phone_number=="The phone number field must be at least 10 characters."){
-                    setMessage("Số điện thoại ít nhất 10 số!");
-                    // console.log(errors.phone_number);
-                }
+                console.log(errors);
+                // if(errors.phone_number =="The phone number has already been taken."){
+                // setMessage("Số điện thoại đã được sử dụng!");
+                // console.log(errors.phone_number);
+                // } else if(errors.phone_number=="The phone number field must be at least 10 characters."){
+                //     setMessage("Số điện thoại ít nhất 10 số!");
+                //     // console.log(errors.phone_number);
+                // }
             }
         
         }
     };
  
     const handleOnChange = (e) => {
-        const { name, value } = e.target;
-        setUpdateinf({
+        if (e.target.name === 'avatar') {
+           setUpdateinf({
             ...updateinf,
-            [name]: value,
-        });
-    };
+            avatar: e.target.files[0],
+          });
+        } else {
+           setUpdateinf({
+            ...updateinf,
+            [e.target.name]: e.target.value,
+          });
+        }
+      };
+
     useEffect(()=>{
     dispatch(fetchUserProfile(token))
     .then((res)=>{
         console.log(res);
         setUser(res.payload.data)
+        setImg(res.payload.data.avatar)
         setUpdateinf(res.payload.data)
     })
     .catch((err)=>{
@@ -102,8 +114,8 @@ const UpdateInfor = () => {
                         <div className='col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12'>
                             <div className='img-user'>
                             <div className='img-updateinf'>
-                                {updateinf.avatar !==null &&<img src={updateinf.avatar} alt="" className='img-fuild'/>}
-                                {updateinf.avatar ===null && 
+                                {img !==null &&<img src={img} alt="" className='img-fuild'/>}
+                                {img ===null && 
                                 <>
                                 <img src={user} alt=""className='img-fuild' />
                                 <br />

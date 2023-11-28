@@ -74,15 +74,17 @@ console.log(token);
           console.error(err)
           setIsLoading(false); 
       })
-  }, [])
+  }, [dispatch,  setUser])
 const handleUpdateInfor=()=>{
   navigate('/user/update');
 }
   return (
     <>
 
-    {/* {isLoading && <div>Loading...</div>}
- {!isLoading && ( */}
+    {isLoading && <div><div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div></div>}
+ {!isLoading && ( 
   <>
     {user !==null && token !==null && (
 
@@ -143,7 +145,7 @@ const handleUpdateInfor=()=>{
      </a>
     }
     </>
-  {/* )} */}
+   )} 
   
       
 

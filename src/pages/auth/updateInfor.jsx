@@ -31,7 +31,8 @@ const UpdateInfor = () => {
             });
      
             setMessage('Cập nhật thông tin thành công')
-            // alert("Cập nhật thành công")
+            alert("Cập nhật thành công")
+            window.location.reload();
             // Handle the response, update UI, etc.
             console.log(response.data); // Log the response data or handle it accordingly
             dispatch(fetchUserProfile(token))
@@ -39,6 +40,7 @@ const UpdateInfor = () => {
                 console.log(res);
                 // setUser(res.payload.data)
                 setUpdateinf(res.payload.data)
+                console.log('update xong',res.payload.data);
             })
             .catch((err)=>{
                 console.error(err)
@@ -47,8 +49,9 @@ const UpdateInfor = () => {
         } catch (err) {
             console.error(err);
             const response = err.response;
-            const errors = response.data.errors;
+     
             if(response){
+                const errors = response.data.errors;
                 if(errors.phone_number =="The phone number has already been taken."){
                 setMessage("Số điện thoại đã được sử dụng!");
                 console.log(errors.phone_number);
@@ -98,7 +101,17 @@ const UpdateInfor = () => {
                     <div className='row m-0 justify-content-between'>
                         <div className='col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12'>
                             <div className='img-user'>
-                            <div className='img-updateinf'><img src={updateinf.avatar} alt="" className='img-fuild'/></div>
+                            <div className='img-updateinf'>
+                                {updateinf.avatar !==null &&<img src={updateinf.avatar} alt="" className='img-fuild'/>}
+                                {updateinf.avatar ===null && 
+                                <>
+                                <img src={user} alt=""className='img-fuild' />
+                                <br />
+                                       <span>Chưa có ảnh đại điện</span>
+                                </>
+ }
+
+                                </div>
                             <div className='form-group'>
                                 <label htmlFor="">Đổi ảnh </label>
                                 <input type="file" className="form-control" name='avatar'  onChange={handleOnChange}/>

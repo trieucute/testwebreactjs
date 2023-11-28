@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
-import user from '../../../assets/images/avatarnv1.jpg'
+import user from '../../../assets/images/usernoavatar.png'
 import Tooltip from '@mui/material/Tooltip';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchcarAdmin } from '../../../reduxTool/carSlice';
+import LoadingAd from '../../loadingAdmin';
+import { fetchCarSeat } from '../../../reduxTool/seatSlice';
+import ReactPaginate from 'react-paginate';
+import { API_BASE_URL } from '../../../config';
 const CarList = () => {
     const navigate = useNavigate();
     const handleAdd=()=>{
@@ -12,8 +18,83 @@ const CarList = () => {
     const handleshowAddChair =()=>{
     setShowAddChair(!showAddChair)
     }
+    const dispatch= useDispatch();
+    const carData= useSelector(state=>state.carAdmin)
+    const cars= carData?.data.data
+
+    useEffect(()=>{
+
+    dispatch(fetchcarAdmin())
+    },[])
+    // console.log(carData, cars, carData.loading);
+    const [selectedCarComments, setSelectedCarComments] = useState([]);
+    const seats= useSelector(state=>state.seatAdmin)
+    const [typeCar, setTypeCar] = useState('');
+
+    const handleViewDetail = (comments,id,type) => {
+      setSelectedCarComments(comments);
+      setTypeCar(type)
+
+      dispatch(fetchCarSeat(id))
+    };
+    
+      console.log(selectedCarComments,'seats');
+    const seatsData= seats?.data.data; 
+    // tìm kiếm
+    const [searchTerm, setSearchTerm] = useState('');
+    const currentCars = searchTerm
+    ? cars?.filter((car) =>
+        car.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : cars;
+
+  const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+  const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
+
+  const offset = pageNumber * perPage;
+  const pageCount = Math.ceil(currentCars?.length / perPage);
+  const paginatedCars = currentCars?.slice(offset, offset + perPage);
+
+  const handlePageClick = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
+  };
+
+
+  // Tính trung bình số sao (rate) từ mảng comment và làm tròn
+  const calculateRoundedAverageRate = (comments) => {
+    const totalRates = comments.reduce((acc, comment) => {
+      return acc + comment.rate;
+    }, 0);
+
+    const averageRate = totalRates / comments.length;
+    return Math.round(averageRate); // Làm tròn trung bình số sao
+  };
+
+  // Render icon fa-star dựa trên giá trị đã làm tròn
+  const renderStars = (roundedRate) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < roundedRate) {
+        stars.push(<i key={i} className="fas fa-star" style={{ color: "yellow" }}></i>);
+      } else {
+        stars.push(<i key={i} className="far fa-star" style={{ color: "grey" }}></i>);
+      }
+    }
+    return stars;
+  };
     return (
         <div>
+         {carData.loading ? (
+          <><LoadingAd/></>
+         ):(
+          
+     <>
         <div className='carAdmin-container'>
           <h3 className='h3-admin'>Quản lý xe khách</h3>
           <div className='row mx-0 my-2'>
@@ -22,7 +103,8 @@ const CarList = () => {
             </div>
           <div className='search col text-end'>
             <form action="">
-              <input type="text" placeholder='Tìm kiếm xe' className='form-control w-75' style={{marginLeft:"auto"}}/><button><i class="fas fa-magnifying-glass"></i></button>
+              <input type="text" placeholder='Tìm kiếm xe' className='form-control w-75' style={{marginLeft:"auto"}}  value={searchTerm}
+      onChange={handleSearch}/><button type='button'><i class="fas fa-magnifying-glass"></i></button>
             </form>
           </div>
           </div>
@@ -34,7 +116,7 @@ const CarList = () => {
                   <th></th>
                   <th>Tên xe</th>
                   <th>Biển số </th>    
-                    <th>Số ghế</th>
+                    <th>Số lượng ghế</th>
                     <th>Hình</th>
                     <th>Loại</th>
                     {/* <th>Giá</th> */}
@@ -45,37 +127,45 @@ const CarList = () => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                <td>1</td>
+                {paginatedCars &&
+          paginatedCars.map((item, index) => (
+                          <tr key={item.id}>
+               <td>{index + offset + 1}</td>
 
-                  <td>Limousine phương trang</td>
-                  <td>29A-12345 </td>
-                  <td>36 </td>
-                  <td className='img-car'><img src={car} alt="" /></td>
-                  <td>Giường nằm</td>
+                  <td>{item.name}</td>
+                  <td>{item.license_plate}</td>
+                  <td>{item.number_seat}</td>
+                  <td className='img-car'><img src={item.primary_img} alt="" /></td>
+                  <td>{item.type}</td>
                   {/* <td>500.000 đ</td> */}
-                  <td>
-                    <i class="fas fa-star" style={{color:"yellow"}}></i>
-                    <i class="fas fa-star" style={{color:"yellow"}}></i>
-                    <i class="fas fa-star" style={{color:"yellow"}}></i>
-                    <i class="fas fa-star" style={{color:"yellow"}}></i>
-                    <i class="far fa-star" style={{color:"grey"}}></i>  
-              
-                  </td>
+                  <td>{renderStars(calculateRoundedAverageRate(item.comment))} ({item.comment.length > 0 ? item.comment.length : 0 } đánh giá)</td>
                   {/* <td>1</td> */}
                   <td>
-                  <button type='button' className='btn btn-primary ' data-bs-toggle="modal" data-bs-target="#exampleModal">Xem chi tiết</button>
+                  <button type='button' className='btn btn-primary ' data-bs-toggle="modal" data-bs-target="#exampleModal"   onClick={() => handleViewDetail(item.comment, item.id, item.type)}>Xem chi tiết</button>
                   </td>
                   <td >
                     <i class="fas fa-pen-to-square"></i>
                     <i class="fas fa-trash"></i>
                     </td>
-                </tr>
+                </tr> 
+                  ))}
+         
                
                 
                 </tbody>
               </table>
           </div>
+          <div className="pagination-contents">
+               <ReactPaginate  
+        previousLabel={<i className="fas fa-caret-left"></i>}
+        nextLabel={<i className="fas fa-caret-right"></i>}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
+          </div>
+       
         </div>
 
 {/* <!-- Modal --> */}
@@ -103,1067 +193,385 @@ const CarList = () => {
                  {/* <h5>Giá ghế</h5> */}
                  <div className="row px-4 py-3 justify-content-center ">
                       {/* {/*-------------------- SỐ GHẾ TẦNG DƯỚI--------------------------* /} */}
-                      <div className="items-FloorDown col-sm-4 ">
-                        <h5 className="text-center" style={{ fontSize: "1em" }}>
-                          Tầng Dưới
-                        </h5>
-                        <div className="row px-3">
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <Tooltip title={
-                                    <div><span> Ghế: A01, Loại: Giường nằm, Giá: 500.000đ  </span>
-                                       <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                      <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
-                                 </div>}
-                                  placement="top" arrow>
-                                 
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A01
-                              </span>
-                         
-                            </div>
-                            </Tooltip>
-                            <Tooltip title={
-                                    <div><span> Ghế: A02, Loại: Giường nằm, Giá: 500.000đ  </span>
-                                       <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                      <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
-                                 </div>}
-                                  placement="top" arrow>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A02
-                              </span>
-                           
-                            </div>
-                            </Tooltip>
-                            <Tooltip title={
-                                    <div><span> Ghế: A03, Loại: Giường nằm, Giá: 500.000đ  </span>
-                                       <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                      <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
-                                 </div>}
-                                  placement="top" arrow>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A03
-                              </span>
-                           
-                            </div>
-                            </Tooltip>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A04
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A05
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A06
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A07
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A08
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A09
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A10
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A11
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A12
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A13
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A14
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A15
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A16
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A17
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                A18
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        {/* {/*------------------END-- SỐ GHẾ TẦNG DƯỚI--------------------------* /} */}
-                      </div>
-                      {/* {/*-------------------- SỐ GHẾ TẦNG TRÊN--------------------------* /} */}
-                      <div className="items-FloorUp col-sm-4">
-                        <h5 className="text-center" style={{ fontSize: "1em" }}>
-                          Tầng trên
-                        </h5>
-                        <div className="row px-3">
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B01
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B02
-                              </span>
-                            </div>
-                            
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B03
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B04
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B05
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B06
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B07
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B08
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B09
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                          <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B10
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B11
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B12
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B13
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B14
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B15
-                              </span>
-                            </div>
-                          </div>
-                          <div className="d-flex  justify-content-between  m-auto py-1">
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B16
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B17
-                              </span>
-                            </div>
-                            <div
-                              className=" position-relative chair-item-go"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <svg
-                                width={43}
-                                height={33}
-                                viewBox="0 0 43 33"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
-                                 fill="#A1CCD1"
-                                />
-                              </svg>
-                              <span
-                                className="name-chair position-absolute"
-                                style={{
-                                  fontSize: "0.6em",
-                                  left: 13,
-                                  top: 3,
-                                  color: "#2E8A99"
-                                }}
-                              >
-                                B18
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                             {/* {/*-------------------- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}
-                             {/* <div className="items-Floor-des col-sm-4">
-                        <div className="row mt-4 flex-column">
-                          <div className="item-des row mx-0 my-2 ">
-                          
-                       
-                          <div className='col text-start ps-0' style={{fontWeight:"700"}}>Giá: 700.000 đ</div>
-              
+           
+                      {seats.loading ? (
+                        <><LoadingAd/></>
+                      ):(
+                        <>
+                           {seatsData && typeCar==='giường nằm'&& (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
+                                          <div className='row px-3  items-content-floor'>
                      
-                          </div>
-                          <div className="item-des row  my-2 mx-0">
-                        
-         
-                    
-                          <div className='col text-start ps-0'  style={{fontWeight:"700"}}>Giá tầng trên: 500.000 đ</div>
-
-                          
-                       
-                          </div>
+                                          {seatsData
+                                              .filter(seat => seat.position.startsWith('A'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className='items-content-floor-row'>
+                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <Tooltip title={
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                       </div>}
+                                                        placement="top" arrow>
+                                                       
+                                                <div
+                                                    className=" position-relative"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                    <svg
+                                                      width={43}
+                                                      height={33}
+                                                      viewBox="0 0 43 33"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <path
+                                                        d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                       fill="#A1CCD1"
+                                                      />
+                                                    </svg>
+                                                    <span
+                                                      className="name-chair position-absolute"
+                                                      style={{
+                                                        fontSize: "0.6em",
+                                                        top: 3,
+                                                        color: "#2E8A99"
+                                                      }}
+                                                    >
+                                                     {seat.position}
+                                                    </span>
+                                               
+                                                  </div>
+                                                  </Tooltip>
+                                                  </div>
+                                                  </div>
+               
+                                              ))
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                                                {seatsData && typeCar==='Limousine'  && (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
+                                          <div className='row px-3  items-content-floor'>
+                     
+                                          {seatsData
+                                              .filter(seat => seat.position.startsWith('A'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className='items-content-floor-row items-content-floor-double'>
+                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <Tooltip title={
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                       </div>}
+                                                        placement="top" arrow>
+                                                       
+                                                <div
+                                                    className=" position-relative"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                    <svg
+                                                      width={43}
+                                                      height={33}
+                                                      viewBox="0 0 43 33"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <path
+                                                        d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                       fill="#A1CCD1"
+                                                      />
+                                                    </svg>
+                                                    <span
+                                                      className="name-chair position-absolute"
+                                                      style={{
+                                                        fontSize: "0.6em",
+                                                        top: 3,
+                                                        color: "#2E8A99"
+                                                      }}
+                                                    >
+                                                     {seat.position}
+                                                    </span>
+                                               
+                                                  </div>
+                                                  </Tooltip>
+                                                  </div>
+                                                  </div>
+               
+                                              ))
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                                                   {seatsData  &&typeCar==='ghế'  && (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
+                                          <div className='row px-3  items-content-floor'>
+                     
+                                          {seatsData
+                                              .filter(seat => seat.position.startsWith('A'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className='items-content-floor-row items-content-floor-chair'>
+                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <Tooltip title={
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                       </div>}
+                                                        placement="top" arrow>
+                                                       
+                                                <div
+                                                    className=" position-relative"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                    <svg
+                                                      width={43}
+                                                      height={33}
+                                                      viewBox="0 0 43 33"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <path
+                                                        d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                       fill="#A1CCD1"
+                                                      />
+                                                    </svg>
+                                                    <span
+                                                      className="name-chair position-absolute"
+                                                      style={{
+                                                        fontSize: "0.6em",
+                                                        top: 3,
+                                                        color: "#2E8A99"
+                                                      }}
+                                                    >
+                                                     {seat.position}
+                                                    </span>
+                                               
+                                                  </div>
+                                                  </Tooltip>
+                                                  </div>
+                                                  </div>
+               
+                                              ))
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                        </>
+                      )}
                    
-                        </div>
-                      </div> */}
-                      {/* {/*------------------END --- MÔ TẢ MÀU ( ĐỎ LÀ ĐANG CHỌN, XANH LÀ CÒN TRỐNG, XÁM LÀ ĐÃ BÁN)--------------------------* /} */}
+             
+                      {/* {/*-------------------- SỐ GHẾ TẦNG TRÊN--------------------------* /} */}
+                      {seats.loading ? (
+                        <><LoadingAd/></>
+                      ):(
+                        <>
+                           {seatsData  && typeCar==='giường nằm'  && (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Trên</h5>
+                                          <div className='row px-3  items-content-floor'>
+                     
+                                          {seatsData
+                                              .filter(seat => seat.position.startsWith('B'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className='items-content-floor-row'>
+                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <Tooltip title={
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                       </div>}
+                                                        placement="top" arrow>
+                                                       
+                                                <div
+                                                    className=" position-relative"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                    <svg
+                                                      width={43}
+                                                      height={33}
+                                                      viewBox="0 0 43 33"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <path
+                                                        d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                       fill="#A1CCD1"
+                                                      />
+                                                    </svg>
+                                                    <span
+                                                      className="name-chair position-absolute"
+                                                      style={{
+                                                        fontSize: "0.6em",
+                                                        top: 3,
+                                                        color: "#2E8A99"
+                                                      }}
+                                                    >
+                                                     {seat.position}
+                                                    </span>
+                                               
+                                                  </div>
+                                                  </Tooltip>
+                                                  </div>
+                                                  </div>
+               
+                                              ))
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                                                       {seatsData  &&typeCar==='Limousine'  && (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
+                                          <div className='row px-3  items-content-floor'>
+                     
+                                          {seatsData
+                                              .filter(seat => seat.position.startsWith('B'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className='items-content-floor-row items-content-floor-double'>
+                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <Tooltip title={
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                       </div>}
+                                                        placement="top" arrow>
+                                                       
+                                                <div
+                                                    className=" position-relative"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                    <svg
+                                                      width={43}
+                                                      height={33}
+                                                      viewBox="0 0 43 33"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <path
+                                                        d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                       fill="#A1CCD1"
+                                                      />
+                                                    </svg>
+                                                    <span
+                                                      className="name-chair position-absolute"
+                                                      style={{
+                                                        fontSize: "0.6em",
+                                                        top: 3,
+                                                        color: "#2E8A99"
+                                                      }}
+                                                    >
+                                                     {seat.position}
+                                                    </span>
+                                               
+                                                  </div>
+                                                  </Tooltip>
+                                                  </div>
+                                                  </div>
+               
+                                              ))
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                       
+                                    {seatsData  &&typeCar==='ghế'  && (
+                                          <div className='items-FloorDown col-sm-4 '>
+                                          {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
+                                          <div className='row px-3  items-content-floor'>
+                     
+                                          {seatsData
+                                              .filter(seat => seat.position.startsWith('B'))
+                                              .sort((a, b) => {
+                                                const positionA = parseInt(a.position.substring(1));
+                                                const positionB = parseInt(b.position.substring(1));
+                                                return positionA - positionB;
+                                              })
+                                              .map(seat => (
+                                                <div className='items-content-floor-row items-content-floor-chair'>
+                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <Tooltip title={
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                       </div>}
+                                                        placement="top" arrow>
+                                                       
+                                                <div
+                                                    className=" position-relative"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                    <svg
+                                                      width={43}
+                                                      height={33}
+                                                      viewBox="0 0 43 33"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <path
+                                                        d="M36.5 9.33333V5.75C36.5 2.79375 33.9688 0.375 30.875 0.375H12.125C9.03125 0.375 6.5 2.79375 6.5 5.75V9.33333C3.40625 9.33333 0.875 11.7521 0.875 14.7083V23.6667C0.875 26.6229 3.40625 29.0417 6.5 29.0417V30.8333C6.5 31.8187 7.34375 32.625 8.375 32.625C9.40625 32.625 10.25 31.8187 10.25 30.8333V29.0417H32.75V30.8333C32.75 31.8187 33.5938 32.625 34.625 32.625C35.6562 32.625 36.5 31.8187 36.5 30.8333V29.0417C39.5938 29.0417 42.125 26.6229 42.125 23.6667V14.7083C42.125 11.7521 39.5938 9.33333 36.5 9.33333ZM10.25 5.75C10.25 4.76458 11.0938 3.95833 12.125 3.95833H30.875C31.9062 3.95833 32.75 4.76458 32.75 5.75V10.7308C31.6063 11.7162 30.875 13.1317 30.875 14.7083V18.2917H12.125V14.7083C12.125 13.1317 11.3938 11.7162 10.25 10.7308V5.75ZM38.375 23.6667C38.375 24.6521 37.5312 25.4583 36.5 25.4583H6.5C5.46875 25.4583 4.625 24.6521 4.625 23.6667V14.7083C4.625 13.7229 5.46875 12.9167 6.5 12.9167C7.53125 12.9167 8.375 13.7229 8.375 14.7083V21.875H34.625V14.7083C34.625 13.7229 35.4688 12.9167 36.5 12.9167C37.5312 12.9167 38.375 13.7229 38.375 14.7083V23.6667Z"
+                                                       fill="#A1CCD1"
+                                                      />
+                                                    </svg>
+                                                    <span
+                                                      className="name-chair position-absolute"
+                                                      style={{
+                                                        fontSize: "0.6em",
+                                                        top: 3,
+                                                        color: "#2E8A99"
+                                                      }}
+                                                    >
+                                                     {seat.position}
+                                                    </span>
+                                               
+                                                  </div>
+                                                  </Tooltip>
+                                                  </div>
+                                                  </div>
+               
+                                              ))
+                                              }
+                                         </div>
+                                   
+                                            </div>
+                                             
+                                              )}
+                        </>
+                      )}
+                   
+
                       </div>
                       <button type='button' className='btn btn-primary' onClick={handleshowAddChair}>Thêm ghế</button>
                    {showAddChair &&  <div className='formaddchair mt-4'>
@@ -1199,7 +607,35 @@ const CarList = () => {
                 
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                   <div className='rate-contents modal-rateCar'>
-                  <div className='row m-0 item-rate'>
+                  {selectedCarComments.map((comment, index) => {
+            
+                       return (
+                        <div key={index} className='row m-0 item-rate'>
+                        <div className='col-3'>
+                        {comment.avatar!==`${API_BASE_URL}/storage` ? (<img src={comment.avatar} alt="" className='img-fluid' />) :  (<img src={user} alt="" className='img-fluid' />)}
+                        <div className='text-center nameUser'>{comment.user}</div>
+                        {/* {comment.user &&    } */}
+                        </div>
+                        <div className='col'>
+                          <div className='row m-0'>
+                            <div className='col text-start content-rate'>{comment.content}</div>
+                            <div className='col-3 text-end'>
+                              {Array(comment.rate).fill().map((_, i) => (
+                                <i key={i} class="fas fa-star" style={{color:"yellow"}}></i>
+                              ))}
+                              {Array(5 - comment.rate).fill().map((_, i) => (
+                                <i key={i + comment.rate} class="far fa-star" style={{color:"grey"}}></i>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                       )
+                  }
+                 
+          
+          )}
+                  {/* <div className='row m-0 item-rate'>
           <div className='col-3'>
             <img src={user} alt="" className='img-fluid' />
           
@@ -1217,8 +653,8 @@ const CarList = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className='row m-0 item-rate'>
+        </div> */}
+        {/* <div className='row m-0 item-rate'>
           <div className='col-3'>
             <img src={user} alt="" className='img-fluid' />
           
@@ -1312,7 +748,7 @@ const CarList = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
                   </div>
                 </div>
               
@@ -1328,7 +764,8 @@ const CarList = () => {
     </div>
   </div>
 </div>
-
+</>
+    )} 
     </div>
     );
 };

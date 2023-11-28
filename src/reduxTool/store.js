@@ -6,6 +6,9 @@ import authReducer from './authSlice'
 import dataTicketReducer from './dataTicketSlice'
 import commentsReducer from './commentSlice'
 import jobReducer from './jobSlide'
+import carAdminReducer from './carSlice'
+import seatReducer from './seatSlice'
+
 // import routesBookingReducer from './formdata'
 export const store=configureStore({
     reducer:{
@@ -14,7 +17,9 @@ export const store=configureStore({
         authAdmin: authReducer,
         dataTicket:dataTicketReducer,
         job:jobReducer,
-        comment:commentsReducer
+        comment:commentsReducer,
+        carAdmin:carAdminReducer,
+        seatAdmin:seatReducer
         // routesBookingReducer ,
 
     }

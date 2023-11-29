@@ -38,7 +38,7 @@ import IndexAdmin from './pages/admin';
 import DashBoard from './pages/admin/dashboard';
 import RouteAdmin from './pages/admin/route/route';
 import NotFoundPage from './pages/notFound';
-import AddNewsForm from './pages/admin/news/addNew';
+import AddNewsForm from './pages/admin/news/addNews';
 import NewsList from './pages/admin/news/news';
 import UserList from './pages/admin/user/user';
 import UpdateInfor from './pages/auth/updateInfor';
@@ -54,6 +54,7 @@ import CommentList from './pages/admin/comments/cmtList';
 import AddNewComment from './pages/admin/comments/newComt';
 import JobList from './pages/admin/jobs/jobList';
 import AddNewJob from './pages/admin/jobs/newJob';
+import UpdateNews from './pages/admin/news/updateNews';
 // import Editor from './pages/admin/news/edit';
 
 
@@ -130,6 +131,8 @@ function App() {
             <Route path='/admin/user' element={<UserList/>} />
             <Route path='/admin/news' element={<NewsList />} />
             <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
+            <Route path='/admin/news/update/:id' element={<UpdateNews/>} />
+            
             <Route path='/admin/trips' element={<TripList />} />
             <Route path='/admin/trips/addnew' element={<AddNewTrip />} />
             <Route path='/admin/cars' element={<CarList />} />

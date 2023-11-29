@@ -6,9 +6,10 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchcarAdmin } from '../../../reduxTool/carSlice';
 import LoadingAd from '../../loadingAdmin';
-import { fetchCarSeat } from '../../../reduxTool/seatSlice';
+import { deleteCarSeat, fetchCarSeat, postCarSeat, updateCarSeat } from '../../../reduxTool/seatSlice';
 import ReactPaginate from 'react-paginate';
 import { API_BASE_URL } from '../../../config';
+import { data } from 'jquery';
 const CarList = () => {
     const navigate = useNavigate();
     const handleAdd=()=>{
@@ -30,11 +31,12 @@ const CarList = () => {
     const [selectedCarComments, setSelectedCarComments] = useState([]);
     const seats= useSelector(state=>state.seatAdmin)
     const [typeCar, setTypeCar] = useState('');
+    const [idCar, setIdCar] = useState('');
 
     const handleViewDetail = (comments,id,type) => {
       setSelectedCarComments(comments);
       setTypeCar(type)
-
+      setIdCar(id)
       dispatch(fetchCarSeat(id))
     };
     
@@ -91,6 +93,73 @@ const CarList = () => {
 
 
   // edit
+  const handleEdit=(id)=>{
+    console.log(id);
+    dispatch()
+  }
+  const [dataChair, setDataChair]= useState({
+    position:'',
+    type:'',
+    price:0
+  })
+  const handleChangeinput=(e)=>{
+    setDataChair({
+      ...dataChair,
+      [e.target.name]: e.target.value,
+    })
+  }
+  const handleAddChair =(e)=>{
+    e.preventDefault()
+    const data={
+      car_id:idCar,
+      position:dataChair.position,
+      type:dataChair.type,
+      price:dataChair.price
+    }
+    dispatch(postCarSeat(data))
+    .then(res=>{
+      console.log(res);
+      alert("Thêm ghế thành công")
+      dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
+    })
+    .catch(err=>{
+      console.error(err);
+    })
+
+  }
+  const handleDeleteChair=(id)=>{
+    dispatch(deleteCarSeat(id))
+    .then(res=>{
+      console.log(res);
+      dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
+    })
+  }
+
+  // sửa ghế
+  // State để lưu thông tin ghế cần chỉnh sửa
+  const [editingSeat, setEditingSeat] = useState(null);
+  const [editChair,setEditChair ]= useState(false)
+  const handleEditChair =(seat)=>{
+    setEditChair(!editChair)
+    console.log(seat,'seatedit');
+   setEditingSeat(seat)
+  }
+  const handleChangeinputedit=(e)=>{
+    setEditingSeat((prevEditingSeat) => ({
+      ...prevEditingSeat,
+      [e.target.name]: e.target.value,
+    }));
+  }
+  const handleSubmitEditChair=(id)=>{
+    dispatch(updateCarSeat(id,editingSeat))
+    .then(res=>{
+      console.log(res);
+      dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
+    })
+    .catch(err=>{
+      console.error(err)
+    })
+  }
     return (
         <div>
          {carData.loading ? (
@@ -147,7 +216,7 @@ const CarList = () => {
                   <button type='button' className='btn btn-primary ' data-bs-toggle="modal" data-bs-target="#exampleModal"   onClick={() => handleViewDetail(item.comment, item.id, item.type)}>Xem chi tiết</button>
                   </td>
                   <td >
-                    <i class="fas fa-pen-to-square" onClick={()=>handleEdit(item.id)}></i>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModaledit"></button><i class="fas fa-pen-to-square" onClick={()=>handleEdit(item.id)}></i>
                     <i class="fas fa-trash"></i>
                     </td>
                 </tr> 
@@ -218,8 +287,8 @@ const CarList = () => {
                                                 <div className="d-flex  justify-content-between  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
                                                        
@@ -279,7 +348,7 @@ const CarList = () => {
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
                                                        
@@ -339,7 +408,7 @@ const CarList = () => {
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
                                                        
@@ -408,7 +477,7 @@ const CarList = () => {
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
                                                        
@@ -468,7 +537,7 @@ const CarList = () => {
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
                                                        
@@ -529,7 +598,7 @@ const CarList = () => {
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
-                                                            <i class='fas fa-trash' style={{paddingLeft:"10px"}}></i>
+                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
                                                        
@@ -578,34 +647,53 @@ const CarList = () => {
                       </div>
                       <button type='button' className='btn btn-primary' onClick={handleshowAddChair}>Thêm ghế</button>
                    {showAddChair &&  <div className='formaddchair mt-4'>
-                        <form action="" className='row m-0'>
+                        <form action="" className='row m-0' onSubmit={handleAddChair}>
                           <div className='form-group col'>
+                        <input type="number" value={idCar} hidden />
                             <label htmlFor="">Tên ghế</label>
-                            <input type="text" className='form-control' placeholder='A19...' style={{fontSize:'14px'}}/>
+                            <input type="text" className='form-control' placeholder='A19...' style={{fontSize:'14px'}} name='position'  onChange={e=>handleChangeinput(e)}/>
                           </div>
-                          {/* <div className='form-group  col'>
-                            <label htmlFor="">Tầng</label>
-                            <select name="" id="" className='form-select'>
-                              <option value="">Tầng 1</option>
-                              <option value="">Tầng 2</option>
-
-                            </select>
-                          </div> */}
+                 
                           <div className='form-group col'>
                             <label htmlFor="">Giá ghế</label>
-                            <input type="number" className='form-control'  placeholder='500.000' />
+                            <input type="number" className='form-control'  placeholder='500.000' name='price' onChange={e=>handleChangeinput(e)}/>
                           </div>
                           <div className='form-group col'>
                             <label htmlFor="">Loại ghế</label>
-                            <input type="text" className='form-control'  placeholder='Giường nằm vip...' />
+                            <input type="text" className='form-control'  placeholder='Giường nằm vip...' name='type' onChange={e=>handleChangeinput(e)}/>
                           </div>
                           <span className='mt-2'>* Bắt đầu bằng A là tầng dưới và B là tầng trên </span>
 
                           <div className='form-group text-center mt-4'>
-                            <button type='button' className='btn-add'>Thêm ghế mới</button>
+                            <button type='submit' className='btn-add'>Thêm ghế mới</button>
                           </div>
                         </form>
                       </div> }
+
+                      {editChair && <div>
+                          <h6 className='text-center' style={{fontWeight:"700"}}>Cập nhật ghế</h6>
+                          <form action="" className='row m-0' onSubmit={()=>handleSubmitEditChair(editingSeat.id)}>
+                          <div className='form-group col'>
+                        
+                            <label htmlFor="">Tên ghế</label>
+                            <input type="text" className='form-control' placeholder='A19...' style={{fontSize:'14px'}} name='position' value={editingSeat.position}  onChange={e=>handleChangeinputedit(e)}/>
+                          </div>
+                 
+                          <div className='form-group col'>
+                            <label htmlFor="">Giá ghế</label>
+                            <input type="number" className='form-control'  placeholder='500.000' name='price' value={editingSeat.price} onChange={e=>handleChangeinputedit(e)}/>
+                          </div>
+                          <div className='form-group col'>
+                            <label htmlFor="">Loại ghế</label>
+                            <input type="text" className='form-control'  placeholder='Giường nằm vip...' name='type' value={editingSeat.type} onChange={e=>handleChangeinputedit(e)}/>
+                          </div>
+                          <span className='mt-2'>* Bắt đầu bằng A là tầng dưới và B là tầng trên </span>
+
+                          <div className='form-group text-center mt-4'>
+                            <button type='submit' className='btn-add'>Thêm ghế mới</button>
+                          </div>
+                        </form>
+                        </div>}
                 </div>
                 
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
@@ -769,6 +857,32 @@ const CarList = () => {
 </div>
 </>
     )} 
+
+
+
+<button type="button" class="btn btn-primary" >
+  Launch demo modal
+</button>
+
+{/* <!-- Modal --> */}
+<div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     </div>
     );
 };

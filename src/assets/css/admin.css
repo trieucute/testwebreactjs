@@ -447,11 +447,38 @@
 .td-content-cmt{
     max-width: 500px;
 }
-.commentAdmin-container .content-cmt{
+.content-summary{
+    width: 100%;
+    height: 150px;
+    overflow-y: auto;
+}
+.td-content-summary{
+    max-width: 400px;
+}
+.content-cmt{
     width: 100%;
     height: 70px;
     overflow-y: auto;
 }
+.td-content-news{
+    max-width: 850px;
+}
+.content-news{
+    width: 100%;
+    height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* overflow: hidden; */
+    
+}
+.content-news img{
+    max-width: 100%;
+}
+.td-content-title{
+    max-width: 250px;
+}
+
 .commentAdmin-container .spinner-border {
     --bs-spinner-width: 1rem;
     --bs-spinner-height: 1rem;

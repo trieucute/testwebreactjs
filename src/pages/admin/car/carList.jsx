@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
 import user from '../../../assets/images/usernoavatar.png'
 import Tooltip from '@mui/material/Tooltip';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchcarAdmin } from '../../../reduxTool/carSlice';
+import { deletecarAdmin, fetchcarAdmin } from '../../../reduxTool/carSlice';
 import LoadingAd from '../../loadingAdmin';
 import { deleteCarSeat, fetchCarSeat, postCarSeat, updateCarSeat } from '../../../reduxTool/seatSlice';
 import ReactPaginate from 'react-paginate';
 import { API_BASE_URL } from '../../../config';
-import { data } from 'jquery';
+
 const CarList = () => {
     const navigate = useNavigate();
     const handleAdd=()=>{
@@ -44,11 +44,15 @@ const CarList = () => {
     const seatsData= seats?.data.data; 
     // tìm kiếm
     const [searchTerm, setSearchTerm] = useState('');
+
+ // Sắp xếp từ cao đến thấp
+ const sortedCarsById = cars?.slice().sort((a, b) => b.id - a.id);
+ 
     const currentCars = searchTerm
-    ? cars?.filter((car) =>
+    ? sortedCarsById?.filter((car) =>
         car.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
-    : cars;
+    : sortedCarsById  ;
 
   const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
   const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
@@ -92,6 +96,9 @@ const CarList = () => {
   };
 
 
+
+
+
   // edit
   const handleEdit=(id)=>{
     console.log(id);
@@ -128,12 +135,18 @@ const CarList = () => {
 
   }
   const handleDeleteChair=(id)=>{
-    dispatch(deleteCarSeat(id))
-    .then(res=>{
-      console.log(res);
-      dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
-    })
-  }
+    const confirmDeletion = window.confirm("Bạn có chắc muốn xoá ghế này?");
+    if (confirmDeletion) {
+      dispatch(deleteCarSeat(id,idCar))
+        .then((res) => {
+          console.log(res);
+          dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
 
   // sửa ghế
   // State để lưu thông tin ghế cần chỉnh sửa
@@ -149,9 +162,13 @@ const CarList = () => {
       ...prevEditingSeat,
       [e.target.name]: e.target.value,
     }));
+  
   }
-  const handleSubmitEditChair=(id)=>{
-    dispatch(updateCarSeat(id,editingSeat))
+  console.log(editingSeat,'editing');
+  const handleSubmitEditChair=(e)=>{
+    e.preventDefault();
+    
+    dispatch(updateCarSeat({ id: editingSeat.id, payload: editingSeat }))
     .then(res=>{
       console.log(res);
       dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
@@ -160,6 +177,23 @@ const CarList = () => {
       console.error(err)
     })
   }
+  // xoá ghế
+  const handleDelete = async (id) => {
+    // dispatch(deletecarAdmin(id))
+    const confirmDeletion = window.confirm("Bạn có chắc muốn xoá xe này?");
+    if (confirmDeletion) {
+      dispatch(deletecarAdmin(id))
+        .then((res) => {
+          console.log(res);
+          dispatch(fetchcarAdmin())
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    
+  }
+
     return (
         <div>
          {carData.loading ? (
@@ -179,6 +213,7 @@ const CarList = () => {
       onChange={handleSearch}/><button type='button'><i class="fas fa-magnifying-glass"></i></button>
             </form>
           </div>
+          {/* <div ><button type='button' onClick={handleSort}>Sắp xếp</button></div> */}
           </div>
         
           <div className='table-dataUser mt-4'>
@@ -216,8 +251,9 @@ const CarList = () => {
                   <button type='button' className='btn btn-primary ' data-bs-toggle="modal" data-bs-target="#exampleModal"   onClick={() => handleViewDetail(item.comment, item.id, item.type)}>Xem chi tiết</button>
                   </td>
                   <td >
-                    <button data-bs-toggle="modal" data-bs-target="#exampleModaledit"></button><i class="fas fa-pen-to-square" onClick={()=>handleEdit(item.id)}></i>
-                    <i class="fas fa-trash"></i>
+                  <Link to={`/admin/cars/update/${item.id}`}><i class="fas fa-pen-to-square"></i></Link>
+                    {/* <button data-bs-toggle="modal" data-bs-target="#exampleModaledit"></button><i class="fas fa-pen-to-square" onClick={()=>handleEdit(item.id)}></i> */}
+                    <i class="fas fa-trash" onClick={()=>handleDelete(item.id)}></i>
                     </td>
                 </tr> 
                   ))}
@@ -228,7 +264,7 @@ const CarList = () => {
               </table>
           </div>
           <div className="pagination-contents">
-               <ReactPaginate  
+          {pageCount > 1 && (              <ReactPaginate  
         previousLabel={<i className="fas fa-caret-left"></i>}
         nextLabel={<i className="fas fa-caret-right"></i>}
         pageCount={pageCount}
@@ -236,6 +272,7 @@ const CarList = () => {
         containerClassName={'pagination'}
         activeClassName={'active'}
       />
+          )}
           </div>
        
         </div>
@@ -270,7 +307,7 @@ const CarList = () => {
                         <><LoadingAd/></>
                       ):(
                         <>
-                           {seatsData && typeCar==='giường nằm'&& (
+                           {seatsData && typeCar==='Giường nằm'&& (
                                           <div className='items-FloorDown col-sm-4 '>
                                           <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
                                           <div className='row px-3  items-content-floor'>
@@ -284,7 +321,7 @@ const CarList = () => {
                                               })
                                               .map(seat => (
                                                 <div className='items-content-floor-row'>
-                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
@@ -344,10 +381,10 @@ const CarList = () => {
                                               })
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-double'>
-                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                                                 <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
                                                              <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
@@ -390,7 +427,7 @@ const CarList = () => {
                                             </div>
                                              
                                               )}
-                                                   {seatsData  &&typeCar==='ghế'  && (
+                                                   {seatsData  &&typeCar==='Ghế'  && (
                                           <div className='items-FloorDown col-sm-4 '>
                                           {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
                                           <div className='row px-3  items-content-floor'>
@@ -404,10 +441,10 @@ const CarList = () => {
                                               })
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-chair'>
-                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
                                                              <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
@@ -459,7 +496,7 @@ const CarList = () => {
                         <><LoadingAd/></>
                       ):(
                         <>
-                           {seatsData  && typeCar==='giường nằm'  && (
+                           {seatsData  && typeCar==='Giường nằm'  && (
                                           <div className='items-FloorDown col-sm-4 '>
                                           <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Trên</h5>
                                           <div className='row px-3  items-content-floor'>
@@ -473,10 +510,10 @@ const CarList = () => {
                                               })
                                               .map(seat => (
                                                 <div className='items-content-floor-row'>
-                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
                                                              <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
@@ -533,10 +570,10 @@ const CarList = () => {
                                               })
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-double'>
-                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                         <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
                                                              <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
@@ -580,7 +617,7 @@ const CarList = () => {
                                              
                                               )}
                        
-                                    {seatsData  &&typeCar==='ghế'  && (
+                                    {seatsData  &&typeCar==='Ghế'  && (
                                           <div className='items-FloorDown col-sm-4 '>
                                           {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
                                           <div className='row px-3  items-content-floor'>
@@ -594,10 +631,10 @@ const CarList = () => {
                                               })
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-chair'>
-                                                <div className="d-flex  justify-content-between  m-auto py-1">
+                                                <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
                                                           <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px"}}></i>
+                                                                           <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
                                                              <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
                                                         placement="top" arrow>
@@ -647,6 +684,7 @@ const CarList = () => {
                       </div>
                       <button type='button' className='btn btn-primary' onClick={handleshowAddChair}>Thêm ghế</button>
                    {showAddChair &&  <div className='formaddchair mt-4'>
+                   <h6 className='text-center' style={{fontWeight:"700"}}>Thêm ghế mới</h6>
                         <form action="" className='row m-0' onSubmit={handleAddChair}>
                           <div className='form-group col'>
                         <input type="number" value={idCar} hidden />
@@ -670,9 +708,9 @@ const CarList = () => {
                         </form>
                       </div> }
 
-                      {editChair && <div>
+                      {editChair && <div className='mt-3'>
                           <h6 className='text-center' style={{fontWeight:"700"}}>Cập nhật ghế</h6>
-                          <form action="" className='row m-0' onSubmit={()=>handleSubmitEditChair(editingSeat.id)}>
+                          <form action="" className='row m-0' onSubmit={handleSubmitEditChair}>
                           <div className='form-group col'>
                         
                             <label htmlFor="">Tên ghế</label>
@@ -690,7 +728,7 @@ const CarList = () => {
                           <span className='mt-2'>* Bắt đầu bằng A là tầng dưới và B là tầng trên </span>
 
                           <div className='form-group text-center mt-4'>
-                            <button type='submit' className='btn-add'>Thêm ghế mới</button>
+                            <button type='submit' className='btn-add'>Cập nhật</button>
                           </div>
                         </form>
                         </div>}
@@ -703,7 +741,7 @@ const CarList = () => {
                        return (
                         <div key={index} className='row m-0 item-rate'>
                         <div className='col-3'>
-                        {comment.avatar!==`${API_BASE_URL}/storage` ? (<img src={comment.avatar} alt="" className='img-fluid' />) :  (<img src={user} alt="" className='img-fluid' />)}
+                        {comment.avatar!==null ? (<img src={comment.avatar} alt="" className='img-fluid' />) :  (<img src={user} alt="" className='img-fluid' />)}
                         <div className='text-center nameUser'>{comment.user}</div>
                         {/* {comment.user &&    } */}
                         </div>
@@ -860,28 +898,9 @@ const CarList = () => {
 
 
 
-<button type="button" class="btn btn-primary" >
-  Launch demo modal
-</button>
 
-{/* <!-- Modal --> */}
-<div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
 
     </div>
     );

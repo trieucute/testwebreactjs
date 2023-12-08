@@ -1,7 +1,7 @@
 import React ,{useEffect}from 'react';
 import logo from '../../assets/images/WebProTicketLogo.png';
 import '../../assets/css/header.css';
-import {NavLink} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import Logout from '../auth/Logout';
 import { menushow } from '../../assets/js/menu';
 const Header = () => {
@@ -13,7 +13,7 @@ const Header = () => {
   <nav className="navbar navbar-expand-lg  p-0">
     <div className="container">
       {/* <a class="navbar-brand" href="#">Navbar</a> */}
-      <a
+      <Link
         className="navbar-brand"
         href="/"
         title="TicketProWeb "
@@ -33,7 +33,7 @@ const Header = () => {
           className="header-logo-dark"
           alt="GetAway"
         />
-      </a>
+      </Link>
       <button
         className="navbar-toggler"
         type="button"
@@ -62,20 +62,23 @@ const Header = () => {
         <li className="nav-item">
                 <NavLink  activeclassname="active"  className="nav-link " to="/">Trang chủ</NavLink>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <NavLink activeclassname="active"  className="nav-link " to="/thuexe">Thuê xe</NavLink>
+              </li> */}
+              <li className="nav-item">
+                <NavLink activeclassname="active"  className="nav-link " to="/searchTicket">Tra cứu vé</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink   activeclassname="active"  className="nav-link " to="/gioithieu"> Giới Thiệu</NavLink>
+                <NavLink   activeclassname="active"  className="nav-link " to="/introduce"> Giới Thiệu</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink   activeclassname="active"  className="nav-link " to="/lienhe">  Liên hệ</NavLink>
+                <NavLink   activeclassname="active"  className="nav-link " to="/contact">  Liên hệ</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink   activeclassname="active"   className="nav-link " to="/tuyendung">  Tuyển dụng</NavLink>
+                <NavLink   activeclassname="active"   className="nav-link " to="/recruitment">  Tuyển dụng</NavLink>
               </li> 
               <li className="nav-item">
-                <NavLink activeclassname="active" className="nav-link " to="/tintuc">Tin tức</NavLink>
+                <NavLink activeclassname="active" className="nav-link " to="/news">Tin tức</NavLink>
 
               </li>
               <li className='nav-item login-mobile'>    <Logout/></li>

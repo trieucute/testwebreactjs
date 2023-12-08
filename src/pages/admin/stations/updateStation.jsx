@@ -1,7 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddStation, deleteStation } from '../../../reduxTool/stationSlice';
+import { AddStation, deleteStation, fetchStationDetail } from '../../../reduxTool/stationSlice';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import LoadingAd from '../../loadingAdmin';
+import axiosAdmin from '../axois-admin';
 export    const provincesVietnam = [
       "Hà Nội",
       "Hồ Chí Minh",
@@ -62,78 +66,117 @@ export    const provincesVietnam = [
       "Bạc Liêu",
       "Cà Mau"
     ];
-const AddNewStation = () => {
+const UpdateStation = () => {
 
-    const [divs, setDivs] = useState([{ id: 0 }]); // Mảng chứa các div, mỗi div có một id để xác định
+    const {id} = useParams()
+    // const [divs, setDivs] = useState([{ id: 0 }]); // Mảng chứa các div, mỗi div có một id để xác định
 
-    // Hàm thêm một div mới
-    const handleAddDiv = () => {
-      const newDivId = divs.length; // Tạo id mới cho div
-      const newDivs = [...divs, { id: newDivId }]; // Thêm div mới vào mảng divs
-      setDivs(newDivs);
-    };
+    // // Hàm thêm một div mới
+    // const handleAddDiv = () => {
+    //   const newDivId = divs.length; // Tạo id mới cho div
+    //   const newDivs = [...divs, { id: newDivId }]; // Thêm div mới vào mảng divs
+    //   setDivs(newDivs);
+    // };
   
-    // Hàm xóa một div dựa trên id
-    const handleRemoveDiv = (id) => {
-      if (id === 0) {
-        // Nếu id là 0 (div đầu tiên), không thực hiện việc xóa
-        return;
-      }
+    // // Hàm xóa một div dựa trên id
+    // const handleRemoveDiv = (id) => {
+    //   if (id === 0) {
+    //     // Nếu id là 0 (div đầu tiên), không thực hiện việc xóa
+    //     return;
+    //   }
   
-      const updatedDivs = divs.filter((div) => div.id !== id); // Loại bỏ div có id tương ứng
-      setDivs(updatedDivs);
-    };
+    //   const updatedDivs = divs.filter((div) => div.id !== id); // Loại bỏ div có id tương ứng
+    //   setDivs(updatedDivs);
+    // };
 
     const [message, setMessage]=useState(null)
     const dispatch= useDispatch()
     const station = useSelector(state=>state.stationAdmin)
+    const loading= useSelector(state=>state.stationAdmin.loading)
+
     const [selectedProvince, setSelectedProvince] = useState('');
     const [address, setAddress]= useState('')
     const [name, setName]= useState('')
+
     const handleProvinceChange = (e) => {
       setSelectedProvince(e.target.value);
     };
     
+    const stationData= station.update?.data
+    useEffect(()=>{
+        dispatch(fetchStationDetail(id))
+       setName(stationData?.name)
+       setAddress(stationData?.address)
+       setSelectedProvince(stationData?.province)
+
+    },[])
+    useEffect(()=>{
+        setName(stationData?.name)
+        setAddress(stationData?.address)
+        setSelectedProvince(stationData?.province)
+ 
+    },[stationData])
 
 
-    const setDivValue = (index, key, value, id) => {
-      const updatedDivs = divs.map((div, i) => {
-        if (i === index) {
-          let updatedValue = value;
-          // let updatedId = id; // Lưu ID vào một trường khác, ví dụ: pickupId và dropoffId
-          // ... (các điều kiện và xử lý khác nếu cần)
-          return { ...div, [key]: updatedValue}; // Lưu ID tương ứng
-        }
-        return div;
-      });
-      setDivs(updatedDivs);
-    };
+    // const setDivValue = (index, key, value, id) => {
+    //   const updatedDivs = divs.map((div, i) => {
+    //     if (i === index) {
+    //       let updatedValue = value;
+    //       // let updatedId = id; // Lưu ID vào một trường khác, ví dụ: pickupId và dropoffId
+    //       // ... (các điều kiện và xử lý khác nếu cần)
+    //       return { ...div, [key]: updatedValue}; // Lưu ID tương ứng
+    //     }
+    //     return div;
+    //   });
+    //   setDivs(updatedDivs);
+    // };
     const handleSubmit=(e)=>{
       e.preventDefault();
-      const pointData = divs.map((div) => ({
-        name: div.namePoint, // Sử dụng thuộc tính pickupTime của mỗi phần tử
-        address: div.addressPoint, // Sử dụng thuộc tính pickupValue của mỗi phần tử
-      }));
+    //   const pointData = divs.map((div) => ({
+    //     name: div.namePoint, // Sử dụng thuộc tính pickupTime của mỗi phần tử
+    //     address: div.addressPoint, // Sử dụng thuộc tính pickupValue của mỗi phần tử
+    //   }));
     
       const post={
         name:name,
         address:address,
         province:selectedProvince,
-        points:pointData
+        // points:pointData
       }
       console.log(post);
-      dispatch(AddStation(post))
-      .then(res=>{
-        setMessage('Thêm mới thành công')
+    //   dispatch(AddStation(post))
+    //   .then(res=>{
+    //     setMessage('Cập nhật thành công')
+    //   })
+      
+      axiosAdmin.put(`/station/${id}`, post,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
       
+      .then(res=>{
+     
+        // setLoading(false);
+        setMessage('Cập nhật thành công')
+        console.log(res);
+      })
+      .catch(err=>{
+        // setLoading(false)
+        console.error(err)
+        const response= err.response
+
+      })
     }
+
+// const station = useSelector(state=>state.stationAdmin)
 
     return (
         <div className='addNew-container addNew-stations'>
-
-          <>
-             <h3 className='h3-admin mb-4 text-center'> Thêm bến xe</h3>
+        {loading ? <LoadingAd/> :
+        (
+                   <>
+             <h3 className='h3-admin mb-4 text-center'> Cập nhật bến xe</h3>
         <form onSubmit={handleSubmit}  className='addNew-contents'>
           <div className='row m-0 justify-content-between'> 
             <div className='form-group'>
@@ -162,32 +205,10 @@ const AddNewStation = () => {
         
      
 
-            <div className=''>
-      {divs.map((div, index) => (
-        <div key={div.id} className='row m-0 justify-content-between stations'>
-            <div  className='form-group p-0'>
-          <label htmlFor={`diemDon${div.id}`}>Tên điểm đón / trả</label>
-          <input type="text" className='form-control' name='namePoint'         onChange={(e) => setDivValue(index, 'namePoint', e.target.value )} />
-          </div>
-          <div  className='form-group p-0'>
-          <label htmlFor={`diemTra${div.id}`}>Địa chỉ điểm đón / trả</label>
-          <input type="text" className='form-control' name='addressPoint'   onChange={(e) => setDivValue(index, 'addressPoint', e.target.value )} />
-          </div>
-            {/* Nút xóa chỉ hiển thị cho các div không phải div đầu tiên */}
-            {div.id !== 0 && (
-            <button type='button' className='but-closeX' onClick={() => handleRemoveDiv(div.id)}>
-            <i class="fas fa-x"></i>
-            </button>
-          )}
-     
 
-        </div>
-      ))}
-      <div className='but-addStation'><button type='button'  onClick={handleAddDiv}>Thêm điểm đón / trả</button></div>
-    </div>
   
          
-         <div className='form-group mt-3'><button className='btn-add' type="submit">Thêm mới</button></div>
+         <div className='form-group mt-3'><button className='btn-add' type="submit"> Cập nhật</button></div>
          </div>
          {message && <>
                                 <div className="form-group"  style={{
@@ -202,6 +223,8 @@ const AddNewStation = () => {
                             </>}
         </form>
           </>
+        )}
+   
    
      
         {/* <div>{content}</div> */}
@@ -209,4 +232,4 @@ const AddNewStation = () => {
     );
 };
 
-export default AddNewStation;
+export default UpdateStation;

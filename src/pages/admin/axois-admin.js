@@ -18,7 +18,7 @@ axiosAdmin.interceptors.response.use((response) => {
 }, (error) => {
   const {response} = error;
   if (response.status === 401) {
-    localStorage.removeItem('adminToken')
+    // localStorage.removeItem('adminToken')
     // window.location.reload();
   } else if (response.status === 404) {
     //Show not found

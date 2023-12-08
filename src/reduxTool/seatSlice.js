@@ -22,26 +22,25 @@ export  const postCarSeat = createAsyncThunk("seat/postcarSeat", async(data)=>{
       console.log(error);
   }
 })
-export  const deleteCarSeat = createAsyncThunk("seat/deletecarSeat", async(id)=>{
+export  const deleteCarSeat = createAsyncThunk("seat/deletecarSeat", async(id,idcar)=>{
   try {
-      const seat = await axiosAdmin.delete(`/car/seat/${id}`)
+      const seat = await axiosAdmin.delete(`/car/${idcar}/seat/${id}`)
       return seat.data
   } catch (error) {
       console.log(error);
   }
 })
-export  const updateCarSeat = createAsyncThunk("seat/updatecarSeat", async(id, data)=>{
+export const updateCarSeat = createAsyncThunk("seat/updatecarSeat", async (data, thunkAPI) => {
   try {
-      const seat = await axiosAdmin.put(`/car/seat/${id}`,data,{
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-        })
-      return seat.data
+    const { id, payload } = data; // Lấy id và dữ liệu từ payload
+    const seat = await axiosAdmin.put(`/car/seat/${id}`, payload);
+    return seat.data;
   } catch (error) {
-      console.log(error);
+    console.log(error);
+    throw error;
   }
-})
+});
+
 const seatSlice=createSlice({
   name: "seat",
   initialState:{

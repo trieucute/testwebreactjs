@@ -1,5 +1,5 @@
 // import firebase from '../../firebase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from "../../assets/images/logo.png"
 import avatar from "../../assets/images/usernoavatar.png"
 
@@ -52,17 +52,6 @@ console.log(token);
         Authorization: `Bearer ${token}`,
       },
     }
-    // axiosClient.get("/user/profile", userInfor)
-    //   .then((resp) => {
-    //     const data = resp.data.data;
-    //     console.log(data);
-    //     setUser(data);
-    //     setIsLoading(false); 
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false); 
-    //   })
       dispatch(fetchUserProfile(token))
       .then((res)=>{
           console.log(res);
@@ -72,12 +61,17 @@ console.log(token);
       })
       .catch((err)=>{
           console.error(err)
+          setUser(null)
           setIsLoading(false); 
       })
-  }, [dispatch,  setUser])
+  
+  }, [dispatch,  setUser,token])
 const handleUpdateInfor=()=>{
   navigate('/user/update');
 }
+// const handleLoginPage =()=>{
+//   navigate('/login')
+// }
   return (
     <>
 
@@ -118,7 +112,7 @@ const handleUpdateInfor=()=>{
         <ul className="dropdown-menu" aria-labelledby="navbarDropdown" style={{border:"none", boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"}}>
           <li>
             <button className="dropdown-item" type='button' onClick={handleUpdateInfor}>
-              Cập nhật thông tin
+              Thông tin
             </button>
           </li>
           <li>
@@ -138,11 +132,11 @@ const handleUpdateInfor=()=>{
       </>
     ) 
 }
-    { token===null &&token ===null &&
-       <a className="col" href='/login' style={{textDecoration:"none", color:"black"}}>
+    { user ===null &&
+       <Link className="col" href='' style={{textDecoration:"none", color:"black"}} to='/login'>
        <i className="fas fa-user" />
        <button className='btn-mobile-for-login'> Đăng nhập</button>
-     </a>
+     </Link>
     }
     </>
    )} 

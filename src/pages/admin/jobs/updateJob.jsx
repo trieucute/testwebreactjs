@@ -2,22 +2,65 @@ import React from 'react';
 import { useState } from 'react';
 import axiosAdmin from '../axois-admin';
 import LoadingAd from '../../loadingAdmin';
+import {useDispatch, useSelector} from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { fetchjobDetail } from '../../../reduxTool/jobSlide';
+import { formatDateTimeAdminTrip } from '../../../config';
 
-const AddNewJob = () => {
+const UpdateJob = () => {
+
+  const navigate = useNavigate ()
   const [title, setTitle] = useState('');
   const [requirements, setRequirement] = useState('');
   const [location, setLocation] = useState('');
   const [salary, setSalary] = useState('');
   const [status, setStatus] = useState('');
+//   const [created_at, setCreat_at] = useState('');
   const [description, setDescription] = useState('');
 
   const [loading, setLoading] = useState('');
+
+  const dispatch = useDispatch()  
+  const {jobDetail} = useSelector(state => state.job)
+  const itemList = jobDetail.data
+  console.log(jobDetail);
+  const {id} = useParams();
+
+  useEffect(() =>{
+    console.log("dispatch");
+    dispatch(fetchjobDetail(id))
+  }, [])
+// const changeDate=(dateTimeString)=>{
+//     // Chuyển đổi sang đối tượng Date
+// const dateTime = new Date(dateTimeString);
+
+// // Lấy ngày, tháng và năm từ đối tượng Date
+// const year = dateTime.getFullYear();
+// const month = String(dateTime.getMonth() + 1).padStart(2, "0"); // Thêm 0 phía trước nếu cần thiết
+// const day = String(dateTime.getDate()).padStart(2, "0"); // Thêm 0 phía trước nếu cần thiết
+
+// // Tạo chuỗi định dạng mới "YYYY-MM-DD"
+// const formattedDate = `${year}-${month}-${day}`;
+// return formattedDate
+// }
+  useEffect(()=>{
+    setTitle(jobDetail.title)
+    setRequirement(jobDetail.requirements)
+    setLocation(jobDetail.location)
+    setSalary(jobDetail.salary)
+    setStatus(jobDetail.status)
+    // const date=jobDetail.created_at
+    // console.log(changeDate(jobDetail.created_at));
+    // setCreat_at(changeDate(jobDetail.created_at))
+    setDescription(jobDetail.description)
+  }, [jobDetail])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
 
-    if (title === '' || requirements === '' || location === '' || salary === '' || status === '' || description === '') {
+    if (title === '' || requirements === '' || location === '' || salary === '' || status === ''|| description === '') {
       setLoading(false)
       alert('Vui lòng nhập đầy đủ nội dung!')
       return
@@ -29,18 +72,23 @@ const AddNewJob = () => {
         location: location,
         salary: salary,
         status: status,
+        // created_at: `${created_at}T00:00:00.000000Z`,
         description: description
       }
-      const res = await axiosAdmin.post('/job', jobNew, {
+      console.log('jobnew',jobNew);
+      const res = await axiosAdmin.put(`/job/${id}`, jobNew, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Accept': 'application/json'
         }
       })
+      navigate('/admin/jobs')
+      console.log(res.data);
       setTitle('');
       setRequirement('');
       setLocation('');
       setSalary('');
       setStatus('');
+    //   setCreat_at('');
       setDescription('');
       setLoading(false)
     } catch (error) {
@@ -56,18 +104,16 @@ const AddNewJob = () => {
     setStatus(value); // Lưu giá trị đã chọn vào state
   };
 
- 
-
   return (
     <div className='addNew-container'>
       {loading ? <LoadingAd/> : (
       <>
-        <h3 className='h3-admin mb-4 text-center'> Thêm tin tuyển dụng</h3>
+        <h3 className='h3-admin mb-4 text-center'> Cập nhật tuyển dụng</h3>
         <form onSubmit={handleSubmit} className='addNew-contents'>
           <div className='row m-0 justify-content-between'>
             <div className='form-group'>
               <label htmlFor="">Tiêu đề</label>
-              <input type="text" onChange={(e) => setTitle(e.target.value)} className='form-control' />
+              <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className='form-control' />
             </div>
 
             {/* <div className='form-group'>
@@ -76,19 +122,19 @@ const AddNewJob = () => {
           </div> */}
             <div className='form-group'>
               <label htmlFor="">Yêu cầu</label>
-              <input type="text" onChange={(e) => setRequirement(e.target.value)} className='form-control' />
+              <input type="text" value={requirements} onChange={(e) => setRequirement(e.target.value)} className='form-control' />
 
             </div>
             <div className='form-group'>
               <label htmlFor="">Địa điểm</label>
-              <input type="text" onChange={(e) => setLocation(e.target.value)} className='form-control' />
+              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} className='form-control' />
             </div>
 
 
 
             <div className='form-group'>
               <label htmlFor="">Lương</label>
-              <input type="number" onChange={(e) => setSalary(e.target.value)} className='form-control' />
+              <input type="number" value={salary} onChange={(e) => setSalary(e.target.value)} className='form-control' />
             </div>
 
             <div className='form-group'>
@@ -101,15 +147,15 @@ const AddNewJob = () => {
             </div>
             {/* <div className='form-group'>
               <label htmlFor="">Ngày đăng</label>
-              <input type="date" onChange={(e) => setCreat_at(e.target.value)} className='form-control' />
+              <input type="date" value={created_at} onChange={(e) => setCreat_at(e.target.value)} className='form-control' />
             </div> */}
 
             <div className='form-group'>
               <label htmlFor="">Mô tả</label>
               {/* <input type="text"  className='form-control' /> */}
-              <textarea name="" id="" rows="3" onChange={(e) => setDescription(e.target.value)} className='form-control' ></textarea>
+              <textarea name="" id="" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} className='form-control' ></textarea>
             </div>
-            <div className='form-group mt-3 w-100'><button className='btn-add' type="submit">Thêm mới</button></div>
+            <div className='form-group mt-3 w-100'><button className='btn-add' type="submit">Cập nhật</button></div>
           </div>
         </form>
       </>
@@ -120,4 +166,4 @@ const AddNewJob = () => {
   );
 };
 
-export default AddNewJob;
+export default UpdateJob;

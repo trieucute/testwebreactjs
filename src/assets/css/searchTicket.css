@@ -1,0 +1,28 @@
+.searchTicket-container .container{
+    max-width: 1440px;
+}
+.searchTicket-container .title_home_bus{
+    margin-bottom: 2em;
+}   
+.searchTicket-container .form-group{
+    margin: 2em;
+}
+.searchTicket-container .form-group .form-control{
+    padding: 10px 13px;
+}
+.resultTicket-container .box-infor-ticket{
+    width: 90%;
+    margin: 0 auto !important;
+    padding: 1em 0;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.resultTicket-container .border-right{
+    border-right: 2px solid rgb(198, 198, 198);
+}
+.resultTicket-container .price-ticket{
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--colorMain);
+    font-style: italic;
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tra cứu thông tin vé</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        h4 {
+            text-align: center;
+            color: #0E2954;
+            margin: 30px 0px 50px 0px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        img {
+            width: 315px;
+            height: 480px;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 162px;
+            height: 39px;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            background-color: #d9d9d9;
+            width: 350px;
+            height: 52px;
+            margin-top: 30px;
+        }
+
+        .form-control.error {
+            border-color: yellow;
+        }
+
+        .error-message {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="https://carshop.vn/wp-content/uploads/2022/07/xe-vung-tau-bien-hoa-dong-nai-5.jpg"
+                    alt="Left Image" style="width:100%">
+            </div>
+            <div class="col-sm-4">
+                <form onsubmit="return validateForm()">
+                    <h4>TRA CỨU THÔNG TIN VÉ</h1>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="phone"
+                                placeholder="Vui lòng nhập số điện thoại">
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="ticket" placeholder="Vui lòng nhập mã vé">
+                            <div class="error-message" id="ticket-error"></div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-danger">Tra cứu</button>
+                        </div>
+                        <div id="error-message" class="error-message"></div>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <img src="https://carshop.vn/wp-content/uploads/2022/07/xe-vung-tau-bien-hoa-dong-nai-5.jpg"
+                    alt="Right Image" style="width:100%">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    function validateForm() {
+        var phoneInput = document.getElementById("phone");
+        var ticketInput = document.getElementById("ticket");
+        var phone = phoneInput.value;
+        var ticket = ticketInput.value;
+        var phonePattern = /^\d{10}$/; // số đt phải 10 chữ số
+        var ticketPattern = /^[A-Za-z0-9]+$/; // số vé chỉ chứa chữ cái và số
+
+        var errorMessages = [];
+
+        if (!phone.match(phonePattern)) {
+            errorMessages.push("Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số.");
+            phoneInput.classList.add("error");
+        } else {
+            phoneInput.classList.remove("error");
+        }
+
+        if (!ticket.match(ticketPattern)) {
+            errorMessages.push("Mã vé không hợp lệ. Vui lòng chỉ nhập chữ cái hoặc số.");
+            ticketInput.classList.add("error");
+        } else {
+            ticketInput.classList.remove("error");
+        }
+
+        var errorMessage = errorMessages.join("<br>");
+        document.getElementById("error-message").innerHTML = errorMessage;
+
+        if (errorMessages.length > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    //xoá tin nhắn cảnh báo khi nhập đúng yêu cầu
+    document.getElementById("phone").addEventListener("input", function () {
+        document.getElementById("phone-error").innerHTML = "";
+        this.classList.remove("error");
+    });
+
+    document.getElementById("ticket").addEventListener("input", function () {
+        document.getElementById("ticket-error").innerHTML = "";
+        this.classList.remove("error");
+    });
+</script>

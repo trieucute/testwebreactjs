@@ -26,6 +26,11 @@
  font-weight: 700;
 
 }
+.pay-items .btn-watch-a .btn-watch {
+    max-width: 280px;
+ 
+    font-size: 15px;
+}
 .pay_container .pay-items{
     display: none;
 }

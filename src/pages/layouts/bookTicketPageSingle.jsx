@@ -151,6 +151,7 @@ const BookTicketPageSingle  = () => {
             const tripResponse = await axiosClient.get(`/trip/${tripId}`);
             const tripData = tripResponse.data.data;
             setTripDetail(tripData);
+            console.log(tripData );
     
             // Gọi API lấy thông tin người dùng nếu có token
             if (token) {
@@ -162,7 +163,6 @@ const BookTicketPageSingle  = () => {
               const userResponse = await axiosClient.get("/user/profile", userInfor);
               const userData = userResponse.data.data;
               setUser(userData);
-          
             }
   
             setIsLoading(false); // Dừng hiển thị "Loading..." khi đã tải xong dữ liệu
@@ -239,25 +239,30 @@ const BookTicketPageSingle  = () => {
       phone_number: phoneNum,
       pickup_location: pickupValue,
       dropoff_location: dropoffValue,
+      selectedSeatsIds: selectedSeatIds,
       ...seatIds, // Thêm seatIds vào dữ liệu gửi đi
     };
-    dispatch(postPayment(data))
-  .then((response) => {
-    // Xử lý kết quả thành công nếu cần
-    const payLink= response.payload.data
-    console.log(payLink);
-    window.location=`${payLink}`
-    // navigate(`${payLink}`)
-  })
-  .catch((error) => {
-    // Xử lý lỗi nếu có
-    console.error(error)
-  });
+  //   dispatch(postPayment(data))
+  // .then((response) => {
+  //   // Xử lý kết quả thành công nếu cần
+  //   const payLink= response.payload.data
+  //   console.log(payLink);
+  //   window.location=`${payLink}`
+  //   // navigate(`${payLink}`)
+  // })
+  // .catch((error) => {
+  //   // Xử lý lỗi nếu có
+  //   console.error(error)
+  // });
+  localStorage.setItem("ticket_ordered", JSON.stringify(data));
+  setTimeout(() => {
+    navigate("/thanhtoan");
+  }, 1000);
     }
     useEffect(() => {
       if (Object.keys(user).length !== 0) {
         setName(user.name || '');
-        setPhoneNum(user.phone || '');
+        setPhoneNum(user.phone_number || '');
         setEmail(user.email || '');
       }
     }, [user]);
@@ -284,7 +289,7 @@ const BookTicketPageSingle  = () => {
                           {/* TP.Hồ Chí Minh - Đà Lạt */}
                           </h5>
                         <span className='date_go'> {tripDetail && tripDetail.departure_time&&(
-                                       <>{formatDate( tripDetail.departure_time)}</>
+                                       <>{formatDate( tripDetail.departure_time.split(' ')[0])}</>
                                       )}
                         </span>
                     </div>
@@ -491,10 +496,19 @@ const BookTicketPageSingle  = () => {
                                               </div>
                                             </div>
                                             <div class="tab-pane fade" id="pills-car" role="tabpanel" aria-labelledby="pills-car-tab">
-                                             <div className='car-container-tabs'>
-                                              {tripDetail &&tripDetail.car && <>
-                                                <img src={tripDetail.car.primary_img} alt="" />
+                                             <div className='car-container-tabs px-3'>
+                                              <div className='row m-0'>
+                                                <div className='col-sm-6'>
+                                                   {tripDetail &&tripDetail.car && <>
+                                                <img src={tripDetail.car.primary_img} alt="" style={{height:"150px", objectFit:"cover"}}/>
                                               </>}
+                                                </div>
+                                                <div className='col'>
+                                                  <span><b>{tripDetail &&tripDetail.car && tripDetail.car.name}</b></span>  <br />
+                                                  <span><b>Biển số:</b>  {tripDetail &&tripDetail.car && tripDetail.car.license_plate}</span>  <br />
+                                                  <span><b>Loại xe:</b>  {tripDetail &&tripDetail.car && tripDetail.car.type}</span> 
+                                                  </div>
+                                              </div>
                                              </div>
                                             </div>
                                            </div>
@@ -511,7 +525,7 @@ const BookTicketPageSingle  = () => {
                                     {/* <div className='items-FloorDown col-sm-4 '>
                                         <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
                                         <div className='row items-content-floor'> */}
-                                        {tripDetail && tripDetail.car && tripDetail.car.type === "phòng đôi" && (
+                                        {tripDetail && tripDetail.car && tripDetail.car.type === "Limousine" && (
                                           <div className='items-FloorDown col-sm-4 '>
                                           <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
                                           <div className='row items-content-floor'>
@@ -551,7 +565,7 @@ const BookTicketPageSingle  = () => {
                                             </div>
                                              
                                               )}
-                                {tripDetail && tripDetail.car && tripDetail.car.type === "giường nằm" && (
+                                {tripDetail && tripDetail.car && tripDetail.car.type === "Giường nằm" && (
                                      <div className='items-FloorDown col-sm-4 '>
                                      <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
                                      <div className='row items-content-floor'>
@@ -592,7 +606,7 @@ const BookTicketPageSingle  = () => {
                                         
                                              
                                               )}
-                                          {tripDetail && tripDetail.car && tripDetail.car.type === "ghế" && (
+                                          {tripDetail && tripDetail.car && tripDetail.car.type === "Ghế" && (
                                                   <div className='items-FloorDown col-sm-3 '>
                                                   {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
                                                   <div className='row items-content-floor'>
@@ -641,7 +655,7 @@ const BookTicketPageSingle  = () => {
                                     {/* <div className='items-FloorUp col-sm-4'>
                                         <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
                                         <div className='row items-content-floor'> */}
-                                        {tripDetail && tripDetail.car && tripDetail.car.type === "phòng đôi" && (
+                                        {tripDetail && tripDetail.car && tripDetail.car.type === "Limousine" && (
                                               <div className='items-FloorUp col-sm-4'>
                                               <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
                                               <div className='row items-content-floor'>
@@ -680,7 +694,7 @@ const BookTicketPageSingle  = () => {
                                                 </div>
                                              
                                               )}
-                                    {tripDetail && tripDetail.car && tripDetail.car.type === "giường nằm" && (
+                                    {tripDetail && tripDetail.car && tripDetail.car.type === "Giường nằm" && (
                                        <div className='items-FloorUp col-sm-4'>
                                        <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
                                        <div className='row items-content-floor'>
@@ -719,11 +733,11 @@ const BookTicketPageSingle  = () => {
                                              </div>
                                                 </div>
                                               )}
-                                    {tripDetail && tripDetail.car && tripDetail.car.type === "ghế" && (
+                                    {tripDetail && tripDetail.car && tripDetail.car.type === "Ghế" && (
                                                   <div className='items-FloorDown col-sm-3 '>
                                                   {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
                                                   <div className='row items-content-floor'>
-                                                  <div className={`items-content-floor-row items-content-floor-chair`} style={{visibility:'hidden'}}>
+                                                  {/* <div className={`items-content-floor-row items-content-floor-chair`} style={{visibility:'hidden'}}>
                                                   <div className='d-flex justify-content-center m-auto py-1' >
                                                     <div className='position-relative'>
                                                       <svg width={43} height={33} viewBox="0 0 43 33" xmlns="http://www.w3.org/2000/svg">
@@ -750,7 +764,7 @@ const BookTicketPageSingle  = () => {
                                                       <span    className={`name-chair position-absolute`} style={{ fontSize: "0.6em", top: "3px" }}></span>
                                                     </div>
                                                   </div>
-                                                  </div>
+                                                  </div> */}
 
                                         {tripDetail.seats &&
                                             tripDetail.seats
@@ -1048,7 +1062,7 @@ const BookTicketPageSingle  = () => {
                                     <div className="col text-start">Thời gian</div>
                                     <div className="col text-end text-danger">
                                     {tripDetail && tripDetail.departure_time&&(
-                                       <>{formatDate( tripDetail.departure_time)}</>
+                                       <>{formatDate( tripDetail.departure_time.split(' ')[0])}</>
                                       )}
                                       {/* 19:35 10-08-2023 */}
                                       </div>

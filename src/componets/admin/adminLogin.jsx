@@ -6,11 +6,13 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import AuthWrapperAdmin from './authWrapperAdmin';
+import { useStateContext } from '../../context/ContextProvider';
 
 const AdminLogin = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { admin, setAdmin, tokenAdmin, setTokenAdmin} = useStateContext();
     // const admin = useSelector(state=>state.authAdmin)
     const [errorMessage, setErrorMessage] = useState('');
     // console.log(admin);
@@ -30,7 +32,9 @@ const AdminLogin = () => {
                 if (userProfileResponse.payload) {
                     const profile = userProfileResponse.payload.data;
                     if (profile.role === 'admin') {
-                        localStorage.setItem('adminToken', loginResponse.payload.data.access_token);
+                        // localStorage.setItem('adminToken', loginResponse.payload.data.access_token);
+                        setTokenAdmin(loginResponse.payload.data.access_token)
+                        setAdmin(profile)
                         navigate('/admin/dashboard');
                     } else {
                         alert('Bạn không có quyền truy cập trang admin');
@@ -41,11 +45,12 @@ const AdminLogin = () => {
             setErrorMessage(error.message);
         }
     };
-// useEffect(()=>{
-//   if(localStorage.getItem('adminToken')){
-//     navigate('/admin/dashboard')
-//   }
-// },[])
+useEffect(()=>{
+  if(tokenAdmin && admin ){
+    navigate('/admin/dashboard');
+  }
+
+},[])
     return (
         <AuthWrapperAdmin>
         <div className='mt-5'>

@@ -338,6 +338,9 @@
 .stations{
     position: relative;
 }
+.stations .form-group-station >div{
+    display: block !important;
+}
 .but-closeX{
     position: absolute;
     right: 0;

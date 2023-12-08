@@ -13,9 +13,9 @@ const IndexAdmin = () => {
   
 
   return (
-    <AuthWrapperAdmin>
+    // <AuthWrapperAdmin>
       <MenuSidebar/>
-    </AuthWrapperAdmin>
+    // </AuthWrapperAdmin>
     
   );
 };

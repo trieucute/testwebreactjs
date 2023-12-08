@@ -8,6 +8,9 @@ import commentsReducer from './commentSlice'
 import jobReducer from './jobSlide'
 import carAdminReducer from './carSlice'
 import seatReducer from './seatSlice'
+import TripAdminReducer from './tripSlice'
+import stationAdminReducer from './stationSlice'
+import ticketAdminReducer from './ticketSlice'
 
 // import routesBookingReducer from './formdata'
 export const store=configureStore({
@@ -19,7 +22,10 @@ export const store=configureStore({
         job:jobReducer,
         comment:commentsReducer,
         carAdmin:carAdminReducer,
-        seatAdmin:seatReducer
+        seatAdmin:seatReducer,
+        tripAdmin:TripAdminReducer,
+        stationAdmin:stationAdminReducer,
+        ticketAdmin: ticketAdminReducer
         // routesBookingReducer ,
 
     }

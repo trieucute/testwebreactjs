@@ -7,6 +7,7 @@ const jobSlice = createSlice({
     initialState:{
         job: [],
         isLoading: false,
+        jobDetail: [],
     },
     reducers: {},
     extraReducers: (builder) =>{
@@ -16,7 +17,15 @@ const jobSlice = createSlice({
         })
         .addCase(fetchjob.fulfilled, (state, action)=>{
             state.isLoading = false
+            console.log(action.payload);
             state.job = action.payload.data
+        })
+        .addCase(fetchjobDetail.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(fetchjobDetail.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.jobDetail = action.payload.data
         })
     }
 })
@@ -24,8 +33,18 @@ const jobSlice = createSlice({
 export  const fetchjob = createAsyncThunk("job/fecthjob", async () => {
     try {
         const job = await axiosClient.get("/job")
+        console.log(job);
         return job.data
     } catch (error) {
+        console.log(error);
+    }
+})
+
+export const fetchjobDetail = createAsyncThunk("job/fetchjobDetail", async (id) =>{
+    try{
+        const job = await axiosClient.get(`/job/${id}`)
+        return job.data
+    }catch (error){
         console.log(error);
     }
 })

@@ -1,20 +1,54 @@
 import React, { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import axiosAdmin from '../../pages/admin/axois-admin';
+import { useStateContext } from '../../context/ContextProvider';
 
 function AuthWrapperAdmin({ children }) {
   const navigate = useNavigate();
   // const [loading, setLoading] = useState(true);
   // const [user, setUser] = useState(null);
-  const token  =localStorage.getItem('adminToken');
-
+  // const tokenAdmin  =localStorage.getItem('adminToken');
+  const { admin, tokenAdmin,setAdmin } = useStateContext();
 
   useEffect(() => {
     // Kiểm tra token ở đây và thực hiện điều hướng (redirect) nếu cần
-    if (!token || token===null || token===undefined) {
-      navigate('/admin')
-    }
-  }, [navigate, token]);
+    // if (!token || token===null || token===undefined) {
+    //   navigate('/admin')
+    // }
+    if ( tokenAdmin) {
+      // navigate('/');
+      const userInfor = {
+        headers: {
+          Authorization: `Bearer ${ tokenAdmin}`,
+        },
+      }
+      axiosAdmin.get('/user/profile', userInfor)
+        .then((res)=>{
+            console.log(res);
+            const profile = res.data.data;
+            if (profile.role === 'admin') {
+                // localStorage.setItem('adminToken', loginResponse.payload.data.access_token);
+                // setTokenAdmin(loginResponse.payload.data.access_token)
+                setAdmin(profile)
+                
+                // navigate('/admin/dashboard');
+            }
+
+        })
+        .catch((err)=>{
+            console.error(err)
+            setAdmin(null)
+      
+        })
+
+      //  if( admin===null){
+      //   navigate('/admin')
+      // }
+     
+
+      }
+  }, [navigate, tokenAdmin,setAdmin]);
 
 //   useEffect(() => {
 //     // Gọi API Laravel để kiểm tra thông tin đăng nhập và xác thực

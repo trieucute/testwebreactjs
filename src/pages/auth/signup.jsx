@@ -5,9 +5,10 @@ import logo2 from "../../assets/images/LogoWebProTicket.png";
 import axiosClient from "../../axios-client";
 import dark from "../../assets/images/dark-sunset.jpg";
 // import "../../../assets/css/dangky.css"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import AuthWrapper from '../../componets/auth/authWrapper';
+import { API_BASE_URL } from '../../config';
 const Signup = () => {
     const [message, setMessage] = useState(false);
     const [seconds, setSeconds] = useState(5);
@@ -128,7 +129,7 @@ const Signup = () => {
   const [googleLoginUrl, setGoogleLoginUrl] = useState(null);
 
   useEffect(() => {
-      fetch('http://localhost:8000/api/login/google', { headers: new Headers({ accept: 'application/json' }) })
+    fetch(`${API_BASE_URL}/api/login/google`, { headers: new Headers({ accept: 'application/json' }) })
           .then((response) => {
               if (response.ok) {
                   return response.json();
@@ -187,7 +188,7 @@ const Signup = () => {
             <div className="login-container signup-container" style={{   backgroundImage: `url(${dark})`}}>
               <div>
                 <div className="logo">
-                  <a href="/"><img src={logo} alt="" className="img-fluid" /></a>
+                  <Link to="/"><img src={logo} alt="" className="img-fluid" /></Link>
                   {/* <i class="fas fa-hat-wizard"></i>
                 <span>Wizard Magazine</span> */}
                 </div>

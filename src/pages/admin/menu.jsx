@@ -11,6 +11,7 @@ import { fetchUserProfile, logoutAdmin } from '../../reduxTool/authSlice';
 import axiosClient from '../../axios-client';
 import avatar from "../../assets/images/usernoavatar.png"
 import station from "../../assets/images/bus.png"
+import { useStateContext } from '../../context/ContextProvider';
 
 
 const MenuSidebar =() => {
@@ -36,42 +37,50 @@ const MenuSidebar =() => {
     const dispatch = useDispatch();
 
     const navigate= useNavigate()
-    const [user, setUser]= useState('')
-    const token= localStorage.getItem('adminToken')
+    // const [user, setUser]= useState('')
+    const { admin, tokenAdmin,setAdmin , setTokenAdmin} = useStateContext();
+    // const token= localStorage.getItem('adminToken')
     useEffect(() => {
-        const userInfor = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-        axiosClient.get("/user/profile", userInfor)
-          .then((resp) => {
-            const data = resp.data.data;
-            console.log(data);
-            setUser(data);
+        // const userInfor = {
+        //   headers: {
+        //     Authorization: `Bearer ${tokenAdmin}`,
+        //   },
+        // }
+        // axiosClient.get("/user/profile", userInfor)
+        //   .then((resp) => {
+        //     const data = resp.data.data;
+        //     console.log(data);
+        //     setAdmin(data);
 
-          })
-          .catch((err) => {
+        //   })
+        //   .catch((err) => {
           
-            console.log(err);
-            // navigate('/admin')
+        //     console.log(err);
+        //     navigate('/admin')
 
-          })
-  
+        //   })
+      // if(admin===null){
+      //   navigate('/admin')
+      // }
+      if(!tokenAdmin){
+        navigate('/admin')
+      }
       }, [])
+    console.log(admin);
     const handLogout=()=>{
-        const token= localStorage.getItem('adminToken')
-        if(token){
-            dispatch(logoutAdmin(token))
+        // const token= localStorage.getItem('adminToken')
+        if( tokenAdmin){
+            dispatch(logoutAdmin( tokenAdmin))
 
         }
         localStorage.removeItem('adminToken');
+        setTokenAdmin(null)
         navigate('/admin')
     }
     
     return (
         <AuthWrapperAdmin>
-       {user !=='' && <div >
+       {admin !==null && <div >
               <div className="bodyAdmin"  id="body-pd" >
   <header className="headerAdmin" id="headerAdmin"  >
     <div className={isIconToggledPad ? 'header_toggle body-pd' : 'header_toggle'}  onClick={toggleNavbar}>
@@ -79,16 +88,16 @@ const MenuSidebar =() => {
       <i className={isIconToggled ? "bx bx-x" : "bx bx-menu"} id="header-toggle" />{" "}
     </div>
     <div className='admininfor row m-0 align-items-center'>
-      <span  className='col'>{user.name}</span>
+      <span  className='col'>{admin.name}</span>
 
     <div className="header_img" >
       {" "}
-      {user.avatar !==null &&
+      {admin.avatar !==null &&
    
-        <img src={user.avatar} alt=""  className='' />
+        <img src={admin.avatar} alt=""  className='' />
         
       }
- {user.avatar ===null &&
+ {admin.avatar ===null &&
 
       <img src={avatar} alt=""  className='' style={{ backgroundColor:"white"}}/>
 
@@ -142,11 +151,11 @@ const MenuSidebar =() => {
         <span className="nav_name">Quản lý bến xe</span>
         
         </NavLink>
-        <NavLink activeclassname='active'  className="nav_link" to="/admin/rentCar" aria-current="false">
+        {/* <NavLink activeclassname='active'  className="nav_link" to="/admin/rentCar" aria-current="false">
         <i class="fas fa-car-side"></i>
         <span className="nav_name">Quản lý thuê xe</span>
         
-        </NavLink>
+        </NavLink> */}
         <NavLink activeclassname='active'  className="nav_link" to="/admin/tickets" aria-current="false">
         <i class="fas fa-ticket"></i>
         <span className="nav_name">Quản lý vé</span>

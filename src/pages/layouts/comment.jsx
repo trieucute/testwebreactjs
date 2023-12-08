@@ -32,7 +32,7 @@ const filteredComments = data.filter(comment => comment.status === 1);
       dispatch(fetchCommentDetail(id));
     //   console.log('comment', filteredComments);
     }, []);
-  
+  console.log(data);
     let totalStars = 0;
   
     // Tính tổng số sao từ danh sách đánh giá (nếu data không rỗng)
@@ -72,10 +72,14 @@ const filteredComments = data.filter(comment => comment.status === 1);
                     <div className='col'>
                         <div className='row m-0 align-items-center'>
                             <div className="col-2 p-0 text-center" >
-                                <img src={user} alt=""className='img-fluid'style={{height:"40px",borderRadius:"100%" }} />
+                              {item.user.avatar ===null && 
+                                <img src={user} alt=""className='img-fluid'style={{height:"40px",borderRadius:"100%" }} />}
+                                  {item.user.avatar !==null && 
+                                <img src={item.user.avatar} alt=""className='img-fluid'style={{height:"40px",borderRadius:"100%" }} />}
                             </div>
-                            <div className="col ps-0">
-                                <span style={{fontSize:"13px"}}>{item.user}</span>
+                            <div className="col-sm-6  ps-0 ">
+                                <span style={{fontSize:"13px"}}>
+                                  {item.user.name}</span>
                                 
                                 <RenderStars rate={item.rate} />
                                     

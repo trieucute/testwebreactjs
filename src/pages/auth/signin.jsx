@@ -5,22 +5,24 @@ import dark from "../../assets/images/dark-sunset.jpg";
 import axiosClient from "../../axios-client";
 import logo2 from "../../assets/images/LogoWebProTicket.png";
 // import "../../../assets/css/dangnhap.css"
-import {  useNavigate } from 'react-router-dom';
+import {  Link, useNavigate } from 'react-router-dom';
 // import logo from "../../../assets/images/LogoWebProTicket.png"
 import back1 from "../../assets/images/bgr1.jpg"
 import AuthWrapper from '../../componets/auth/authWrapper';
 import {useStateContext} from "../../context/ContextProvider.jsx";
 import { API_BASE_URL } from '../../config.js';
+import { fetchUserProfile } from '../../reduxTool/authSlice.js';
+import { useDispatch } from 'react-redux';
 const Signin = () => {
   const emailRef = createRef()
   const passwordRef = createRef()
-    const {  setToken } = useStateContext()
+    const {  setToken, setUser } = useStateContext()
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true); 
     const [erroremail, setErroremail] = useState(null);
     const [errorpassword, setErrorpassword] = useState(null);
     // const navigate= useNavigate()
-
+const dispatch= useDispatch()
     const handleLogin = (e) => {
     e.preventDefault();
  
@@ -33,9 +35,21 @@ const Signin = () => {
           // setUser(data.user)
         console.log(res.data.data.access_token);
         setToken(res.data.data.access_token);
-        console.log(setToken);
         setMessage('Đăng nhập thành công!');
-        // navigate.goBack();
+        // const userInfor = {
+        //   headers: {
+        //     Authorization: `Bearer ${res.data.data.access_token}`,
+        //   },
+        // }
+        //   dispatch(fetchUserProfile(userInfor))
+        //   .then((res)=>{
+        //       console.log(res);
+        //       setUser(res.payload.data)
+           
+        //   })
+        //   .catch((err)=>{
+        //       console.error(err)
+        //   })
         })
         .catch((err) => {
           const response = err.response;
@@ -98,6 +112,7 @@ const Signin = () => {
     window.scrollTo(0, 0);
     return () => clearTimeout(timer);
   }, []);
+
   const navigate= useNavigate()
   const hanleNavigateLogin =()=>{
     navigate('/signup')
@@ -116,7 +131,7 @@ const Signin = () => {
   <div className="login-container" style={{   backgroundImage: `url(${dark})`}}>
     <div>
       <div className="logo">
-        <a href="/"><img src={logo} alt="" className="img-fluid" /></a>
+        <Link to="/"><img src={logo} alt="" className="img-fluid" /></Link>
         {/* <i class="fas fa-hat-wizard"></i>
       <span>Wizard Magazine</span> */}
       </div>

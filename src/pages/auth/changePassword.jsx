@@ -6,7 +6,7 @@ import dark from "../../assets/images/dark-sunset.jpg";
 
 import "../../assets/css/changePass.css"
 const ChangePassword = () => {
-    const { token } = useStateContext();
+    const { token, user } = useStateContext();
     const [loading, setLoading]= useState(false);
     const navigate= useNavigate();
     const old_passwordRef = createRef()
@@ -109,9 +109,9 @@ const ChangePassword = () => {
         }
       };
      useEffect(()=>{
-        if(token){
+        if(user){
             // setLoading(true)
-            console.log(token);
+            console.log(user);
         }else{
             // setLoading(false);
             navigate('/')

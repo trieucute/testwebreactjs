@@ -42,7 +42,8 @@ const  Recruitment= () => {
 
   const {job, isLoading} = useSelector (state => state.job)
   const itemListVacancies = job
-  console.log(job);
+
+  console.log(job,'job');
   useEffect(()=>{
     dispatch(fetchjob())
   },[])

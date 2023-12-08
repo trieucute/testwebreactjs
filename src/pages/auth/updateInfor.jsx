@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { fetchUserProfile } from '../../reduxTool/authSlice';
 import axiosClient from '../../axios-client';
 const UpdateInfor = () => {
-    const {setUser, token } = useStateContext();
+    const {setUser, token, user } = useStateContext();
     const navigate= useNavigate()
     const dispatch = useDispatch();
     const [message, setMessage]=useState(null);
@@ -96,9 +96,9 @@ const UpdateInfor = () => {
     })
     // console.log(    dispatch(fetchUserProfile(token)));
 
-    if(token){
+    if(user){
         // setLoading(true)
-        console.log(token);
+        console.log(user);
     }else{
         // setLoading(false);
         navigate('/')

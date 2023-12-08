@@ -55,6 +55,14 @@ import AddNewComment from './pages/admin/comments/newComt';
 import JobList from './pages/admin/jobs/jobList';
 import AddNewJob from './pages/admin/jobs/newJob';
 import UpdateNews from './pages/admin/news/updateNews';
+import UpdateCar from './pages/admin/car/updateCar';
+import UpdateTrip from './pages/admin/trips/updateTrip';
+import UpdateJob from './pages/admin/jobs/updateJob';
+import AddNewUser from './pages/admin/user/newuser';
+import UpdateUser from './pages/admin/user/updateUser';
+import UpdateStation from './pages/admin/stations/updateStation';
+import SearchTicket from './pages/layouts/searchTicket';
+
 // import Editor from './pages/admin/news/edit';
 
 
@@ -73,12 +81,13 @@ function App() {
 
 
           <Route path='/' element={<Home/>}/>
-          <Route path='/gioithieu' element={<Introduce/>}/>
-          <Route path='/tuyendung' element={<Recruitment/>}/>
-          <Route path='/tintuc' element={<Posts/>}/>
+          <Route path='/introduce' element={<Introduce/>}/>
+          <Route path='/recruitment' element={<Recruitment/>}/>
+          <Route path='/news' element={<Posts/>}/>
           <Route path='/thuexe' element={<Thuexe/>}/>
-          <Route path='/lienhe' element={<Contact/>}/>
+          <Route path='/contact' element={<Contact/>}/>
           {/* <Route path='/test' element={<Test/>}/> */}
+          <Route path='/searchTicket' element={<SearchTicket/>}/>
 
           <Route path='/lichtrinh' element={<RoutersBus/>}/>
 
@@ -128,23 +137,36 @@ function App() {
   {/* Nested routes bên trong /admin */}
             <Route path='/admin/dashboard'  element={<DashBoard />} />
             <Route path='/admin/route' element={<RouteAdmin />} />
+
             <Route path='/admin/user' element={<UserList/>} />
+            <Route path='/admin/user/addnew' element={<AddNewUser/>} />
+            <Route path='/admin/user/update/:id' element={<UpdateUser/>} />
+
             <Route path='/admin/news' element={<NewsList />} />
             <Route path='/admin/news/addnew' element={<AddNewsForm/>} />
             <Route path='/admin/news/update/:id' element={<UpdateNews/>} />
             
             <Route path='/admin/trips' element={<TripList />} />
             <Route path='/admin/trips/addnew' element={<AddNewTrip />} />
+            <Route path='/admin/trips/update/:id' element={<UpdateTrip />} />
+
             <Route path='/admin/cars' element={<CarList />} />
             <Route path='/admin/cars/addnew' element={<AddNewCar/>} />
+            <Route path='/admin/cars/update/:id' element={<UpdateCar/>} />
+
             <Route path='/admin/stations' element={<StationsList />} />
             <Route path='/admin/stations/addnew' element={<AddNewStation/>} />
+            <Route path='/admin/stations/update/:id' element={<UpdateStation/>} />
+
             <Route path='/admin/tickets' element={<TicketList />} />
             <Route path='/admin/tickets/addnew' element={<AddNewTicket/>} />
+
             <Route path='/admin/comments' element={<CommentList />} />
             <Route path='/admin/comments/addnew' element={<AddNewComment/>} />
+            
             <Route path='/admin/jobs' element={<JobList/>} />
             <Route path='/admin/jobs/addnew' element={<AddNewJob/>} />
+            <Route path='/admin/jobs/update/:id' element={<UpdateJob/>} />
   </Route> 
             
         <Route path="*" element={<NotFoundPage />} />

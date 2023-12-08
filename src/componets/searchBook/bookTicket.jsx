@@ -196,7 +196,8 @@ const Book = () => {
   const [formData, setFormData] = useState({
     start_location: '',
     end_location: '',
-    date: ''
+    date: '',
+    amount:1
   });
 
   const fetchDataProvinces = () => {
@@ -257,7 +258,7 @@ const Book = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!formData.start_location || !formData.end_location || !formData.date) {
+    if (!formData.start_location || !formData.end_location || !formData.date || !formData.amount) {
       // setShowAlert(true);
       setShowNotifi(true)
       return;
@@ -266,6 +267,7 @@ const Book = () => {
     const startLocation = formData.start_location;
     const endLocation = formData.end_location;
     const date = formData.date;
+    const amount = formData.amount;
     console.log(date);
  // Kiểm tra nếu start_location và end_location giống nhau
  if (startLocation === endLocation) {
@@ -278,7 +280,7 @@ const Book = () => {
     // dispatch(searchTrip({ startLocation, endLocation, date }));
     dispatch(updateSearchData(formData));
 
-    navigate(`/lichtrinh1chieu/?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=1`);
+    navigate(`/lichtrinh1chieu/?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=${amount}`);
   };
 
   useEffect(() => {
@@ -290,7 +292,8 @@ const Book = () => {
     setFormData({
       start_location: urlParams.get('start_location') || '',
       end_location: urlParams.get('end_location') || '',
-      date: urlParams.get('date') || ''
+      date: urlParams.get('date') || '',
+      amount: urlParams.get('amount') || ''
     });
 
   }, []);
@@ -312,9 +315,9 @@ const Book = () => {
        {showNotifi && <Notification message="Vui lòng nhập đầy đủ thông tin!" />}
        {messLocation && <Notification message="Vui lòng chọn điểm đến và điểm đi khác nhau!" />}
 
-    <div className="book-contents">
+    <div className="book-contents" style={{display:"flex", alignItems:"center"}}>
       <div className="booking-content">
-        <div className="trip-book">
+        {/* <div className="trip-book">
           <div className="form-check">
             <input
               className="form-input"
@@ -343,7 +346,7 @@ const Book = () => {
               Khứ hồi
             </label>
           </div>
-        </div>
+        </div> */}
         <div className="book-ticket">
           <form id="search-form"  className="form-book-ticket flex-wrap align-items-end" onSubmit={handleSubmit}>
 
@@ -431,15 +434,22 @@ const Book = () => {
 
       </LocalizationProvider>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="date_go">Ngày về</label>
               <input
                 type="date"
                 className="form-control disabled_input disabled"
                 id="date_go" 
               />
+            </div> */}
+            <div className="form-group">
+              <label htmlFor="date_go">Số vé</label>
+              <input
+                type="number" name="amount" value={formData.amount} placeholder="1"  onChange={(event) => handleChange(event)}
+                className="form-control "
+                id="date_go" 
+              />
             </div>
-
           <div className="form-group ">
                       <button type="submit" className=" button_search_ticket" style={{color:"white"}} >Tìm chuyến xe
                      {/* <a href="/lichtrinh" style={{textDecoration:"none", color:"white"}}></a>  */}

@@ -7,6 +7,7 @@ import Loading from '../../loadingTrip';
 import { useState } from 'react';
 import axiosAdmin from '../axois-admin';
 import ReactPaginate from 'react-paginate';
+import LoadingAd from '../../loadingAdmin';
 
 const NewsList = () => {
 
@@ -46,9 +47,13 @@ const NewsList = () => {
 
   const handleDelete = async (id) => {
     setLoading(true)
-    const res = await axiosAdmin.delete(`/news/${id}`);
-    if (res.data) {
-      setLoading(false)
+  
+    const confirmDeletion = window.confirm("Bạn có chắc muốn tin tức này?");
+    if (confirmDeletion) {
+      const res = await axiosAdmin.delete(`/news/${id}`);
+      if (res.data) {
+        setLoading(false)
+      }
     }
   }
 
@@ -137,7 +142,7 @@ setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
   return (
     <div>
       {isLoading ? (
-        <Loading />
+        <LoadingAd />
       ) : (
         <div className='newsAdmin-container'>
           <h3 className='h3-admin'>Quản lý tin tức</h3>

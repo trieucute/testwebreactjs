@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosClient from "../axios-client";
+import axiosAdmin from "../pages/admin/axois-admin";
 export  const fetchuserAdmin = createAsyncThunk("user/fecthusers", async () => {
   try {
       const user = await axiosClient.get("/user")
@@ -8,7 +9,14 @@ export  const fetchuserAdmin = createAsyncThunk("user/fecthusers", async () => {
       console.log(error);
   }
 })
-
+export  const fetchDriverAdmin = createAsyncThunk("user/fecthDriver", async () => {
+  try {
+      const driver = await axiosAdmin.get("/driver")
+      return driver.data
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 const userAdminSlice=createSlice({
   name: "userAdminSlice",

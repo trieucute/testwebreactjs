@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosAdmin from "../axois-admin";
+import { useEffect } from "react";
+import LoadingAd from "../../loadingAdmin";
 
-const AddNewUser = () => {
-  const [userUpdate, setUserUpdate] = useState({});
+const UpdateUser = () => {
+    const {id}= useParams() 
+  const [loading, setLoading] = useState(true);
+
   const [newUserData, setNewUserData] = useState({
     name: "",
     email: "",
     phone_number: "",
     role: "",
-    password:''
   });
-  const [errorEmail, setErrorEmail]= useState('')
-  const [errorPhone, setErrorPhone]= useState('')
-  const [errorPassword, setErrorPassword]= useState('')
+  const [error, setError]= useState('')
+
 const [messageSuccess, setMessageSuccess]=useState('')
 
   const handleInputChange = (e) => {
@@ -24,6 +26,22 @@ const [messageSuccess, setMessageSuccess]=useState('')
     }));
   };
   const navigation = useNavigate();
+  useEffect(() => {
+    // fetchUsers();
+    axiosAdmin.get(`/user/${id}`)
+    .then(res=>{
+      
+      const userData = res.data.data;
+      setNewUserData(userData);
+      setLoading(false);
+      console.log(userData );
+    })
+   .catch (error=> {
+      console.error("Error fetching user data:", error);
+    //   setError("Error fetching user data. Please try again later.");
+      setLoading(false);
+    })
+  }, []);
   const handleAddUser = async (e) => {
     e.preventDefault()
     if(newUserData.name==='' || newUserData.email===''|| newUserData.phone_number===''|| newUserData.role ===''|| newUserData.password===''){
@@ -31,43 +49,36 @@ const [messageSuccess, setMessageSuccess]=useState('')
         return
     }
     try {
-      const response = await axiosAdmin.post("/user", newUserData);
-      setMessageSuccess('Thêm người dùng thành công')
+      const response = await axiosAdmin.put(`/user/${id}`, newUserData,{
+        headers: {
+            'Content-Type': 'application/json',
+          },
+      });
+      setMessageSuccess('Cập nhật người dùng thành công')
     //   navigation("/admin/user");
-    setNewUserData({
-        name: "",
-        email: "",
-        phone_number: "",
-        role: "",
-        password:''
-    })
-      setErrorEmail('')
-      setErrorPhone('')
-      setErrorPassword('')
+    // setNewUserData({
+    //     name: "",
+    //     email: "",
+    //     phone_number: "",
+    //     role: "",
+    //     password:''
+    // })
+      setError('')
+
     } catch (error) {
 
       console.error("Error adding new user:", error);
 
       if (error.response) {
-        const errors= error.response.data.data
-        console.log(errors);
-        if(errors.email){
-            setErrorEmail(errors.email)
+        const errors= error.response
+        console.log(errors, 'lỗi');
+        if(errors.status===500){
+            setError('Email hoặc số điện thoại đã tồn tại!')
 
         }else{
-            setErrorEmail('')
+            setError('')
         }
-        if(errors.phone_number){
-            setErrorPhone(errors.phone_number)
-        }else{
-               setErrorPhone('')
-        }
-        if(errors.password){
-            setErrorPassword(errors.password)
-            
-        }else{
-            setErrorPassword('')
-        }
+     
         console.error("Server responded with:", error.response.data);
       } else if (error.request) {
         console.error("No response:", error.request);
@@ -83,8 +94,10 @@ const [messageSuccess, setMessageSuccess]=useState('')
   return (
     <div>
       <div className="addNew-container">
-        {/* <h3 className="h3-admin mb-5">Thêm người dùng</h3> */}
-        <h3 className="h3-admin mb-4 text-center"> Thêm người dùng</h3>
+        {loading ? <LoadingAd/> :
+        (
+            <>
+            <h3 className="h3-admin mb-4 text-center"> Câp nhật người dùng</h3>
         <form onSubmit={handleAddUser} className="addNew-contents">
           <div className="row m-0 justify-content-between">
             <div className="form-group">
@@ -110,17 +123,7 @@ const [messageSuccess, setMessageSuccess]=useState('')
                 value={newUserData.phone_number}
                 onChange={handleInputChange}
               />
-                 {errorPhone && <>
-                                <div   style={{
-                                                color: "rgb(230, 57, 70)",
-                                                fontWeight: "700",
-                                                marginTop: 5,
-                                                fontSize: "0.8em",
-                                                textAlign: "left",
-                                            }}>
-                                    {errorPhone}
-                                </div>
-                            </>}
+           
             </div>
             <div className="form-group">
               <label htmlFor="">Email</label>
@@ -133,41 +136,9 @@ const [messageSuccess, setMessageSuccess]=useState('')
                 value={newUserData.email}
                 onChange={handleInputChange}
               />
-                   {errorEmail && <>
-                                <div   style={{
-                                                color: "rgb(230, 57, 70)",
-                                                fontWeight: "700",
-                                                marginTop: 5,
-                                                fontSize: "0.8em",
-                                                textAlign: "left",
-                                            }}>
-                                    {errorEmail}
-                                </div>
-                            </>}
+            
             </div>
-            <div className="form-group">
-              <label htmlFor="">Mật khẩu</label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                aria-label="Password"
-                name="password"
-                value={newUserData.password}
-                onChange={handleInputChange}
-              />
-                  {errorPassword && <>
-                                <div   style={{
-                                                color: "rgb(230, 57, 70)",
-                                                fontWeight: "700",
-                                                marginTop: 5,
-                                                fontSize: "0.8em",
-                                                textAlign: "left",
-                                            }}>
-                                    {errorPassword}
-                                </div>
-                            </>}
-            </div>
+     
             <div className="form-group">
               <label htmlFor="">Vai trò</label>
               <div className="form-control">
@@ -177,6 +148,7 @@ const [messageSuccess, setMessageSuccess]=useState('')
                   aria-label="role"
                   name="role"
                   value={"user"}
+                  checked ={newUserData.role==='user' ? 'checked' :''}
                   onChange={handleInputChange}
                 />
                 <label>User</label>
@@ -186,7 +158,7 @@ const [messageSuccess, setMessageSuccess]=useState('')
                   placeholder="Vai trò"
                   aria-label="role"
                   name="role"
-                  value={"driver"}
+                  value={"driver"} checked ={newUserData.role==='driver' ? 'checked' :''}
                   onChange={handleInputChange}
                 />
                 <label>Driver</label>
@@ -197,6 +169,7 @@ const [messageSuccess, setMessageSuccess]=useState('')
                   aria-label="role"
                   name="role"
                   value={"admin"}
+                  checked ={newUserData.role==='admin' ? 'checked' :''}
                   onChange={handleInputChange}
                 />
                 <label>Admin</label>
@@ -204,7 +177,7 @@ const [messageSuccess, setMessageSuccess]=useState('')
             </div>
             <div className="form-group w-100">   
           <button className="btn-add" type="submit">
-            Thêm mới 
+            Cập nhật
           </button>
           </div>
           </div>
@@ -219,10 +192,25 @@ const [messageSuccess, setMessageSuccess]=useState('')
                                     {messageSuccess}
                                 </div>
                             </>}
+                            {error && <>
+                                <div   style={{
+                                                color: "rgb(230, 57, 70)",
+                                                fontWeight: "700",
+                                                marginTop: 5,
+                                                fontSize: "0.8em",
+                                                textAlign: "left",
+                                            }}>
+                                    {error}
+                                </div>
+                            </>}
         </form>
+            </>
+        )}
+        {/* <h3 className="h3-admin mb-5">Thêm người dùng</h3> */}
+        
       </div>
     </div>
   );
 };
 
-export default AddNewUser;
+export default UpdateUser;

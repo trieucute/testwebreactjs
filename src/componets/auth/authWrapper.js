@@ -3,20 +3,37 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../../axios-client';
 import {useStateContext} from "../../context/ContextProvider.jsx";
+import { fetchUserProfile } from '../../reduxTool/authSlice.js';
 function AuthWrapper({ children }) {
   const navigate = useNavigate();
   // const [loading, setLoading] = useState(true);
   // const [user, setUser] = useState(null);
-  const { token } = useStateContext();
+  const { user, token,setUser } = useStateContext();
 
   useEffect(() => {
     // Kiểm tra token ở đây và thực hiện điều hướng (redirect) nếu cần
     if (token) {
       // navigate('/');
-
+      const userInfor = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      axiosClient.get('/user/profile', userInfor)
+        .then((res)=>{
+            console.log(res);
+            setUser(res.payload.data)
+        
+            // setUpdateinf(res.payload.data)
+        })
+        .catch((err)=>{
+            console.error(err)
+            setUser(null)
+      
+        })
       window.history.back();
     }
-  }, [navigate, token]);
+  }, [navigate, token, setUser]);
 
 //   useEffect(() => {
 //     // Gọi API Laravel để kiểm tra thông tin đăng nhập và xác thực

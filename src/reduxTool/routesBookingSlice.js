@@ -4,9 +4,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosClient from '../axios-client';
 import { format } from 'date-fns'; 
 // Tạo action creator sử dụng createAsyncThunk để gửi yêu cầu API
-export const searchTrip = createAsyncThunk('trip/search', async ({ startLocation, endLocation, date }) => {
+export const searchTrip = createAsyncThunk('trip/search', async ({ startLocation, endLocation, date,amount }) => {
   // const dateFormat = format(new Date(date), 'yyyy-MM-dd');
-  const response = await axiosClient.get(`/trip/search?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=1`);
+  const response = await axiosClient.get(`/trip/search?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=${amount}`);
   console.log(response.data);
   return response.data;
 });

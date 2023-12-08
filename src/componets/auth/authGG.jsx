@@ -26,6 +26,9 @@ const AuthGG = ({ location }) => {
                     // console.log(data.data);
                     console.log(data.data.access_token);
                     setToken(data.data.access_token)
+                     // Lưu thời gian hiện tại khi token được tạo
+                    // const currentTime = new Date().getTime(); // Lấy thời gian hiện tại
+                    // localStorage.setItem('tokenCreationTime', currentTime); // Lưu vào localStorage
                     navigate('/')
                 })
                 .catch((error) => {
@@ -37,7 +40,23 @@ const AuthGG = ({ location }) => {
             console.error('Location is undefined');
         }
     }, [location]);
-
+// Trong useEffect hoặc bất kỳ hàm nào có thể được gọi khi người dùng truy cập trang hoặc thực hiện hành động trong ứng dụng
+// useEffect(() => {
+//     const tokenCreationTime = localStorage.getItem('tokenCreationTime');
+//     const currentTime = new Date().getTime(); // Thời gian hiện tại
+  
+//     if (tokenCreationTime) {
+//       const elapsedTime = currentTime - Number(tokenCreationTime);
+//       const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000; // 2 ngày tính bằng mili giây
+  
+//       if (elapsedTime >= twoDaysInMillis) {
+//         // Token đã hết hạn sau 2 ngày, xóa token và thực hiện các hành động khác cần thiết
+//         localStorage.removeItem('tokenCreationTime');
+//         setToken(null); // Xóa token trong context hoặc local state của bạn
+//         // Thực hiện các hành động khác khi token hết hạn
+//       }
+//     }
+//   }, []);
     if (loading) {
         return <>
             <div className="loading ">

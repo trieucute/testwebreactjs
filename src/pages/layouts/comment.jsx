@@ -3,7 +3,7 @@ import user from '../../assets/images/usernoavatar.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCommentDetail } from '../../reduxTool/commentSlice';
-import { formatDateNews} from '../../config'
+import { API_BASE_URL, formatDateNews} from '../../config'
 const RenderStars = ({ rate }) => {
     const stars = [];
     // Tạo một mảng chứa số sao tương ứng với giá trị rate từ 1 đến 5
@@ -72,9 +72,9 @@ const filteredComments = data.filter(comment => comment.status === 1);
                     <div className='col'>
                         <div className='row m-0 align-items-center'>
                             <div className="col-2 p-0 text-center" >
-                              {item.user.avatar ===null && 
+                              {item.user.avatar ===`${API_BASE_URL}/storage` && 
                                 <img src={user} alt=""className='img-fluid'style={{height:"40px",borderRadius:"100%" }} />}
-                                  {item.user.avatar !==null && 
+                                  {item.user.avatar !==`${API_BASE_URL}/storage`  && 
                                 <img src={item.user.avatar} alt=""className='img-fluid'style={{height:"40px",borderRadius:"100%" }} />}
                             </div>
                             <div className="col-sm-6  ps-0 ">

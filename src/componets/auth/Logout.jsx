@@ -88,12 +88,12 @@ const handleUpdateInfor=()=>{
   <div className='col ps-0'>
       {user.avatar !==null &&
       <div>
-        <img src={user.avatar} alt=""  className='' style={{borderRadius:"100%", objectFit:"cover", width:"30px"}}/>
+        <img src={user.avatar} alt=""  className='' style={{borderRadius:"100%", objectFit:"cover", width:"30px",height: '30px'}}/>
         </div>
       }
  {user.avatar ===null &&
       <div>
-      <img src={avatar} alt=""  className='' style={{borderRadius:"100%", objectFit:"cover", width:"30px", backgroundColor:"white"}}/>
+      <img src={avatar} alt=""  className='' style={{borderRadius:"100%", objectFit:"cover", width:"30px", height: '30px',backgroundColor:"white"}}/>
       </div>
     }
     </div>

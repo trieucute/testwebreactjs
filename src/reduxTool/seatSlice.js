@@ -12,7 +12,8 @@ export  const fetchCarSeat = createAsyncThunk("seat/fetchcarSeat", async(id)=>{
 })
 export  const postCarSeat = createAsyncThunk("seat/postcarSeat", async(data)=>{
   try {
-      const seat = await axiosAdmin.post(`/car/seat`, data,{
+    const { id, payload } = data;
+      const seat = await axiosAdmin.post(`/car/${id}/seat`, payload,{
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -26,8 +27,13 @@ export  const deleteCarSeat = createAsyncThunk("seat/deletecarSeat", async(id,id
   try {
       const seat = await axiosAdmin.delete(`/car/${idcar}/seat/${id}`)
       return seat.data
-  } catch (error) {
-      console.log(error);
+  } catch (err) {
+    const res = err.response;
+    if (res.status === 500 ) {
+      alert('Không xoá được vì có hoá đơn liên kết với ghế!');
+    } else {
+      console.error(err);
+    }
   }
 })
 export const updateCarSeat = createAsyncThunk("seat/updatecarSeat", async (data, thunkAPI) => {

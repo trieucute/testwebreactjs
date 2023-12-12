@@ -200,7 +200,7 @@ const  Recruitment= () => {
          </div>
          <div className="col-12 ps-4">
            <i className="fas fa-sack-dollar" />
-           {item.salary.toLocaleString('vi', {style : 'currency', currency : 'VND'})}
+           {item.salary.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}
          </div>
          <div className="col-12 ps-4">
            <i className="fas fa-location-dot" />

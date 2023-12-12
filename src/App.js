@@ -62,6 +62,7 @@ import AddNewUser from './pages/admin/user/newuser';
 import UpdateUser from './pages/admin/user/updateUser';
 import UpdateStation from './pages/admin/stations/updateStation';
 import SearchTicket from './pages/layouts/searchTicket';
+import TestQr from './pages/layouts/testqr';
 
 // import Editor from './pages/admin/news/edit';
 
@@ -90,6 +91,7 @@ function App() {
           <Route path='/searchTicket' element={<SearchTicket/>}/>
 
           <Route path='/lichtrinh' element={<RoutersBus/>}/>
+          <Route path='/test' element={<TestQr/>}/>
 
           <Route path='/lichtrinh1chieu' element={<RoutersBusSingle/>}/>
           <Route path='/lichtrinh1chieu/:location' element={<RoutersBusSingle/>}/>

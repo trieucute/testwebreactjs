@@ -36,6 +36,7 @@ const dispatch= useDispatch()
         console.log(res.data.data.access_token);
         setToken(res.data.data.access_token);
         setMessage('Đăng nhập thành công!');
+        navigate('/')
         // const userInfor = {
         //   headers: {
         //     Authorization: `Bearer ${res.data.data.access_token}`,

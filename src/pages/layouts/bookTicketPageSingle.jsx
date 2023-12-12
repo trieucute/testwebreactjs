@@ -1092,7 +1092,7 @@ const BookTicketPageSingle  = () => {
                                           .filter(seat => selectedSeats.includes(seat.position))
                                           .reduce((total, seat) => total + seat.price, 0);
 
-                                        return totalPrice.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+                                        return totalPrice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                                       })()
                                     }
 
@@ -1116,7 +1116,7 @@ const BookTicketPageSingle  = () => {
                                           .filter(seat => selectedSeats.includes(seat.position))
                                           .reduce((total, seat) => total + seat.price, 0);
 
-                                        return totalPrice.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+                                        return totalPrice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                                       })()
                                     }
                                           </div>
@@ -1137,7 +1137,7 @@ const BookTicketPageSingle  = () => {
                                           .filter(seat => selectedSeats.includes(seat.position))
                                           .reduce((total, seat) => total + seat.price, 0);
 
-                                        return totalPrice.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+                                        return totalPrice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                                       })()
                                     }
                                           </div>

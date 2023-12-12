@@ -12,6 +12,7 @@
 .introduce-contents .imgs-bus--Intro .col-xl-3{
     width: 28%;
 }
+
 .introduce-contents .banner-intro{
     max-height:515px;
     margin-bottom: 30px;
@@ -55,12 +56,22 @@
     .img-des-bus--first img{
         margin:  0 auto !important;
     }
+    .introduce-contents .banner-intro {
+        /* max-height: 515px; */
+        margin-bottom: 15px;
+    }
     .introduce-contents .imgs-bus--Intro .col-xl-3 {
         width: 33%;
         padding: 0;
     }
     .introduce-contents .container.mt-5{
         padding: 0;
+    }
+    .introduce-contents .lh-base{
+        font-size: 14px;
+    }
+    .introduce-contents >.my-4{
+        margin: 10px 0;
     }
 }
 @media only screen and (max-width: 768px){

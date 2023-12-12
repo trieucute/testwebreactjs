@@ -16,6 +16,32 @@
     font-weight: 500;
     
 }
+.book-contents .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    font: inherit;
+    /* letter-spacing: inherit; */
+    /* color: currentColor; */
+    /* padding: 4px 0 5px; */
+    border: none;
+    border-radius: 5px;
+    /* box-sizing: content-box; */
+    /* background: none; */
+    /* height: 1.4375em; */
+    /* margin: 0; */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    min-width: 0;
+    width: 100%;
+    -webkit-animation-name: mui-auto-fill-cancel;
+    animation-name: mui-auto-fill-cancel;
+    -webkit-animation-duration: 10ms;
+    animation-duration: 10ms;
+    padding: 10px;
+}
+.book-contents .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:hover{
+    outline: none;
+    border: none;
+}
 .search-filters  h5{
     font-size: 1em;
    font-weight: 700;

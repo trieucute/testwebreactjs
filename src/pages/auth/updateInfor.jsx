@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import user from '../../assets/images/usernoavatar.png'
+import users from '../../assets/images/usernoavatar.png'
 import { useStateContext } from '../../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -32,9 +32,9 @@ const UpdateInfor = () => {
                     'Content-Type': 'multipart/form-data'
                 },
             });
-     
+        
             setMessage('Cập nhật thông tin thành công')
-            alert("Cập nhật thành công")
+            // alert("Cập nhật thành công")
             window.location.reload();
             // Handle the response, update UI, etc.
             console.log(response.data); // Log the response data or handle it accordingly
@@ -56,13 +56,16 @@ const UpdateInfor = () => {
             if(response){
                 const errors = response.data.errors;
                 console.log(errors);
-                // if(errors.phone_number =="The phone number has already been taken."){
-                // setMessage("Số điện thoại đã được sử dụng!");
-                // console.log(errors.phone_number);
-                // } else if(errors.phone_number=="The phone number field must be at least 10 characters."){
-                //     setMessage("Số điện thoại ít nhất 10 số!");
-                //     // console.log(errors.phone_number);
-                // }
+                if(errors.phone_number =="The phone number has already been taken."){
+                setMessage("Số điện thoại đã được sử dụng!");
+                console.log(errors.phone_number);
+                } else if(errors.phone_number=="The phone number field must be at least 10 characters."){
+                    setMessage("Số điện thoại ít nhất 10 số!");
+                    // console.log(errors.phone_number);
+                }
+                if(errors.address){
+                    setMessage("Vui lòng nhập địa chỉ nhà!");
+                }
             }
         
         }
@@ -89,13 +92,14 @@ const UpdateInfor = () => {
         setUser(res.payload.data)
         setImg(res.payload.data.avatar)
         setUpdateinf(res.payload.data)
+
     })
     .catch((err)=>{
         console.error(err)
       
     })
     // console.log(    dispatch(fetchUserProfile(token)));
-
+console.log(img,'img');
     if(user){
         // setLoading(true)
         console.log(user);
@@ -117,11 +121,11 @@ const UpdateInfor = () => {
                                 {img !==null &&<img src={img} alt="" className='img-fuild'/>}
                                 {img ===null && 
                                 <>
-                                <img src={user} alt=""className='img-fuild' />
+                                <img src={users} alt=""className='img-fuild' />
                                 <br />
                                        <span>Chưa có ảnh đại điện</span>
                                 </>
- }
+                                 }
 
                                 </div>
                             <div className='form-group'>

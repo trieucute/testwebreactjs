@@ -1484,6 +1484,10 @@ line-height: 7px
 }
 }
 @media only screen and (max-width: 768px){
+  .backWhite-padding {
+    background-color: white;
+    padding: 15px 12px;
+  }
   .book-contents {
     width: 100%;
 }
@@ -1713,6 +1717,10 @@ height: 3px;
 }
 
 @media only screen and (max-width: 484px){
+  .backWhite-padding {
+    background-color: white;
+    padding: 15px 7px;
+  }
   .contents-fleet {
     width: 100%;
 }

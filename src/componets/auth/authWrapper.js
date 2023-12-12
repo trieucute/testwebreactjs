@@ -13,7 +13,7 @@ function AuthWrapper({ children }) {
   useEffect(() => {
     // Kiểm tra token ở đây và thực hiện điều hướng (redirect) nếu cần
     if (token) {
-      // navigate('/');
+
       const userInfor = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -23,7 +23,7 @@ function AuthWrapper({ children }) {
         .then((res)=>{
             console.log(res);
             setUser(res.payload.data)
-        
+            navigate('/');
             // setUpdateinf(res.payload.data)
         })
         .catch((err)=>{
@@ -31,7 +31,7 @@ function AuthWrapper({ children }) {
             setUser(null)
       
         })
-      window.history.back();
+        //  navigate(
     }
   }, [navigate, token, setUser]);
 

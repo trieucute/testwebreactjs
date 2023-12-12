@@ -280,7 +280,7 @@ return
            {carData && carData
            .filter(i=>i.status===1)
            .map(i=>(
-               <option value={i.id}>{i.name} ({i.license_plate})</option>
+               <option value={i.id}>{i.name} ({i.license_plate}) - {i.type}</option>
 
              ))}
              

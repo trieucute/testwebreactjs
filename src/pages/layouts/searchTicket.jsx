@@ -11,7 +11,8 @@ import dot from '../../assets/images/fluent-emoji_bus-stop.png';
 import go from '../../assets/images/simple-icons_go.png';
 
 
-import { calculateTimeDifference, formatDate } from '../../config';
+import { TimeHM, calculateTimeDifference, formatDate } from '../../config';
+import QRCode from 'qrcode.react';
 const SearchTicket = () => {
     const [phone, setPhone]= useState('')
     const [code, setCode]=useState('')
@@ -25,6 +26,7 @@ const SearchTicket = () => {
             console.log(res);
             setData(res.data.data)
             setError('')
+      
         })
         .catch(err=>{
             console.error(err)
@@ -37,6 +39,7 @@ const SearchTicket = () => {
             // }
         })
     }
+    // console.log('schedule',data.trip?.schedule.find(i=> i.name===data?.pickup_location).time);
     return (
         <div className='mt-10 searchTicket-container '>
             <div className="container py-3 ">
@@ -122,7 +125,9 @@ const SearchTicket = () => {
                                 </div>
                     <div className='row m-0 align-items-center box-infor-ticket'>
                         <div className='col-xxl-4 col-xl-4 col-lg-4 col-sm-12 col-ms-12 text-center'>
-                            <img src={qr} alt=""  className='img-fulid'/>
+                        <QRCode value={`Mã vé: ${data.code} \nTuyến xe: ${data.trip.start_station.name} - ${data.trip.end_station.name}  \nThời gian: ${ TimeHM(data.trip.schedule.find(item => item.type === 'pickup').time)} ${data.trip.departure_time.split(' ')[0]} \nGhế: ${data.seat.position} \nĐiểm lên xe: ${  data.pickup_location} (${data.trip.start_station.address}) \n
+                             `} id="qr-code-img" />
+                            {/* <img src={qr} alt=""  className='img-fulid'/> */}
                         </div>
                         <div className='col-xxl-8 col-xl-8 col-lg-8 col-sm-12 col-ms-12'>
                             <div className='row m-0'>
@@ -143,7 +148,7 @@ const SearchTicket = () => {
                             </div>
                             <div className='row mx-0 price-ticket  mt-2'>
                                 <div className='col text-start'>GIÁ VÉ</div>
-                                <div className='col text-end'>{data.seat.price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</div>
+                                <div className='col text-end'>{data.seat.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</div>
                             </div>
                         </div>
                     </div>
@@ -161,18 +166,18 @@ const SearchTicket = () => {
                             <div className= 'col row m-0 flex-column'>
                                 <div className='col'><img src={xe} alt=""  className='img-fulid' style={{maxWidth:"222px"}}/></div>
                                 <div className='col text-center mt-3' style={{fontWeight:"700"}}>{data.trip.start_station.name}<br /> ({data.pickup_location})</div>
-                                <div className='col text-center'>{ data.trip.departure_time.split(' ')[1].substring(0, 5)}    </div>
+                                <div className='col text-center'> {data.trip?.schedule.find(i=> i.name===data?.pickup_location).time.substring(0, 5)} </div>
                          
                             </div>
                             <div className=' col row m-0 flex-column align-items-center text-center'>
                               
-                               <div className='col'><p>{calculateTimeDifference( data.trip.departure_time.split(' ')[1], data.trip.arrival_time.split(' ')[1])}</p>
+                               <div className='col'><p>{calculateTimeDifference( data.trip?.schedule.find(i=> i.name===data?.pickup_location).time.substring(0, 5), data.trip?.schedule.find(i=> i.name===data?.dropoff_location).time.substring(0, 5))}</p>
                                 <img src={go} alt="" className='img-fulid' /></div>
                             </div>
                             <div className='col row m-0 flex-column'>
                             <div className='col'><img src={city} alt="" className='img-fulid' style={{maxWidth:"222px"}} /></div>
                             <div className='col text-center mt-3' style={{fontWeight:"700"}}>{data.trip.end_station.name} <br /> ({data.dropoff_location})</div>
-                                <div className='col text-center'>{ data.trip.arrival_time.split(' ')[1].substring(0, 5)}    </div>
+                                <div className='col text-center'> {data.trip?.schedule.find(i=> i.name===data?.dropoff_location).time.substring(0, 5)}  </div>
                           
                             </div>
                             </div>
@@ -180,7 +185,7 @@ const SearchTicket = () => {
                         <div className='col-xxl-3 col-xl-3 col-lg-3 col-sm-12 col-ms-12 '>
                             <div className='row m-0 flex-column'>
                             <div><img src={dot} alt=""  className='img-fulid' style={{maxWidth:"160px"}} /></div>
-                            <div className='col text-end price-ticket mt-2'>{data.seat.price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}/vé</div>
+                            <div className='col text-end price-ticket mt-2'>{data.seat.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}/vé</div>
                             </div>
                         </div>
                         </div>

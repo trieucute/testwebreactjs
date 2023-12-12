@@ -7,7 +7,7 @@ import LoadingAd from "../../loadingAdmin.js";
 import Tooltip from '@mui/material/Tooltip';
 const UserList = () => {
   const [users, setUsers] = useState([]);
-
+  // const [ client setClient] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,30 +60,81 @@ const UserList = () => {
 
   };
   // search user
-
-  const currentUser= searchTerm
-  ? users?.filter((list) =>
-  list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  list.email.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  : users;
-
 const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
 const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
+  const handlePageClick = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
-const offset = pageNumber * perPage;
-const pageCount = Math.ceil(currentUser?.length / perPage);
-const paginatedUser = currentUser?.slice(offset, offset + perPage);
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setPageNumber(0);
+  };
 
-const handlePageClick = ({ selected }) => {
-  setPageNumber(selected);
-};
-const handleSearch = (e) => {
-  const value = e.target.value;
-  setSearchTerm(value);
-  setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
-};
+  const applyPaginationAndSearch = (data) => {
+    const filteredData = searchTerm
+      ? data.filter(
+          (list) =>
+            list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            list.email.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : data;
 
+    const offset = pageNumber * perPage;
+    const pageCount = Math.ceil(filteredData.length / perPage);
+    const paginatedData = filteredData.slice(offset, offset + perPage);
+
+    return { paginatedData, pageCount };
+  };
+
+  const { paginatedData: paginatedUser, pageCount } = applyPaginationAndSearch(users);
+  const { paginatedData: paginatedClient, pageCount: pageCountClient } = applyPaginationAndSearch(
+    users.filter((i) => i.role === 'user')
+  );
+  const { paginatedData: paginatedDriver, pageCount: pageCountDriver } = applyPaginationAndSearch(
+    users.filter((i) => i.role === 'driver')
+  );
+  const { paginatedData: paginatedAdmin, pageCount: pageCountAdmin} = applyPaginationAndSearch(
+    users.filter((i) => i.role === 'admin')
+  );
+//   const currentUser= searchTerm
+//   ? users?.filter((list) =>
+//   list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//   list.email.toLowerCase().includes(searchTerm.toLowerCase())
+//   )
+//   : users;
+
+
+
+// const offset = pageNumber * perPage;
+// const pageCount = Math.ceil(currentUser?.length / perPage);
+// const paginatedUser = currentUser?.slice(offset, offset + perPage);
+
+// const handlePageClick = ({ selected }) => {
+//   setPageNumber(selected);
+// };
+// const handleSearch = (e) => {
+//   const value = e.target.value;
+//   setSearchTerm(value);
+//   setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
+// };
+// const  client = users?.filter(i=>i.role==='user')
+// console.log(client, 'client');
+// const currentClient= searchTerm
+// ?  client?.filter((list) =>
+// list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+// list.email.toLowerCase().includes(searchTerm.toLowerCase())
+// )
+// : client;
+
+
+// const pageCountClient = Math.ceil(currentClient?.length / perPage);
+// const paginatedClient = currentClient?.slice(offset, offset + perPage);
+
+// const handlePageClickClient = ({ selected }) => {
+// setPageNumber(selected);
+// };
 
 
   const handleSubmit = (e) => {
@@ -125,70 +176,281 @@ const handleSearch = (e) => {
               </form>
             </div>
           </div>
+        <div>
+        <ul class="nav nav-tabs mb-1" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all" aria-selected="true">Tất cả</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-client-tab" data-bs-toggle="pill" data-bs-target="#pills-client" type="button" role="tab" aria-controls="pills-client" aria-selected="false">Khách hàng</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-driver-tab" data-bs-toggle="pill" data-bs-target="#pills-driver" type="button" role="tab" aria-controls="pills-driver" aria-selected="false">Tài xế</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false">Admin</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane px-1 fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+                    <div className="table-dataUser mt-4">
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th> 
+                                  Vai trò 
+                                
+                                  </th>
+                                
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {!paginatedUser&& <LoadingAd/>}
+                              {paginatedUser&&
+                              paginatedUser.map((user,index) =>{
+                                const offset = pageNumber * perPage;
+                                return (
+                                  <tr key={user.id} user={user}>
+                                    <td>{index + offset + 1}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.phone_number ? user.phone_number : 'Không có'}</td>
+                                    <td>{user.role==='user' && 'Khách Hàng' }
+                                    {user.role==='admin' &&  'Admin' }
+                                    {user.role==='driver' && 'Tài xế' }
+                                    </td>
+                                    <td>
+                                    <Link to={`/admin/user/update/${user.id}`}><i
+                                        // onClick={() => {
+                                        //   handleShowModalToUpdate(user.id);
+                                        // }}
+                                        className="fas fa-pen-to-square"
+                                      ></i></Link> 
+                                      <i
+                                        className="fas fa-trash"
+                                        onClick={() => handleDeleteUser(user.id)}
+                                        style={{ cursor: "pointer" }}
+                                      ></i>
+                                    </td>
+                                  </tr>
+                                )})}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="pagination-contents">
+                          {pageCount > 1 && (<ReactPaginate
+                            previousLabel={<i className="fas fa-caret-left"></i>}
+                            nextLabel={<i className="fas fa-caret-right"></i>}
+                            pageCount={pageCount}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                          />
+                          )}
+                        </div>
 
-          <div className="table-dataUser mt-4">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Tên</th>
-                  <th>Email</th>
-                  <th>SĐT</th>
-                  <th> 
-                    Vai trò 
-                     <Tooltip title={<div style={{padding:"8px 15px"}}>
-                     <input type="checkbox"  id="driver"/><label htmlFor="driver" style={{fontSize:"15px", marginRight:"10px"}}>Tài xế</label>
-                     <input type="checkbox"  id="admin"/><label htmlFor="admin" style={{fontSize:"15px"}}>Admin</label>
-                    
-                          </div>}              
-                    placement="top" arrow><i className="fas fa-filter ms-2" ></i>
-                      </Tooltip>
-                     </th>
-                  
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedUser&&
-                 paginatedUser.map((user,index) => (
-                    <tr key={user.id} user={user}>
-                      <td>{index + offset + 1}</td>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phone_number ? user.phone_number : 'Không có'}</td>
-                      <td>{user.role==='user' && 'Khách Hàng' }
-                      {user.role==='admin' &&  'Admin' }
-                      {user.role==='driver' && 'Tài xế' }
-                      </td>
-                      <td>
-                       <Link to={`/admin/user/update/${user.id}`}><i
-                          // onClick={() => {
-                          //   handleShowModalToUpdate(user.id);
-                          // }}
-                          className="fas fa-pen-to-square"
-                        ></i></Link> 
-                        <i
-                          className="fas fa-trash"
-                          onClick={() => handleDeleteUser(user.id)}
-                          style={{ cursor: "pointer" }}
-                        ></i>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="pagination-contents">
-            {pageCount > 1 && (<ReactPaginate
-              previousLabel={<i className="fas fa-caret-left"></i>}
-              nextLabel={<i className="fas fa-caret-right"></i>}
-              pageCount={pageCount}
-              onPageChange={handlePageClick}
-              containerClassName={'pagination'}
-              activeClassName={'active'}
-            />
-            )}
-          </div>
+                  </div>
+
+                  <div class="tab-pane px-1 " id="pills-client" role="tabpanel" aria-labelledby="pills-client-tab">
+                    <div className="table-dataUser mt-4">
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th> 
+                                  Vai trò 
+                                  
+                                  </th>
+                                
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {!paginatedClient&& <LoadingAd/>}
+                              {paginatedClient&&
+                              paginatedClient.map((user,index) => {
+                                const offset = pageNumber * perPage;
+                                return (
+                                  <tr key={user.id} user={user}>
+                                    <td>{index + offset + 1}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.phone_number ? user.phone_number : 'Không có'}</td>
+                                    <td>{user.role==='user' && 'Khách Hàng' }
+                                   
+                                   
+                                    </td>
+                                    <td>
+                                    <Link to={`/admin/user/update/${user.id}`}><i
+                                        // onClick={() => {
+                                        //   handleShowModalToUpdate(user.id);
+                                        // }}
+                                        className="fas fa-pen-to-square"
+                                      ></i></Link> 
+                                      <i
+                                        className="fas fa-trash"
+                                        onClick={() => handleDeleteUser(user.id)}
+                                        style={{ cursor: "pointer" }}
+                                      ></i>
+                                    </td>
+                                  </tr>
+                         )})}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="pagination-contents">
+                          {pageCountClient > 1 && (<ReactPaginate
+                            previousLabel={<i className="fas fa-caret-left"></i>}
+                            nextLabel={<i className="fas fa-caret-right"></i>}
+                            pageCount={pageCountClient}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                          />
+                          )}
+                        </div>
+
+                  </div>
+
+                  <div class="tab-pane px-1 " id="pills-driver" role="tabpanel" aria-labelledby="pills-driver-tab">
+                    <div className="table-dataUser mt-4">
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th> 
+                                  Vai trò 
+                                
+                                  </th>
+                                
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {!paginatedDriver&& <LoadingAd/>}
+                              {paginatedDriver&&
+                              paginatedDriver.map((user,index) =>{
+                                const offset = pageNumber * perPage;
+                                return (
+                                  <tr key={user.id} user={user}>
+                                    <td>{index + offset + 1}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.phone_number ? user.phone_number : 'Không có'}</td>
+                                    <td>
+                                   
+                                    {user.role==='driver' && 'Tài xế' }
+                                    </td>
+                                    <td>
+                                    <Link to={`/admin/user/update/${user.id}`}><i
+                                        // onClick={() => {
+                                        //   handleShowModalToUpdate(user.id);
+                                        // }}
+                                        className="fas fa-pen-to-square"
+                                      ></i></Link> 
+                                      <i
+                                        className="fas fa-trash"
+                                        onClick={() => handleDeleteUser(user.id)}
+                                        style={{ cursor: "pointer" }}
+                                      ></i>
+                                    </td>
+                                  </tr>
+                                )})}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="pagination-contents">
+                          {pageCountDriver > 1 && (<ReactPaginate
+                            previousLabel={<i className="fas fa-caret-left"></i>}
+                            nextLabel={<i className="fas fa-caret-right"></i>}
+                            pageCount={pageCountDriver}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                          />
+                          )}
+                        </div>
+
+                  </div>
+
+                  <div class="tab-pane px-1 " id="pills-admin" role="tabpanel" aria-labelledby="pills-admin-tab">
+                    <div className="table-dataUser mt-4">
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th> 
+                                  Vai trò 
+                                
+                                  </th>
+                                
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {!paginatedAdmin&& <LoadingAd/>}
+                              {paginatedAdmin&&
+                              paginatedAdmin.map((user,index) =>{
+                                const offset = pageNumber * perPage;
+                                return (
+                                  <tr key={user.id} user={user}>
+                                    <td>{index + offset + 1}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.phone_number ? user.phone_number : 'Không có'}</td>
+                                    <td>
+                                    {user.role==='admin' &&  'Admin' }
+                                   
+                                    </td>
+                                    <td>
+                                    <Link to={`/admin/user/update/${user.id}`}><i
+                                        // onClick={() => {
+                                        //   handleShowModalToUpdate(user.id);
+                                        // }}
+                                        className="fas fa-pen-to-square"
+                                      ></i></Link> 
+                                      <i
+                                        className="fas fa-trash"
+                                        onClick={() => handleDeleteUser(user.id)}
+                                        style={{ cursor: "pointer" }}
+                                      ></i>
+                                    </td>
+                                  </tr>
+                                )})}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="pagination-contents">
+                          {pageCountAdmin > 1 && (<ReactPaginate
+                            previousLabel={<i className="fas fa-caret-left"></i>}
+                            nextLabel={<i className="fas fa-caret-right"></i>}
+                            pageCount={pageCountAdmin}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                          />
+                          )}
+                        </div>
+
+                  </div>
+
+                  </div>
+        </div>
+    
 
   
         </div>

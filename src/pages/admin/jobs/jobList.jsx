@@ -201,7 +201,7 @@ const JobList = () => {
                       <td>{item.description}</td>
                      <td>{item.requirements}</td>
                      <td>{item.location}</td>
-                      <td>{item.salary.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</td>
+                      <td>{item.salary.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
                       <td>{formatDateJob(item.created_at)}</td>
                       <td className='text-center'>{item.status=== 1 ? (<i class="fas fa-check"></i>) : ''}</td>
                       <td >

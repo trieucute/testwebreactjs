@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../../assets/css/completlyPayment.css";
 // import "../../assets/css/index.css";
-
+import QRCode from 'qrcode.react';
+import { saveAs } from 'file-saver';
 import down from "../../assets/images/push-down.png";
 import check from "../../assets/images/check.png";
 import qr from "../../assets/images/QR.png";
@@ -73,6 +74,7 @@ const CompletlyPayment = () => {
       first.current = false;
     } catch (e) {
       console.log(e);
+      console.error(e)
     }
   };
   const toCurrency = (amount) => {
@@ -81,6 +83,37 @@ const CompletlyPayment = () => {
       currency: "VND",
     });
   };
+  function getInfoFromQR(qrData) {
+    qrData = 'sdt, tên, email';
+    return qrData;
+  }
+
+  const [scannedInfo, setScannedInfo] = useState('');
+  const [qrData, setQrData]= useState('')
+
+  function handleScan(qrData) {
+    const info = getInfoFromQR(qrData);
+    setScannedInfo(info);
+  }
+
+  function downloadQRCode() {
+    const canvas = document.getElementById('qr-code-img');
+
+    // Get the base64 representation of the QR code from the image element
+    const base64Image = canvas.toDataURL('image/png');
+
+    // Convert the base64 image to a Blob
+    const byteCharacters = atob(base64Image.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' });
+
+    // Use FileSaver.js to save the blob as a file
+    saveAs(blob, 'ma-qr.png');
+  }
   return (
     <div className="mt-10">
       <div className="complete-pay-container container backWhite-padding ">
@@ -162,15 +195,19 @@ const CompletlyPayment = () => {
                         <div className="ticket__infor3">
                           <div className="row justify-content-center my-2 align-items-baseline">
                             {/* <h5 className=" number_ticket">{index + 1}</h5> */}
-                            <h5 className="ticket__code  text-center mb-2">
+                            <div className="col pe-0 " style={{visibility:'hidden'}}>d</div>
+                            <h5 className="col-sm-8 ticket__code p-0 text-center mb-2" sty>
                               Mã vé {val.code}
+                          
                             </h5>
-                            {/* <div className="download__ticket  text-end">
+                            <div className="col  text-end ps-0" onClick={downloadQRCode}>
                               <img src={down} alt="" />
-                            </div> */}
+                            </div>
                           </div>
-                          <div className="QR">
-                            <img src={qr} alt="" />
+                          <div className="QR text-center">
+                            {/* <img src={qr} alt="" /> */}
+                            <QRCode value={`Mã vé: ${val.code} \nTuyến xe: ${val.trip.start_station.name} - ${val.trip.end_station.name}  \nThời gian: ${ TimeHM(val.trip.schedule.find(item => item.type === 'pickup').time)} ${val.trip.departure_time.split(' ')[0]} \nGhế: ${val.seat.position} \nĐiểm lên xe: ${  val.pickup_location} (${val.trip.start_station.address}) \n
+                             `} id="qr-code-img" />
                           </div>
                           <div className="infor__trip mt-4 ">
                             <div className="card ">

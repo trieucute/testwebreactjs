@@ -9,6 +9,7 @@ import LoadingAd from '../../loadingAdmin';
 import { deleteCarSeat, fetchCarSeat, postCarSeat, updateCarSeat } from '../../../reduxTool/seatSlice';
 import ReactPaginate from 'react-paginate';
 import { API_BASE_URL } from '../../../config';
+import axiosAdmin from '../axois-admin';
 
 const CarList = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const CarList = () => {
     const [showAddChair, setShowAddChair]= useState(false)
     const handleshowAddChair =()=>{
     setShowAddChair(!showAddChair)
+    setEditChair(false)
     }
     const dispatch= useDispatch();
     const carData= useSelector(state=>state.carAdmin)
@@ -26,12 +28,14 @@ const CarList = () => {
     useEffect(()=>{
 
     dispatch(fetchcarAdmin())
+
     },[])
-    // console.log(carData, cars, carData.loading);
+
     const [selectedCarComments, setSelectedCarComments] = useState([]);
     const seats= useSelector(state=>state.seatAdmin)
     const [typeCar, setTypeCar] = useState('');
     const [idCar, setIdCar] = useState('');
+    const [showDetail, setShowDetail] = useState(false);
 
     const handleViewDetail = (comments,id,type) => {
       setSelectedCarComments(comments);
@@ -96,14 +100,6 @@ const CarList = () => {
   };
 
 
-
-
-
-  // edit
-  const handleEdit=(id)=>{
-    console.log(id);
-    dispatch()
-  }
   const [dataChair, setDataChair]= useState({
     position:'',
     type:'',
@@ -116,18 +112,43 @@ const CarList = () => {
     })
   }
   const handleAddChair =(e)=>{
-    e.preventDefault()
+    e.preventDefault();
+    const { position, type, price } = dataChair;
+    const positionRegex = /^[A-B]/;
+    if (!positionRegex.test(position)) {
+      alert('Vui lòng nhập tên ghế bắt đầu bằng A hoặc B!');
+      return;
+    }
+  
+    // Kiểm tra xem ghế đã tồn tại hay chưa
+    const existingSeat = seatsData.find(seat => seat.position === position);
+    if (existingSeat) {
+      alert('Ghế đã tồn tại!');
+      return;
+    }
+    if(dataChair.position===''|| dataChair.type===''|| dataChair.price===''){
+      alert('Vui lòng nhập đầy đủ thông tin!')
+      return
+    }
     const data={
-      car_id:idCar,
+      // car_id:idCar,
       position:dataChair.position,
       type:dataChair.type,
       price:dataChair.price
     }
-    dispatch(postCarSeat(data))
+    // console.log(postCarSeat(idCar,data));
+    dispatch(postCarSeat({id:idCar,payload:data}))
     .then(res=>{
       console.log(res);
       alert("Thêm ghế thành công")
+      setDataChair({
+        position:'',
+        type:'',
+        price:0
+      })
       dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
+      // dispatch(fetchcarAdmin());
+
     })
     .catch(err=>{
       console.error(err);
@@ -136,14 +157,21 @@ const CarList = () => {
   }
   const handleDeleteChair=(id)=>{
     const confirmDeletion = window.confirm("Bạn có chắc muốn xoá ghế này?");
+    console.log(idCar,' idCar');
     if (confirmDeletion) {
-      dispatch(deleteCarSeat(id,idCar))
+      
+      // dispatch(deleteCarSeat(id,idCar))
+      axiosAdmin.delete(`/car/${idCar}/seat/${id}`)
         .then((res) => {
           console.log(res);
           dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
+          // dispatch(fetchcarAdmin())
+
         })
         .catch((err) => {
-          console.error(err);
+       
+            console.error(err);
+          
         });
     }
   };
@@ -156,6 +184,7 @@ const CarList = () => {
     setEditChair(!editChair)
     console.log(seat,'seatedit');
    setEditingSeat(seat)
+   setShowAddChair(false)
   }
   const handleChangeinputedit=(e)=>{
     setEditingSeat((prevEditingSeat) => ({
@@ -167,10 +196,28 @@ const CarList = () => {
   console.log(editingSeat,'editing');
   const handleSubmitEditChair=(e)=>{
     e.preventDefault();
-    
+    const { position, type, price } = editingSeat;
+    const positionRegex = /^[A-B]/;
+    if (!positionRegex.test(position)) {
+      alert('Vui lòng nhập tên ghế bắt đầu bằng A hoặc B!');
+      return;
+    }
+  
+    // Kiểm tra xem ghế đã tồn tại hay chưa
+    const existingSeat = seatsData.find(seat => seat.position === position);
+    if (existingSeat) {
+      alert('Ghế đã tồn tại!');
+      return;
+    }
+    if(editingSeat.position===''|| editingSeat.type===''|| editingSeat.price===''){
+      alert('Vui lòng nhập đầy đủ thông tin!')
+      return
+    }
     dispatch(updateCarSeat({ id: editingSeat.id, payload: editingSeat }))
     .then(res=>{
       console.log(res);
+      setEditingSeat('')
+      setEditChair()
       dispatch(fetchCarSeat(idCar)); // Gọi lại action fetchCarSeat để load lại dữ liệu
     })
     .catch(err=>{
@@ -323,7 +370,7 @@ const CarList = () => {
                                                 <div className='items-content-floor-row'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
                                                 <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}   {seat.id} </span>
                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
                                                        </div>}
@@ -700,7 +747,10 @@ const CarList = () => {
                             <label htmlFor="">Loại ghế</label>
                             <input type="text" className='form-control'  placeholder='Giường nằm vip...' name='type' onChange={e=>handleChangeinput(e)}/>
                           </div>
-                          <span className='mt-2'>* Bắt đầu bằng A là tầng dưới và B là tầng trên </span>
+                          <p className='mt-2'>
+                            * Bắt đầu bằng A là tầng dưới và B là tầng trên đối với xe giường và Limousine <br />
+                          * Bắt đầu bằng A là cột bên trái và B là cột bên phải đối với xe ghế
+                          </p>
 
                           <div className='form-group text-center mt-4'>
                             <button type='submit' className='btn-add'>Thêm ghế mới</button>
@@ -725,7 +775,10 @@ const CarList = () => {
                             <label htmlFor="">Loại ghế</label>
                             <input type="text" className='form-control'  placeholder='Giường nằm vip...' name='type' value={editingSeat.type} onChange={e=>handleChangeinputedit(e)}/>
                           </div>
-                          <span className='mt-2'>* Bắt đầu bằng A là tầng dưới và B là tầng trên </span>
+                          <p className='mt-2'>
+                            * Bắt đầu bằng A là tầng dưới và B là tầng trên đối với xe giường và Limousine <br />
+                          * Bắt đầu bằng A là cột bên trái và B là cột bên phải đối với xe ghế
+                          </p>
 
                           <div className='form-group text-center mt-4'>
                             <button type='submit' className='btn-add'>Cập nhật</button>
@@ -741,8 +794,9 @@ const CarList = () => {
                        return (
                         <div key={index} className='row m-0 item-rate'>
                         <div className='col-3'>
-                        {comment.avatar!==null ? (<img src={comment.avatar} alt="" className='img-fluid' />) :  (<img src={user} alt="" className='img-fluid' />)}
+                        {comment.avatar!==`${API_BASE_URL}/storage` ? (<img src={comment.avatar} alt="" className='img-fluid' />) :  (<img src={user} alt="" className='img-fluid' />)}
                         <div className='text-center nameUser'>{comment.user}</div>
+
                         {/* {comment.user &&    } */}
                         </div>
                         <div className='col'>

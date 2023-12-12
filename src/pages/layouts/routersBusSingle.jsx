@@ -429,7 +429,7 @@ console.log(routeData);
                   <div className="d-flex w-100 mt-2 align-items-center flex-wrap">
                     <div className="item-about-bus w-75">
                       <ul className="d-flex p-0 w-100 m-0">
-                        <li className="list-group-item ">{item.price.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</li>
+                        <li className="list-group-item ">{item.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</li>
                         <li className="list-group-item ">
                           <span className="icon-dot ps-4">
                             <i className="fa-solid fa-circle" />

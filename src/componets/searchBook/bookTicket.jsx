@@ -190,7 +190,7 @@ const Book = () => {
   const navigate = useNavigate();
   const [dataProvinces, setDataProvinces] = useState([]);
   const [filteredDataProvinces, setFilteredDataProvinces] = useState([]);
-
+  const [filteredDataProvincesEnd, setFilteredDataProvincesEnd] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -208,6 +208,8 @@ const Book = () => {
         console.log(data);
         setDataProvinces(data);
         setFilteredDataProvinces(data);
+        setFilteredDataProvincesEnd(data);
+
       })
       .catch((err) => {
         console.error(err);
@@ -230,15 +232,26 @@ const Book = () => {
       [name]: value,
     }));
 
-    if (name === 'start_location' || name === 'end_location') {
+    if (name === 'start_location' ) {
+      setFilteredDataProvinces(dataProvinces);
       const filteredLocations = dataProvinces.filter((locationObj) =>
-        locationObj.province &&
-        locationObj.province.toLowerCase().includes(value && value.toLowerCase())
+       
+        locationObj?.province.toLowerCase().includes(value && value.toLowerCase())
       );
       setFilteredDataProvinces(filteredLocations);
+      
+    }
+    if( name === 'end_location') {
+      setFilteredDataProvincesEnd(dataProvinces);
+      const filteredLocations = dataProvinces.filter((locationObj) =>
+       
+        locationObj?.province.toLowerCase().includes(value && value.toLowerCase())
+      );
+      setFilteredDataProvincesEnd(filteredLocations);
+      
     }
   };
-
+console.log(filteredDataProvinces, 'filtereDATA');
   const handleSelect = (value, field) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -247,8 +260,12 @@ const Book = () => {
   };
 
   const handleInputClick = (field) => {
-    if (field === 'start_location' || field === 'end_location') {
+    if (field === 'start_location' ) {
       setFilteredDataProvinces(dataProvinces);
+      console.log(dataProvinces,'dataProvinces');
+    }
+    if(field === 'end_location') {
+      setFilteredDataProvincesEnd(dataProvinces);
     }
   };
 
@@ -298,18 +315,24 @@ const Book = () => {
 
   }, []);
 
-  useEffect(() => {
-    if (formData.start_location !== '') {
-      fetchDataProvinces();
-    }
-  }, [formData.start_location]);
+  // useEffect(() => {
+  //   if (formData.start_location !== '') {
+  //     fetchDataProvinces();
+  //   }
+  // }, [formData.start_location]);
 
   useEffect(() => {
     if (formData.date) {
       setSelectedDate(new Date(formData.date));
     }
   }, [formData.date]);
-
+  // useEffect(() => {
+  //   const filteredLocations = dataProvinces.filter((locationObj) => {
+  //     const value = (formData.start_location || formData.end_location || '').toLowerCase();
+  //     return locationObj.province.toLowerCase().includes(value);
+  //   });
+  //   setFilteredDataProvinces(filteredLocations);
+  // }, [formData, dataProvinces]);
   return (
     <div className='book-content_container container'>
        {showNotifi && <Notification message="Vui lòng nhập đầy đủ thông tin!" />}
@@ -317,36 +340,7 @@ const Book = () => {
 
     <div className="book-contents" style={{display:"flex", alignItems:"center"}}>
       <div className="booking-content">
-        {/* <div className="trip-book">
-          <div className="form-check">
-            <input
-              className="form-input"
-              type="radio"
-              name="trip"
-              id="motchieu"
-              defaultValue="motchieu"
-              defaultChecked="checked"
-              onChange={handleCheckedKhuHoi}
-            />
-            <label className="form-check-label" htmlFor="motchieu">
-              Một chiều
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-input"
-              type="radio"
-              name="trip"
-              id="khuhoi"
-              defaultValue="khuhoi"
-              defaultChecked=""
-              onChange={handleCheckedKhuHoi}
-            />
-            <label className="form-check-label" htmlFor="khuhoi">
-              Khứ hồi
-            </label>
-          </div>
-        </div> */}
+     
         <div className="book-ticket">
           <form id="search-form"  className="form-book-ticket flex-wrap align-items-end" onSubmit={handleSubmit}>
 
@@ -393,7 +387,7 @@ const Book = () => {
               autoComplete: 'off'
             }}
             value={formData.end_location}
-            items={filteredDataProvinces}
+            items={filteredDataProvincesEnd}
             getItemValue={(item) => item.province}
             onSelect={(value) => handleSelect(value, 'end_location')}
             onChange={(event) => handleChange(event)}

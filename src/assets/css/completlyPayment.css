@@ -73,8 +73,8 @@
    width: 15%;
 }
 .complete-pay-container .ticket__code  {
-   width: 70%;
-   font-size: 18px;
+   /* width: 70%; */
+   font-size: 16px;
     font-weight: 700;
 }
 .complete-pay-container .download__ticket  {

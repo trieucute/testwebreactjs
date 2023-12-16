@@ -58,7 +58,7 @@ const Thuexe = () => {
       Hệ thống xe du lịch hơn 100 chiếc từ 7 -16 chỗ chỗ ngồi chất lượng cao,
       giá cả và dịch vụ tốt.
       <br />
-      Khách hàng đến với WebProTicket không còn phải lo ngại, đắn đo.
+      Khách hàng đến với TicketProWeb không còn phải lo ngại, đắn đo.
     </p>
   </div>
   {/* {/* text center * /} */}

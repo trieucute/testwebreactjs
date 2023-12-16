@@ -23,7 +23,7 @@ const Contact = () => {
           Thành phố Hồ Chí Minh
         </p>
         <p>Số điện thoại: 0369540497</p>
-        <p>Email: webproticket@gmail.com</p>
+        <p>Email: ticketproweb@gmail.com</p>
       </div>
       <div className="map">
         <iframe

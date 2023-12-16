@@ -11,6 +11,7 @@ import seatReducer from './seatSlice'
 import TripAdminReducer from './tripSlice'
 import stationAdminReducer from './stationSlice'
 import ticketAdminReducer from './ticketSlice'
+import historyTicketReducer from './historyTicketSlice'
 
 // import routesBookingReducer from './formdata'
 export const store=configureStore({
@@ -25,7 +26,8 @@ export const store=configureStore({
         seatAdmin:seatReducer,
         tripAdmin:TripAdminReducer,
         stationAdmin:stationAdminReducer,
-        ticketAdmin: ticketAdminReducer
+        ticketAdmin: ticketAdminReducer,
+        historyTicket:historyTicketReducer,
         // routesBookingReducer ,
 
     }

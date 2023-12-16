@@ -63,7 +63,7 @@ const UserList = () => {
 //   )
 //   : itemList;
 
-// const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+// const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
 // const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
 
 // const offset = pageNumber * perPage;
@@ -81,7 +81,7 @@ const UserList = () => {
   )
   : users;
 
-const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
 const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
 
 const offset = pageNumber * perPage;

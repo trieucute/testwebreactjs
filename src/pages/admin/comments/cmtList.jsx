@@ -8,9 +8,10 @@ import user from '../../../assets/images/avatarnv1.jpg'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCommentAdmin, putStatusCmt } from '../../../reduxTool/commentSlice';
 import axiosAdmin from '../axois-admin';
+import LoadingAd from '../../loadingAdmin';
 
 const CommentList = () => {
-  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     console.log('CommentListcomponent loaded');
     // Kiểm tra điều kiện chuyển hướng ở đây
@@ -22,13 +23,20 @@ const CommentList = () => {
   }
 
   const dispatch = useDispatch()
-  const {data, isLoading} = useSelector (state => state.comment)
+  const {data} = useSelector (state => state.comment)
+  const [loading, setLoading]=useState(false)
+
   const itemList = data?.data
   console.log(data);
   useEffect (()=>{
+
+    setLoading(true)
     dispatch(fetchCommentAdmin())
-  },[loading])
-console.log(itemList);
+    .then(res=>{
+      setLoading(false)
+    })
+  },[])
+
 // ngày đăng 
 function formatDateCmt(inputDate) {
   const date = new Date(inputDate);
@@ -52,7 +60,7 @@ function formatDateCmt(inputDate) {
         )
         : itemList;
     
-      const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+      const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
       const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
     
       const offset = pageNumber * perPage;
@@ -103,7 +111,8 @@ function formatDateCmt(inputDate) {
       }
   return (
     <div>
-      <div className='commentAdmin-container'>
+      {loading ? <LoadingAd/> : (
+        <div className='commentAdmin-container'>
         <h3 className='h3-admin'>Quản lý bình luận</h3>
         <div className='row mx-0 my-2'>
           <div className='col ps-0 '>
@@ -171,32 +180,7 @@ function formatDateCmt(inputDate) {
                   <i class="fas fa-trash" onClick={()=>handleDetele(item.id)}></i>
                 </td>
               </tr>
-              // <tr>
-              //   <td>2</td>
-              //   <td> Triệu Trần</td>
-              //   <td>Limousine phương trang</td>
-              //   <td className='td-content-cmt'>
-              //     <div className='content-cmt'>Thác Prenn là một thác nước ở thành phố Đà Lạt thuộc tỉnh Lâm Đồng, Việt Nam. Thác Prenn là một thác nước ở thành phố Đà Lạt thuộc tỉnh Lâm Đồng, Việt Nam.
-              //       Thác Prenn là một thác nước ở thành phố Đà Lạt thuộc tỉnh Lâm Đồng, Việt Nam.
-              //     </div></td>
-              //   <td>  <i class="fas fa-star" style={{ color: "yellow" }}></i>
-              //     <i class="fas fa-star" style={{ color: "yellow" }}></i>
-              //     <i class="fas fa-star" style={{ color: "yellow" }}></i>
-              //     <i class="fas fa-star" style={{ color: "yellow" }}></i>
-              //     <i class="far fa-star" style={{ color: "grey" }}></i>  </td>
-              //   <td>2023-11-02</td>
-              //   <td>
-              //     <button className='btn btn-success loading_cmt'>
-
-              //       <span >Đã duyệt</span>
-              //     </button>
-
-              //   </td>
-              //   <td >
-              //     <i class="fas fa-pen-to-square"></i>
-              //     <i class="fas fa-trash"></i>
-              //   </td>
-              // </tr>
+     
 ))}
             </tbody>
           </table>
@@ -213,6 +197,8 @@ function formatDateCmt(inputDate) {
             )}
           </div>
       </div>
+      )}
+      
     </div>
   );
 };

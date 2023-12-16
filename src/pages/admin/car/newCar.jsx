@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axiosAdmin from '../axois-admin';
 import { useState } from 'react';
 import LoadingAd from '../../loadingAdmin';
+import Notification from '../../NotificationTrip';
 
 const AddNewCar = () => {
   const [loading, setLoading]= useState(false)
@@ -31,13 +32,21 @@ const AddNewCar = () => {
       });
     }
   };
-
+  const [showNotifi, setShowNotifi] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
 const handleAddSubmit = (e) => {
   e.preventDefault();
   setLoading(true)
   if(newData.name==='' || newData.number_seat===''|| newData.license_plate===''|| newData.type===''|| newData.img===''||newData.price===''){
     setLoading(false)
-    alert('Vui lòng nhập đầy đủ nội dung!')
+    // alert('Vui lòng nhập đầy đủ nội dung!')
+    setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+    setShowNotifi(true);
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+      setShowNotifi(false);
+    }, 3000);
     return
   }
   // Tạo dữ liệu cho xe mới
@@ -98,7 +107,7 @@ const handleAddSubmit = (e) => {
 
       if(response){
         const errors = response.data.errors;
-          if(errors.license_plate =="The license plate has already been taken."){
+          if(errors.license_plate =="Trường license plate đã có trong cơ sở dữ liệu."){
           setMessage("Biển số xe đã tồn tại!");
          
           } 
@@ -111,6 +120,7 @@ const handleAddSubmit = (e) => {
         <div className='addNew-container'>
       {loading ? <LoadingAd/> : (
  <>
+       {showNotifi &&  <Notification message={notificationMessage} />}
            <h3 className='h3-admin mb-4 text-center'> Thêm xe khách</h3>
       <form   className='addNew-contents' onSubmit={handleAddSubmit}>
         <div className='row m-0 justify-content-between'> 

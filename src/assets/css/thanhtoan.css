@@ -26,6 +26,9 @@
  font-weight: 700;
 
 }
+.img-ckMomo img{
+    max-width: 100%;
+}
 .pay-items .btn-watch-a .btn-watch {
     max-width: 280px;
  

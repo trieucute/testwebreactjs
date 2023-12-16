@@ -10,6 +10,7 @@ import { deleteCarSeat, fetchCarSeat, postCarSeat, updateCarSeat } from '../../.
 import ReactPaginate from 'react-paginate';
 import { API_BASE_URL } from '../../../config';
 import axiosAdmin from '../axois-admin';
+import Notification from '../../NotificationTrip';
 
 const CarList = () => {
     const navigate = useNavigate();
@@ -58,7 +59,7 @@ const CarList = () => {
       )
     : sortedCarsById  ;
 
-  const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+  const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
   const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
 
   const offset = pageNumber * perPage;
@@ -114,22 +115,42 @@ const CarList = () => {
   const handleAddChair =(e)=>{
     e.preventDefault();
     const { position, type, price } = dataChair;
-    const positionRegex = /^[A-B]/;
+    const positionRegex =/^(A|B)\d{1,2}$/;
+
+    if(dataChair.position===''|| dataChair.type===''|| dataChair.price===''){
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
+      return
+    }
     if (!positionRegex.test(position)) {
-      alert('Vui lòng nhập tên ghế bắt đầu bằng A hoặc B!');
+      setNotificationMessage('Sai cú pháp! Vui lòng nhập đúng định dạng (A10) (B12).');
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return;
     }
   
     // Kiểm tra xem ghế đã tồn tại hay chưa
     const existingSeat = seatsData.find(seat => seat.position === position);
     if (existingSeat) {
-      alert('Ghế đã tồn tại!');
+      setNotificationMessage('Ghế đã tồn tại!');
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return;
     }
-    if(dataChair.position===''|| dataChair.type===''|| dataChair.price===''){
-      alert('Vui lòng nhập đầy đủ thông tin!')
-      return
-    }
+  
     const data={
       // car_id:idCar,
       position:dataChair.position,
@@ -180,6 +201,8 @@ const CarList = () => {
   // State để lưu thông tin ghế cần chỉnh sửa
   const [editingSeat, setEditingSeat] = useState(null);
   const [editChair,setEditChair ]= useState(false)
+  const [showNotifi, setShowNotifi] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const handleEditChair =(seat)=>{
     setEditChair(!editChair)
     console.log(seat,'seatedit');
@@ -197,22 +220,45 @@ const CarList = () => {
   const handleSubmitEditChair=(e)=>{
     e.preventDefault();
     const { position, type, price } = editingSeat;
-    const positionRegex = /^[A-B]/;
-    if (!positionRegex.test(position)) {
-      alert('Vui lòng nhập tên ghế bắt đầu bằng A hoặc B!');
-      return;
-    }
-  
-    // Kiểm tra xem ghế đã tồn tại hay chưa
-    const existingSeat = seatsData.find(seat => seat.position === position);
-    if (existingSeat) {
-      alert('Ghế đã tồn tại!');
-      return;
-    }
+    const positionRegex =/^(A|B)\d{1,2}$/;
+
+
     if(editingSeat.position===''|| editingSeat.type===''|| editingSeat.price===''){
-      alert('Vui lòng nhập đầy đủ thông tin!')
+      // alert('Vui lòng nhập đầy đủ thông tin!')
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return
     }
+    if (!positionRegex.test(position)) {
+      // alert('Vui lòng nhập tên ghế bắt đầu bằng A hoặc B!');
+      setNotificationMessage('Sai cú pháp! Vui lòng nhập đúng định dạng (A10) (B12).');
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
+      return;
+    }
+      // // Kiểm tra xem ghế đã tồn tại hay chưa
+      // const existingSeat = seatsData.find(seat => seat.position === position);
+      // if (existingSeat) {
+      //   // alert('Ghế đã tồn tại!');
+      //   setNotificationMessage('Ghế đã tồn tại!');
+      //   setShowNotifi(true);
+  
+      //   // Hide the notification after 3 seconds
+      //   setTimeout(() => {
+      //     setShowNotifi(false);
+      //   }, 3000);
+      //   return;
+      // }
+
     dispatch(updateCarSeat({ id: editingSeat.id, payload: editingSeat }))
     .then(res=>{
       console.log(res);
@@ -248,6 +294,7 @@ const CarList = () => {
          ):(
           
      <>
+ 
         <div className='carAdmin-container'>
           <h3 className='h3-admin'>Quản lý xe khách</h3>
           <div className='row mx-0 my-2'>
@@ -333,6 +380,7 @@ const CarList = () => {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body ">
+      {showNotifi &&  <Notification message={notificationMessage} />}
       <div class="tab-contents-car  ">
               <ul class="nav nav-tabs mb-1" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">

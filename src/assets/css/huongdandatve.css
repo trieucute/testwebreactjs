@@ -135,3 +135,194 @@
 
     }
 }
+
+
+.dieukhoan-container .title__name{
+    text-align: center;
+    color: var(--colorMain);
+    font-weight: 700;
+    font-size: 25px;
+    
+}
+.dieukhoan-container .title__rules{
+    text-align: center;
+    font-size: 22px;  
+      font-weight: 700;
+    margin-bottom: 3%;
+}
+.dieukhoan-container .container{
+    width: 90%;
+    margin: 0 auto;
+}
+.dieukhoan-container .title__rules1:first-child{
+    margin-bottom: 15px;
+}
+.dieukhoan-container .title__rules1{
+    color: #0E2954;
+    font-weight: 700;
+    font-size: 18px;  
+    margin-bottom: 10px;
+}
+.dieukhoan-container .content__rules{
+    font-size: 15px;
+    text-align: justify;
+}
+.dieukhoan-container .detail__desc{
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+.dieukhoan-container .title__name-box{
+    text-align: center;
+    color: var(--colorMain);
+    font-weight: 700;
+    font-size: 23px;
+    margin-top: 3em;
+}
+.dieukhoan-container .box__box{
+    width: 40%;
+    margin-left: 3%;
+}
+.dieukhoan-container .head__box{
+    display: flex;
+}
+.dieukhoan-container .num__box{
+    color: #0E2954;
+    font-weight: 600;
+    transform: translateY(40%);
+    margin-left: 5%;
+}
+.dieukhoan-container .name__box{
+    color: #139407;
+    font-weight: 600;
+    margin-top: 3%;
+}
+.dieukhoan-container .content__box{
+    width: 95%;
+    text-align: justify;
+}
+
+/* respon */
+@media only screen and (max-width: 768px){
+ 
+    .dieukhoan-container .num__box{
+        font-size: 120%;
+    }
+    .dieukhoan-container .detail__desc{
+        width: 95%;
+        flex-wrap: wrap;
+    }
+    .dieukhoan-container .box__box{
+        width: 100%;
+        margin: 0 auto;
+    }
+    .dieukhoan-container .head__box{
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 480px){
+ 
+    .dieukhoan-container .title__name{
+
+        font-size: 22px;
+    }
+    .dieukhoan-container .title__rules{
+ 
+        font-size: 18px;  
+
+    }
+    .dieukhoan-container .title__rules1{
+ 
+        font-size: 16px;  
+
+    }
+    .dieukhoan-container .content__rules{
+        font-size: 14px;
+        text-align: justify;
+    }
+    .dieukhoan-container .container-contents.px-3{
+        padding: 0 !important;
+    }
+}
+@media only screen and (max-width: 320px){
+    .dieukhoan-container .title__name{
+        font-size: 110%;
+    }
+    .dieukhoan-container .title__rules{
+        font-size: 110%;
+    }
+    .dieukhoan-container .container{
+        width: 100%;
+    }
+    .dieukhoan-container .title__rules1{
+        font-size: 100%;
+    }
+    .dieukhoan-container .head__box{
+        width: 85%;
+    }
+}
+
+.cauhoichung-container.container{
+    max-width: 1460px;
+}
+.dieukhoan-container.container{
+    max-width: 1460px;
+}
+.container__question{
+    width: 94%;
+    margin: 0 auto;
+}
+.container__question .title__main{
+    text-align: center;
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--colorMain);
+}
+.container__question .title__question{
+    font-size: 22px;
+    text-align: center;
+    font-weight: 700;
+}
+.container__question .title__question1{
+    font-size: 18px;
+    font-weight: 700;
+}
+.container__question .content__question{
+    font-size: 15px;
+    text-align: justify;
+}
+@media only screen and (max-width: 768px){
+    .container__question .title__main{
+        text-align: center;
+        font-size: 22px;
+    }
+    .container__question .title__question{
+        font-size: 19px;
+        text-align: center;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    .container__question .title__question1{
+        font-size: 17px;
+    }
+}
+@media only screen and (max-width: 438px){
+    .container__question .title__main{
+        text-align: center;
+        font-size: 20px;
+    }
+    .container__question .title__question{
+        font-size: 17px;
+        text-align: center;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    .container__question .title__question1{
+        font-size: 15px;
+    }
+    .container__question .content__question{
+        font-size: 14px;
+    }
+}

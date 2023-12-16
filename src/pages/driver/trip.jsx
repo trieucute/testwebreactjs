@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import car from '../../../assets/images/bus1.jpg'
+import car from '../../assets/images/bus1.jpg'
 import Tooltip from '@mui/material/Tooltip';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeStatus, deleteTripAdmin, fetchTripAdmin, fetchTripAdminDetail } from '../../../reduxTool/tripSlice';
+import { changeStatus, deleteTripAdmin, fetchTripAdmin, fetchTripAdminDetail } from '../../reduxTool/tripSlice';
 import ReactPaginate from 'react-paginate';
-import { formatDateTimeAdminTrip, formatTimeAdminTrip } from '../../../config';
-import LoadingAd from '../../loadingAdmin';
-import { deletePoint, fetchAddPoint, fetchStationPoint, updatePoint } from '../../../reduxTool/stationSlice';
-import axiosAdmin from '../axois-admin';
-const TripList = () => {
+import { formatDateTimeAdminTrip, formatTimeAdminTrip } from '../../config';
+import LoadingAd from '../loadingAdmin';
+import { deletePoint, fetchAddPoint, fetchStationPoint, updatePoint } from '../../reduxTool/stationSlice';
+import axiosAdmin from '../admin/axois-admin';
+const  TripOfDriver= () => {
     const navigate = useNavigate();
-    const handleAddTrip=()=>{
-    navigate('/admin/trips/addnew')
-    }
+    // const handleAddTrip=()=>{
+    // navigate('/admin/trips/addnew')
+    // }
     const [showAddStart, setShowAddStart]= useState(false);
     const [showAddEnd, setShowAddEnd]= useState(false);
 
@@ -25,16 +25,11 @@ const TripList = () => {
     }
     const dispatch= useDispatch();
     const tripData= useSelector(state=>state.tripAdmin)
-    const [loading, setLoading]=useState(false)
+    const [loadingDelete, setLoadingDelete]=useState(false)
     const trips= tripData?.data.data
 
     useEffect(()=>{
-
-    setLoading(true)
     dispatch(fetchTripAdmin())
-    .then(res=>{
-      setLoading(false)
-    })
     },[])
 
     // Tạo đối tượng Date hiện tại
@@ -70,52 +65,7 @@ const now= new Date();
 //   // Các thông tin khác của postData
 // };
 
-// Tính toán số mili giây cần chờ để đến thời gian 18:15
-const timeUntilDesiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 29, 0, 0) - now;
 
-// Nếu thời gian đã vượt qua thời gian mong muốn, không gửi request
-if (timeUntilDesiredTime > 0) {
-  setTimeout(() => {
-    // Thời gian đã đạt đến 18:15, gửi dữ liệu lên server
-    const postDatas = {
-      departure_time: '2023-12-14 18:00:00', // Format lại thời gian thành ISO string (vd: "2023-12-13 18:00:00")
-      car_id: 1,
-      driver_id: 9,
-      arrival_time: '2023-12-14 23:00:00', // Thời gian đến sau 9 tiếng
-      start_station: 1,
-      end_station: 3,
-      status: 'Chờ khởi hành',
-      pickups: [
-        {
-          time: '19:00',
-          pointId: 1,
-        }
-      ],
-      dropoff: [
-        {
-          time: '20:00', // Thời gian sau 9 tiếng
-          pointId: 7,
-        }
-      ],
-      // Các thông tin khác của postData
-    };
-    console.log('postDatas',postDatas);
-
-    axiosAdmin.post('/trip', postDatas, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-      console.log(res,'postne'); 
-    })
-    .catch(e => {
-      console.error(e);
-    });
-  }, timeUntilDesiredTime);
-} else {
-  console.log('Đã vượt qua thời gian 18:18 ngày hôm nay.');
-}
 
     // console.log(trips);
         // tìm kiếm
@@ -289,21 +239,21 @@ if (timeUntilDesiredTime > 0) {
         const handleDeleteTrip=(id)=>{
 
           const confirmDeletion = window.confirm("Bạn có chắc muốn xoá chuyến xe này?");
-       
+          setLoadingDelete(true)
           if (confirmDeletion) {
             dispatch(deleteTripAdmin(id))
               .then((res) => {
                 console.log(res);
                 dispatch(fetchTripAdmin())// Gọi lại action fetchCarSeat để load lại dữ liệu
                 .then(res=>{
-           
+                setLoadingDelete(false)
 
                 })
 
               })
               .catch((err) => {
                 console.error(err);
-
+                setLoadingDelete(false)
 
               });
           }
@@ -318,25 +268,23 @@ if (timeUntilDesiredTime > 0) {
         // dispatch(fetchTripAdmin())
         // setLoadingDelete(false)
         const confirmDeletion = window.confirm("Bạn có chắc muốn cập nhật trạng thái chuyến xe này?");
-        setLoading(true)
+        setLoadingDelete(true)
         if (confirmDeletion) {
           dispatch(changeStatus(post))
             .then((res) => {
               console.log(res);
               dispatch(fetchTripAdmin())// Gọi lại action fetchCarSeat để load lại dữ liệu
               .then(res=>{
-              setLoading(false)
+              setLoadingDelete(false)
 
               })
 
             })
             .catch((err) => {
               console.error(err);
-              setLoading(false)
+              setLoadingDelete(false)
 
             });
-        }else{
-          setLoading(false)
         }
       }
       const [pointStartEdit, setPointStartEdit] = useState({
@@ -374,20 +322,20 @@ if (timeUntilDesiredTime > 0) {
         // });
     return (
         <div>
-          {loading ? (
+          {loadingDelete ? (
             <LoadingAd/>
           ):(
             <>
             
         <div className='tripAdmin-container'>
-          <h3 className='h3-admin'>Quản lý chuyến xe</h3>
+          <h3 className='h3-admin'>Lịch trình chuyến xe</h3>
           <div className='row mx-0 my-2'>
-            <div className='col ps-0 '>
+            {/* <div className='col ps-0 '>
               <button className='btn-add' onClick={handleAddTrip}> <i class="fas fa-bus"></i> Thêm chuyến xe</button>
-            </div>
-          <div className='search col text-end'>
+            </div> */}
+          <div className='search col text-end my-2' >
             <form action="">
-              <input type="text" placeholder='Tìm kiếm chuyến xe' className='form-control w-75' style={{marginLeft:"auto"}} value={searchTerm}
+              <input type="text" placeholder='Tìm kiếm chuyến xe' className='form-control w-100' style={{marginLeft:"auto"}} value={searchTerm}
       onChange={handleSearch}/><button type='button'><i class="fas fa-magnifying-glass"></i></button>
             </form>
           </div>
@@ -407,7 +355,7 @@ if (timeUntilDesiredTime > 0) {
                     {/* <th>Chỗ còn trống</th> */}
                   <th>Trạng thái</th>
                   <th></th>
-                  <th></th>
+                
                 </tr>
                 </thead>
                 <tbody>
@@ -432,10 +380,7 @@ if (timeUntilDesiredTime > 0) {
                 <td>
                   <button  className='btn btn-primary' data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>handleTripdetail(item.id, item.start_station.id, item.end_station.id)}>Xem chi tiết</button>
                   </td>
-                <td >
-                   <Link  to={`/admin/trips/update/${item.id}`}> <i class="fas fa-pen-to-square"></i></Link>
-                    <i class="fas fa-trash" onClick={()=>handleDeleteTrip(item.id)}></i>
-                    </td>
+               
               </tr>
             ))}
                   
@@ -1108,4 +1053,4 @@ if (timeUntilDesiredTime > 0) {
     );
 };
 
-export default TripList;
+export default  TripOfDriver

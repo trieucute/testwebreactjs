@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchPostDetail, fetchlastest, fetchnews, fetchpopular } from '../../reduxTool/newsSlice';
 import { useEffect } from 'react';
 import Loading from '../loadingTrip';
@@ -32,12 +32,6 @@ const PostDetail = () => {
     navigate(`/tinchitiet/${id}`)
     dispatch(fetchPostDetail(id));
   }
-  const handlnewslist= ()=>{
-    // window.load()
-    window.scrollTo(0, 0);
-    navigate(`/tintuc`)
-   
-  }
 
   return (
     <div className='mt-10'>
@@ -63,13 +57,13 @@ const PostDetail = () => {
                   <div className="" dangerouslySetInnerHTML={{ __html: postDetail.content }}/>
                   <p className="text-end mt-5">Sưu tầm</p>
                   <div className="back-news text-start">
-                    <a className="btn-watch btn-back-news" onClick={handlnewslist} style={{cursor:"pointer"}}>
+                    <Link className="btn-watch btn-back-news" to="/news" >
                       <i
                         className="fa-solid fa-angles-left"
                         style={{ paddingRight: 10 }}
                       />
                       Quay lại
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

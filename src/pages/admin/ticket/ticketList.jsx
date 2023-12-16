@@ -48,13 +48,14 @@ const TicketList = () => {
       // tìm kiếm
 
       const [searchTerm, setSearchTerm] = useState('');
+      const sortedById = itemList?.slice().sort((a, b) => b.id - a.id);
       const currentticket = searchTerm
-        ? itemList?.filter((list) =>
+        ?  sortedById?.filter((list) =>
           list.code.toLowerCase().includes(searchTerm.toLowerCase()) ||   list.user.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
-        : itemList;
+        :  sortedById;
     
-      const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+      const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
       const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
     
       const offset = pageNumber * perPage;
@@ -137,7 +138,7 @@ const [dataDetail, setDataDetail] = useState('')
                         <td>{item.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
                         <td>{item.status ==='booked' && 'Đã thanh toán'}
                         {item.status ==='pending' && 'Đang thanh toán'}
-                        {item.status ==='canceled' && 'Đã huỷ'}
+                        {item.status =='cancelled' && 'Đã huỷ'}
                         </td>
                   
                         <td>

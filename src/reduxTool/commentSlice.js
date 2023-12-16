@@ -4,7 +4,7 @@ import axiosAdmin from '../pages/admin/axois-admin';
 
 export  const fetchCommentDetail = createAsyncThunk("comment/fetchCommentDetail", async(id)=>{
   try {
-      const commentCar= await axiosClient.get(`/car/${id}/comment`)
+      const commentCar= await axiosClient.get(`/car/${id}/comments`)
       return commentCar.data
   } catch (error) {
       console.log(error);

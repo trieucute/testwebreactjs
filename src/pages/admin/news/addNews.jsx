@@ -1,149 +1,4 @@
-// import React, { useState } from 'react';
-// // import { CKEditor } from '@ckeditor/ckeditor5-react';
-// // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import { initializeApp } from 'firebase/app';
-// import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-// // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 
-// import { CKEditor } from 'ckeditor4-react';
-// import firebaseConfig from '../../../firebase'; // Import your Firebase config
-// import axiosAdmin from '../axois-admin';
-
-// const AddNewsForm = () => {
-//   // console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
-//   // ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName )
-//   const [content, setContent] = useState('');
-//   const [title, setTitle] = useState('');
-//   const [img, setImg] = useState('');
-//   const [sum, setSum] = useState('');
-//   const [des, setDes] = useState('');
-
-//   // const [content, setContent] = useState('');
-
-//   const handleEditorChange = (event, editor) => {
-//     const data = editor.getData();
-//     setContent(data);
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // Handle submission logic here
-//     // console.log(content);
-//     console.log(img);
-//     const postNew= {
-//       title: title,
-//       content:content,
-//       img:img,
-//       summary:sum
-//     }
-//     axiosAdmin.post('/news',postNew,{
-//       headers: {
-//         'Content-Type': 'multipart/form-data'
-//       }
-//       })
-//     .then(res=>{
-//       console.log(res.data);
-//     })
-//     .catch(err=>{
-//       console.error(err)
-//     })
-//   };
-
-//   const app = initializeApp(firebaseConfig);
-//   const storage = getStorage(app);
-
-//   const uploadImage = async (file) => {
-//     console.log('File nè:', file);
-//     const timestamp = new Date().getTime();
-    
-//     // Kiểm tra xem file.name có giá trị không rỗng
-//     const fileExtension = file.name ? file.name.split('.').pop() : 'jpg';
-  
-//     const fileName = `${timestamp}_${Math.random()}.${fileExtension}`;
-//     const storageRef = ref(storage, 'images/' + fileName);
-  
-//     const metadata = {
-//       contentType: file.type,
-//     };
-  
-//     try {
-//       await uploadBytes(storageRef, file, metadata);
-//       const imageUrl = await getDownloadURL(storageRef);
-//       console.log('img', imageUrl);
-//     console.log('File nè:', file);
-
-//       return imageUrl;
-//     } catch (error) {
-//       console.error('Error uploading image:', error);
-//       throw error;
-//     }
-//   };
-  
-//   function uploadAdapter(loader) {
-//     return {
-//       upload: async () => {
-//         try {
-//           // Đợi cho Promise được giải quyết trước khi log
-//           const file = await loader.file;
-//           console.log('Loader file:', file);
-  
-//           const imageUrl = await uploadImage(file);
-          
-//           return { default: imageUrl };
-//         } catch (error) {
-//           console.error('Error uploading image:', error);
-//           throw error;
-//         }
-//       },
-//     };
-//   }
-//   function uploadPlugin(editor) {
-//     editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-//       console.log('Loader:', loader);
-//       return uploadAdapter(loader);
-//     };
-//      // Thêm plugin ImageResize
-//     //  editor.plugins.add(ImageResize)
-//   }
-
-//   return (
-//     <div>
-//       <h2>Add News</h2>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           <input type="text" name='title' id='title' placeholder='title' onChange={(e)=>setTitle(e.target.value)}/>
-//           <input type="text" name="summary" id='summary' placeholder='summary'onChange={(e)=>setSum(e.target.value)}  />
-//           <input type="number" name='active'id='active' value={1} placeholder='active' />
-//           {/* <input type="text" name='content 'id='content'  placeholder='content' onChange={(e)=>setDes(e.target.value)} /> */}
-
-//           <input type="number" name='view' id='view' placeholder='view'  value={0}/>
-//           <input type="file" accept='' onChange={(e)=>setImg(e.target.files[0])}/>
-//           <h2>Using CKEditor 5 build in React</h2>
-//           <CKEditor
-       
-//             // editor={ClassicEditor}   
-//               config={{
-//               extraPlugins: [uploadPlugin],
-      
-//             }}
-//             data="<p>Hello from CKEditor 5!</p>"
-//             onReady={(editor) => {
-//               console.log('Editor is ready to use!', editor);
-//             }}
-//             onChange={handleEditorChange }
-//             onFocus={(event, editor) => {
-//               console.log('Focus.', editor);
-//             }}
-//           />
-//         </div>
-//         <button type="submit">Submit</button>
-//       </form>
-//       <div>{content}</div>
-//     </div>
-//   );
-// };
-
-// export default AddNewsForm;
 import React, { useState, useRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -155,6 +10,7 @@ import firebaseConfig from '../../../firebase'; // Import cấu hình Firebase c
 import axiosAdmin from '../axois-admin';
 import { useEffect } from 'react';
 import LoadingAd from '../../loadingAdmin';
+import Notification from '../../NotificationTrip';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -191,16 +47,39 @@ const AddNewsForm = () => {
       });
     }
   }, [imagesUploaded]);
-
+  const [showNotifi, setShowNotifi] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [message, setMessage]=useState(null)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
   
-    if(sum==='' || active==='' || content===''|| img===''|| title===''){
+    if(sum==='' || active==='' || content===''|| img===''|| title===''|| content===''){
       setLoading(false)
-      alert('Vui lòng nhập đầy đủ nội dung!')
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+    setShowNotifi(true);
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+      setShowNotifi(false);
+    }, 3000);
       return
-    }
+    }  
+              // Kiểm tra xem nội dung có chứa hình ảnh hay không
+  const hasImage = /<img[^>]+>/g.test(content);
+
+  if (content!=='' && !hasImage) {
+    setLoading(false);
+    // alert('Vui lòng thêm hình ảnh trong khung nội dung!');
+    setNotificationMessage('Vui lòng thêm hình ảnh trong khung nội dung!');
+    setShowNotifi(true);
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+      setShowNotifi(false);
+    }, 3000);
+    return;
+  }
     try {
       // Process and upload images in a batch
       if (!imagesUploaded && imageData.length > 0) {
@@ -221,7 +100,7 @@ const AddNewsForm = () => {
           img: img,
           active: active,
         };
-      
+
         // Make the API call with the updated data
         const res = await axiosAdmin.post('/news', postNew, {
           headers: {
@@ -236,6 +115,7 @@ const AddNewsForm = () => {
         setImg('');
         setImageData([]);
         setLoading(false);
+        setMessage('Thêm mới thành công')
         // Reset form fields and show success message
         // ...
       }
@@ -243,10 +123,12 @@ const AddNewsForm = () => {
     } catch (error) {
       setLoading(false);
       console.error(error);
+      setMessage(null)
       // Handle errors
       // ...
     } finally {
       setLoading(false);
+    
       setImagesUploaded(false); // Đảm bảo rằng nếu có lỗi, trạng thái sẽ được reset
     }
   };
@@ -306,6 +188,7 @@ const AddNewsForm = () => {
     <div className='addNew-container'>
       {loading ? <LoadingAd/> : (
         <>
+           {showNotifi &&  <Notification message={notificationMessage} />}
            <h3 className='h3-admin mb-4 text-center'> Thêm tin mới</h3>
       <form onSubmit={handleSubmit}  className='addNew-contents'>
         <div className='row m-0 justify-content-between'> 
@@ -344,6 +227,17 @@ const AddNewsForm = () => {
        
        <div className='form-group'><button className='btn-add' type="submit">Thêm mới</button></div>
        </div>
+       {message && <>
+                                <div className="form-group"  style={{
+                                                color: "rgb(230, 57, 70)",
+                                                fontWeight: "700",
+                                                marginTop: 5,
+                                                fontSize: "0.8em",
+                                                textAlign: "left",
+                                            }}>
+                                    {message}
+                                </div>
+                            </>}
       </form>
         </>
       )}

@@ -29,7 +29,7 @@ const NewsList = () => {
 // console.log( news);
   useEffect(() => {
     dispatch(fetchnews());
-  }, [loading])
+  }, [])
 
   function formatDateNews(inputDate) {
     const date = new Date(inputDate);
@@ -48,11 +48,12 @@ const NewsList = () => {
   const handleDelete = async (id) => {
     setLoading(true)
   
-    const confirmDeletion = window.confirm("Bạn có chắc muốn tin tức này?");
+    const confirmDeletion = window.confirm("Bạn có chắc muốn xoá tin tức này?");
     if (confirmDeletion) {
       const res = await axiosAdmin.delete(`/news/${id}`);
       if (res.data) {
         setLoading(false)
+        dispatch(fetchnews());
       }
     }
   }
@@ -66,7 +67,7 @@ list.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 : itemList;
 
-const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
 const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
 
 const offset = pageNumber * perPage;
@@ -84,60 +85,6 @@ setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
 };
 
 
-  // tìm kiếm
-
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const [searchResults, setSearchResults] = useState([]);
-
-  // const handleSearch = (event) => {
-  //   setSearchTerm(event.target.value);
-
-  //   const results = itemList.filter((news) =>
-  //     news.title?.toLowerCase().includes(searchTerm?.toLowerCase())
-  //   );
-
-  //   setSearchResults(results);
-  // }
-  // console.log(searchResults);
-
-  // const [currentPage, setCurrentPage] = useState(0);
-  // const [perPage] = useState(5);
-  // // const [searchTerm, setSearchTerm] = useState('');
-  // // const [searchResults, setSearchResults] = useState([]);
-  // const [currentItems, setCurrentItems] = useState([]);
-  // const [noResults, setNoResults] = useState(false);
-
-  // // ... (fetch dữ liệu và các logic khác)
-
-  // const handleSearch = (event) => {
-  //   setSearchTerm(event.target.value);
-
-  //   const results = itemList.filter((news) =>
-  //     news.title?.toLowerCase().includes(searchTerm?.toLowerCase())
-  //   );
-
-  //   setSearchResults(results);
-  //   setNoResults(results.length === 0);
-  // };
-
-  // useEffect(() => {
-  //   if (searchTerm !== '') {
-  //     setCurrentItems(searchResults);
-  //     setNoResults(searchResults.length === 0);
-  //   } else {
-  //     setCurrentItems(itemList);
-  //     setNoResults(false);
-  //   }
-  // }, [searchResults, itemList, searchTerm]);
-
-  // const pageCount = Math.ceil(currentItems?.length / perPage);
-
-  // const handlePageChange = ({ selected }) => {
-  //   setCurrentPage(selected);
-  // };
-
-  // const offset = currentPage * perPage;
-  // const currentPageData = currentItems?.slice(offset, offset + perPage);
 
   return (
     <div>
@@ -180,8 +127,8 @@ setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
                       <tr>
                              <td>{index + offset + 1}</td>
                         <td className='td-content-title'>{item.title}</td>
-                        <td className='td-content-summary'>
-                          <div className='content-summary'>
+                        <td className='td-content-summarys'>
+                          <div className='content-summarys'>
                             {item.summary}
                           </div>
                           

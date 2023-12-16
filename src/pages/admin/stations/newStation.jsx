@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddStation, deleteStation } from '../../../reduxTool/stationSlice';
+import Notification from '../../NotificationTrip';
 export    const provincesVietnam = [
       "Hà Nội",
       "Hồ Chí Minh",
@@ -108,13 +109,29 @@ const AddNewStation = () => {
       });
       setDivs(updatedDivs);
     };
+    const [showNotifi, setShowNotifi] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
     const handleSubmit=(e)=>{
       e.preventDefault();
+   
       const pointData = divs.map((div) => ({
         name: div.namePoint, // Sử dụng thuộc tính pickupTime của mỗi phần tử
         address: div.addressPoint, // Sử dụng thuộc tính pickupValue của mỗi phần tử
       }));
+      const isValidPointData = pointData.every(point => point.name !== undefined && point.address !== undefined );
+      if(name===''  || selectedProvince==='' || address==='' ||  !isValidPointData){
+        setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+        setShowNotifi(true);
     
+        // Hide the notification after 3 seconds
+        setTimeout(() => {
+          setShowNotifi(false);
+        }, 3000);
+        return
+      }
+
+
+
       const post={
         name:name,
         address:address,
@@ -133,6 +150,7 @@ const AddNewStation = () => {
         <div className='addNew-container addNew-stations'>
 
           <>
+          {showNotifi &&  <Notification message={notificationMessage} />}
              <h3 className='h3-admin mb-4 text-center'> Thêm bến xe</h3>
         <form onSubmit={handleSubmit}  className='addNew-contents'>
           <div className='row m-0 justify-content-between'> 

@@ -26,3 +26,142 @@
     color: var(--colorMain);
     font-style: italic;
 }
+.searchTicket-container  .col-sm-3 img{
+    width: 100%;
+    object-fit: cover;
+    height: 480px;
+
+ }
+ @media only screen and (max-width: 1200px){
+    .col-content-trips .col-content{
+        width: 26%;
+        flex: inherit;
+    }
+    .col-content-trips .col-content  .img-fluid{
+    width: 100%;
+    }
+    .col-content-trips .col-content.col-content-width{
+        width: 37%;
+        flex: inherit;
+    }
+
+ }
+@media only screen and (max-width: 992px){
+    .resultTicket-container .border-right {
+        border-right: none;
+    }
+    .resultTicket-container .border-right {
+        /* margin: 10px 0; */
+        padding: 10px 0;
+        border-bottom:  2px solid rgb(198, 198, 198);
+    }
+    .col-content-trips .col-content-width .col.text-center.mt-3{
+        font-size: 14px;
+    }
+    
+    .searchTicket-container .form-group {
+        margin: 1.5em 0em ;
+    }
+    .searchTicket-container  .col-sm-3{
+      width: 29%;
+    }
+    .searchTicket-container  .col-sm-3 img{
+       
+        height: 351px;
+     }
+     .searchTicket-container .title_home_bus h1 {
+        font-size: 20px;
+    }
+    .col-price-trip .text-centers{
+        text-align: center;
+    }
+    .col-price-trip .text-end.price-ticket{
+        text-align: center !important;
+    }
+}
+@media only screen and (max-width: 768px){
+    .col-content-trips .col-content.col-content-width{
+        width:  35%;
+  
+    }
+
+    .col-content-trips .col-content{
+        width: 30%;
+
+    }
+    .searchTicket-container  .title_home_bus h1 {
+        font-size: 22px;
+    }
+    .searchTicket-container .form-group {
+        margin: 1.5em 1em ;
+    }
+    .searchTicket-container   .padding-5 {
+        padding: 3em 0;
+    }
+    .searchTicket-container  .col-sm-3{
+        display: none;
+    }
+    .searchTicket-container  .col-sm-5{
+        width: 100%;
+    }
+    .col-content-trips .col-content.col-content-width:first-child{
+        padding-left: 0;
+    }
+    .col-content-trips .col-content.col-content-width:last-child{
+        padding-right: 0;
+    }
+}
+@media only screen and (max-width: 568px){
+    .resultTicket-container .backWhite-padding{
+        padding: 25px 7px;
+    }
+    .searchTicket-container  .title_home_bus h1 {
+        font-size: 21px;
+    }
+    .searchTicket-container .form-group {
+        margin: 1.5em 0em ;
+    }
+    .searchTicket-container .title-trip span{
+        display: block;
+        text-align: center;
+        padding: 0 !important;
+    }
+    .bus_popular-contents .text-bus {
+        font-size: 12px;
+    }
+    .bus_popular-contents .img-popular-route-card img {
+        border-radius: 10px;
+        height: 214px;
+        object-fit: cover;
+    }
+    .touristInformation .img-popular-route-card img {
+        border-radius: 10px;
+        height: 217px;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 438px){
+
+    .searchTicket-container  .title_home_bus h1 {
+        font-size: 20px;
+    }
+    .col-content-trips .col-content.col-content-width{
+        width:  100%;
+  
+    }
+
+    .col-content-trips .col-content{
+        width: 100%;
+
+    }
+    .searchTicket-container  .box-infor-ticket .text-centers{
+        text-align: center;
+    }
+    .col-content-trips .col-content{
+        padding: 0 !important;
+    }
+    .col-content-trips .col-content > .text-centers{
+        padding: 1em 0;
+    }
+}

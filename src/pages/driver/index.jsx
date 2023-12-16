@@ -5,16 +5,14 @@ import AuthWrapperAdmin from "../../componets/admin/authWrapperAdmin";
 import '../../assets/css/admin.css'
 // import '../../assets/js/adminMenu.js'
 import { useEffect } from "react";
-import DashBoard from "./dashboard";
-import RouteAdmin from "./route/route";
-import User from "./user/user";
+
 import MenuSidebar from "./menu";
 import { useStateContext } from "../../context/ContextProvider";
-const IndexAdmin = () => {
- const {admin}=  useStateContext();
+const IndexDriver = () => {
+ const {driver}=  useStateContext();
  const navigate= useNavigate()
   useEffect(()=>{
-    if(!admin){
+    if(!driver){
       navigate('/admin')
     }
 },[])
@@ -27,4 +25,4 @@ const IndexAdmin = () => {
   );
 };
 
-export default IndexAdmin;
+export default IndexDriver ;

@@ -9,6 +9,7 @@ import { fetchDriverAdmin } from '../../../reduxTool/userSlice';
 import Loading from '../../loadingTrip';
 import Autocomplete from 'react-autocomplete';
 import axiosAdmin from '../axois-admin';
+import Notification from '../../NotificationTrip';
 
 const AddNewTrip = () => {
     const [loading, setLoading]= useState(true)
@@ -79,7 +80,14 @@ const AddNewTrip = () => {
       })
       if( idStationEnd !=='' &&  idStationStart !=='' ){
         if(idStationEnd === idStationStart ){
-          alert('Vui lòng chọn khác nơi đến và nơi đi!')
+          // alert('Vui lòng chọn khác nơi đến và nơi đi!')
+          setNotificationMessage('Vui lòng chọn khác nơi đến và nơi đi!');
+          setShowNotifi(true);
+        
+          // Hide the notification after 3 seconds
+          setTimeout(() => {
+            setShowNotifi(false);
+          }, 3000);
         return
         }
         
@@ -135,6 +143,11 @@ const AddNewTrip = () => {
     const [messageArrival, setMessageArrival]= useState('')
     const [messageSuccess, setMessageSuccess]= useState('')
 
+    const [showNotifi, setShowNotifi] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
+
+
+
     const handleSubmit=(e)=>{
       e.preventDefault();
       setLoading(true)
@@ -155,15 +168,35 @@ const AddNewTrip = () => {
 // Kiểm tra nếu pickupData hoặc dropoffData có giá trị undefined
 if(departure==='' || idCar===''|| idDriver===''|| arrival===''||  idStationStart==='' || idStationEnd===''|| status==='' ){
   setLoading(false);
-  alert('Vui lòng nhập đầy đủ thông tin!')
+  setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+  setShowNotifi(true);
+
+  // Hide the notification after 3 seconds
+  setTimeout(() => {
+    setShowNotifi(false);
+  }, 3000);
   return
 }else if (pickupData.some((data) => data.time === undefined || data.pointId === undefined) || dropoffData.some((data) => data.time === undefined || data.pointId === undefined)) {
   setLoading(false);
-  alert('Vui lòng chọn điểm đón và điểm trả!');
+  // alert('Vui lòng chọn điểm đón và điểm trả!');
+  setNotificationMessage('Vui lòng chọn điểm đón và điểm trả!');
+  setShowNotifi(true);
+
+  // Hide the notification after 3 seconds
+  setTimeout(() => {
+    setShowNotifi(false);
+  }, 3000);
   return;
 }else  if(idStationEnd === idStationStart ){
   setLoading(false);
-  alert('Vui lòng chọn khác nơi đến và nơi đi!')
+  // alert('Vui lòng chọn khác nơi đến và nơi đi!')
+  setNotificationMessage('Vui lòng chọn khác nơi đến và nơi đi!');
+  setShowNotifi(true);
+
+  // Hide the notification after 3 seconds
+  setTimeout(() => {
+    setShowNotifi(false);
+  }, 3000);
 return
 }
       const postData={
@@ -247,6 +280,7 @@ return
             <Loading/>
           ):(
             <>
+                  {showNotifi &&  <Notification message={notificationMessage} />}
             <h3 className='h3-admin mb-4 text-center'> Thêm chuyến xe</h3>
        <form onSubmit={handleSubmit}  className='addNew-contents'>
          <div className='row m-0 justify-content-between'> 

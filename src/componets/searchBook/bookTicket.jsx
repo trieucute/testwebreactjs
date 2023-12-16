@@ -278,6 +278,10 @@ console.log(filteredDataProvinces, 'filtereDATA');
     if (!formData.start_location || !formData.end_location || !formData.date || !formData.amount) {
       // setShowAlert(true);
       setShowNotifi(true)
+      // Ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return;
     }
 
@@ -289,6 +293,9 @@ console.log(filteredDataProvinces, 'filtereDATA');
  // Kiểm tra nếu start_location và end_location giống nhau
  if (startLocation === endLocation) {
   setMessLocation(true);
+  setTimeout(() => {
+    setMessLocation(false);
+  }, 3000);
   return;
 }
 
@@ -439,7 +446,7 @@ console.log(filteredDataProvinces, 'filtereDATA');
             <div className="form-group">
               <label htmlFor="date_go">Số vé</label>
               <input
-                type="number" name="amount" value={formData.amount} placeholder="1"  onChange={(event) => handleChange(event)}
+                type="number" name="amount" value={formData.amount} onChange={(event) => handleChange(event)}
                 className="form-control "
                 id="date_go" 
               />

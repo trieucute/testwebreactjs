@@ -12,7 +12,7 @@ const AdminLogin = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { admin, setAdmin, tokenAdmin, setTokenAdmin} = useStateContext();
+    const { admin, setAdmin, tokenAdmin, setTokenAdmin, setDriver, driver, setTokenDriver, tokenDriver} = useStateContext();
     // const admin = useSelector(state=>state.authAdmin)
     const [errorMessage, setErrorMessage] = useState('');
     // console.log(admin);
@@ -36,8 +36,13 @@ const AdminLogin = () => {
                         setTokenAdmin(loginResponse.payload.data.access_token)
                         setAdmin(profile)
                         navigate('/admin/dashboard');
-                    } else {
-                        alert('Bạn không có quyền truy cập trang admin');
+                    } else if (profile.role === 'driver'){
+                      setTokenDriver(loginResponse.payload.data.access_token)
+                        setDriver(profile)
+                        navigate('/driver/dashboard');
+                    }else{
+                      alert('Bạn không có quyền truy cập trang admin');
+
                     }
                 }
             }
@@ -45,8 +50,9 @@ const AdminLogin = () => {
             setErrorMessage(error.message);
         }
     };
+    console.log(admin);
 useEffect(()=>{
-  if(tokenAdmin && admin ){
+  if(admin ){
     navigate('/admin/dashboard');
   }
 

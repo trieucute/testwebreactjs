@@ -9,7 +9,7 @@ import xe from '../../assets/images/xe2.gif';
 import city from '../../assets/images/city2.jpg';
 import dot from '../../assets/images/fluent-emoji_bus-stop.png';
 import go from '../../assets/images/simple-icons_go.png';
-
+import Loading from '../loadingTrip'
 
 import { TimeHM, calculateTimeDifference, formatDate } from '../../config';
 import QRCode from 'qrcode.react';
@@ -18,18 +18,20 @@ const SearchTicket = () => {
     const [code, setCode]=useState('')
     const [error, setError] = useState('');
     const [data, setData]= useState('')
+    const [loadingData, setLoadingData] = useState(false);
     const handleSearch=(e)=>{
         e.preventDefault()
-     
+        setLoadingData(true)
         axiosClient.get(`/ticket/search?phone_number=${phone}&code=${code}`)
         .then(res=>{
             console.log(res);
             setData(res.data.data)
             setError('')
-      
+            setLoadingData(false)
         })
         .catch(err=>{
             console.error(err)
+            setLoadingData(false)
             // const error= err.response;
             setError(`Không tìm thấy mã vé ${code}`);
             // if(error){
@@ -43,13 +45,13 @@ const SearchTicket = () => {
     return (
         <div className='mt-10 searchTicket-container '>
             <div className="container py-3 ">
-                <div className='backWhite-padding'>
+                <div className='backWhite-padding padding-5'>
                     <div className="row m-0 justify-content-between align-items-center">
                         <div className="col-sm-3">
                             <img
                                 src={banner}
                                 alt="Left Image"
-                                style={{ width: "100%" , objectFit:'cover', height:'480px' }}
+               
                             />
                         </div>
                         <div className="col-sm-5">
@@ -106,15 +108,16 @@ const SearchTicket = () => {
                             <img
                                 src={banner}
                                 alt="Right Image"
-                                style={{ width: "100%", objectFit:'cover',height:'480px'  }}
+                 
                             />
                         </div>
                     </div>
                 </div>
             </div>
-            {data && 
+            {loadingData && <Loading/>}
+             {!loadingData && data && 
             <div className='resultTicket-container container mb-4'>
-                <div className=' backWhite-padding'>
+                <div className=' backWhite-padding '>
                     <div className='title_home_bus'>
                                     <h1 className='text-center'>THÔNG TIN MÃ VÉ {code}</h1>
                                 </div>
@@ -159,32 +162,32 @@ const SearchTicket = () => {
                                     <h1 className='text-start' style={{fontSize:"15px"}}>THÔNG TIN CHUYẾN XE</h1>
                                 </div>
                     <div className='row m-0 align-items-center box-infor-ticket'>
-                        <div className='col ps-3' style={{fontWeight:"700"}}>{formatDate( data.trip.departure_time.split(' ')[0])}  <span style={{paddingLeft:"2em"}}>{data.trip.start_station.province} - {data.trip.end_station.province}</span>   </div>
+                        <div className='col ps-3 title-trip' style={{fontWeight:"700"}}> <span> {formatDate( data.trip.departure_time.split(' ')[0])} </span> <span style={{paddingLeft:"2em"}}>{data.trip.start_station.province} - {data.trip.end_station.province}</span>   </div>
                         <div className='row m-0 align-items-center '>
-                        <div  className='col-xxl-9 col-xl-9 col-lg-9 col-sm-12 col-ms-12 border-right'>
-                            <div className='row m-0 flex-row align-items-center'>
-                            <div className= 'col row m-0 flex-column'>
-                                <div className='col'><img src={xe} alt=""  className='img-fulid' style={{maxWidth:"222px"}}/></div>
+                        <div  className='col-xxl-9 col-xl-9 col-lg-9  col-md-12 col-sm-12 col-ms-12 border-right'>
+                            <div className='row m-0 flex-row align-items-baseline col-content-trips'>
+                            <div className= 'col row m-0 flex-column  col-content col-content-width'>
+                                <div className='col text-centers'><img src={xe} alt=""  className='img-fluid' style={{maxWidth:"222px"}}/></div>
                                 <div className='col text-center mt-3' style={{fontWeight:"700"}}>{data.trip.start_station.name}<br /> ({data.pickup_location})</div>
                                 <div className='col text-center'> {data.trip?.schedule.find(i=> i.name===data?.pickup_location).time.substring(0, 5)} </div>
                          
                             </div>
-                            <div className=' col row m-0 flex-column align-items-center text-center'>
+                            <div className=' col row m-0 flex-column align-items-center text-center  col-content p-0'>
                               
-                               <div className='col'><p>{calculateTimeDifference( data.trip?.schedule.find(i=> i.name===data?.pickup_location).time.substring(0, 5), data.trip?.schedule.find(i=> i.name===data?.dropoff_location).time.substring(0, 5))}</p>
-                                <img src={go} alt="" className='img-fulid' /></div>
+                               <div className='col text-centers'><p>{calculateTimeDifference( data.trip?.schedule.find(i=> i.name===data?.pickup_location).time.substring(0, 5), data.trip?.schedule.find(i=> i.name===data?.dropoff_location).time.substring(0, 5))}</p>
+                                <img src={go} alt="" className='' style={{maxWidth:'100%'}} /></div>
                             </div>
-                            <div className='col row m-0 flex-column'>
-                            <div className='col'><img src={city} alt="" className='img-fulid' style={{maxWidth:"222px"}} /></div>
+                            <div className='col row m-0 flex-column  col-content col-content-width' >
+                            <div className='col text-centers'><img src={city} alt="" className='img-fluid' style={{maxWidth:"222px"}} /></div>
                             <div className='col text-center mt-3' style={{fontWeight:"700"}}>{data.trip.end_station.name} <br /> ({data.dropoff_location})</div>
                                 <div className='col text-center'> {data.trip?.schedule.find(i=> i.name===data?.dropoff_location).time.substring(0, 5)}  </div>
                           
                             </div>
                             </div>
                         </div>
-                        <div className='col-xxl-3 col-xl-3 col-lg-3 col-sm-12 col-ms-12 '>
+                        <div className='col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-ms-12 col-price-trip '>
                             <div className='row m-0 flex-column'>
-                            <div><img src={dot} alt=""  className='img-fulid' style={{maxWidth:"160px"}} /></div>
+                            <div className='text-centers'><img src={dot} alt=""  className='img-fluid' style={{maxWidth:"160px"}} /></div>
                             <div className='col text-end price-ticket mt-2'>{data.seat.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}/vé</div>
                             </div>
                         </div>

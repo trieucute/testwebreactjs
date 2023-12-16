@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import axiosAdmin from '../axois-admin';
 import LoadingAd from '../../loadingAdmin';
+import Notification from '../../NotificationTrip';
 
 const AddNewJob = () => {
   const [title, setTitle] = useState('');
@@ -12,14 +13,21 @@ const AddNewJob = () => {
   const [description, setDescription] = useState('');
 
   const [loading, setLoading] = useState('');
-
+  const [showNotifi, setShowNotifi] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
 
     if (title === '' || requirements === '' || location === '' || salary === '' || status === '' || description === '') {
       setLoading(false)
-      alert('Vui lòng nhập đầy đủ nội dung!')
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+      setShowNotifi(true);
+  
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return
     }
     try {
@@ -62,6 +70,7 @@ const AddNewJob = () => {
     <div className='addNew-container'>
       {loading ? <LoadingAd/> : (
       <>
+         {showNotifi &&  <Notification message={notificationMessage} />}
         <h3 className='h3-admin mb-4 text-center'> Thêm tin tuyển dụng</h3>
         <form onSubmit={handleSubmit} className='addNew-contents'>
           <div className='row m-0 justify-content-between'>

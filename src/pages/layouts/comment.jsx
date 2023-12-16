@@ -84,7 +84,7 @@ const filteredComments = data.filter(comment => comment.status === 1);
                                 <RenderStars rate={item.rate} />
                                     
                             </div>
-                            <div className='col p-0 text-end' style={{fontSize:"13px"}}>Đăng ngày {formatDateNews(item.created_at)}</div>
+                            <div className='col p-0 text-end' style={{fontSize:"13px"}}>{formatDateNews(item.created_at)}</div>
                         </div>
                         <div className='col px-3 ' style={{fontSize:"13px"}}>
                             {item.content}

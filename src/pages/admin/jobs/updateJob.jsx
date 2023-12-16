@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchjobDetail } from '../../../reduxTool/jobSlide';
 import { formatDateTimeAdminTrip } from '../../../config';
+import Notification from '../../NotificationTrip';
 
 const UpdateJob = () => {
 
@@ -55,14 +56,21 @@ const UpdateJob = () => {
     // setCreat_at(changeDate(jobDetail.created_at))
     setDescription(jobDetail.description)
   }, [jobDetail])
-
+  const [showNotifi, setShowNotifi] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
 
     if (title === '' || requirements === '' || location === '' || salary === '' || status === ''|| description === '') {
       setLoading(false)
-      alert('Vui lòng nhập đầy đủ nội dung!')
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+      setShowNotifi(true);
+  
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return
     }
     try {
@@ -108,6 +116,7 @@ const UpdateJob = () => {
     <div className='addNew-container'>
       {loading ? <LoadingAd/> : (
       <>
+         {showNotifi &&  <Notification message={notificationMessage} />}
         <h3 className='h3-admin mb-4 text-center'> Cập nhật tuyển dụng</h3>
         <form onSubmit={handleSubmit} className='addNew-contents'>
           <div className='row m-0 justify-content-between'>

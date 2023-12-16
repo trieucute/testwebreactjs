@@ -18,7 +18,7 @@ import PaymentSingle from './pages/layouts/paymentSingle';
 import Payment from './pages/layouts/payment';
 import BookTicketPage from './pages/layouts/bookTicketPage';
 import BookTicketPageSingle from './pages/layouts/bookTicketPageSingle';
-import ChairChoose from './pages/layouts/chair';
+
 import Signin from './pages/auth/signin';
 import Signup from './pages/auth/signup';
 import LoginGG from './componets/auth/loginGG';
@@ -62,7 +62,13 @@ import AddNewUser from './pages/admin/user/newuser';
 import UpdateUser from './pages/admin/user/updateUser';
 import UpdateStation from './pages/admin/stations/updateStation';
 import SearchTicket from './pages/layouts/searchTicket';
-import TestQr from './pages/layouts/testqr';
+
+import DriverIndex from './pages/driver/driverIndex';
+import TripOfDriver from './pages/driver/trip';
+import IndexDriver from './pages/driver';
+import Dieukhoandatve from './pages/layouts/dieukhoandatve';
+import Cauhoichung from './pages/layouts/cauhoichung';
+
 
 // import Editor from './pages/admin/news/edit';
 
@@ -91,12 +97,12 @@ function App() {
           <Route path='/searchTicket' element={<SearchTicket/>}/>
 
           <Route path='/lichtrinh' element={<RoutersBus/>}/>
-          <Route path='/test' element={<TestQr/>}/>
+
 
           <Route path='/lichtrinh1chieu' element={<RoutersBusSingle/>}/>
           <Route path='/lichtrinh1chieu/:location' element={<RoutersBusSingle/>}/>
-
-          <Route path='/test' element={<ChairChoose/>}/>
+          <Route path='/lichtrinhkhuhoi' element={<RoutersBus/>}/>
+          {/* <Route path='/test' element={<ChairChoose/>}/> */}
  
           <Route path='/tinchitiet/:idNews' element={<PostDetail/>}/>
           <Route path='/datve1chieu' element={<BookTicketPageSingle/>}/>
@@ -112,8 +118,9 @@ function App() {
 
 
 
-          <Route path='/huongdandatve' element={<Huongdandatve/>}/>
-
+          <Route path='/instruct' element={<Huongdandatve/>}/>
+          <Route path='/rules' element={<Dieukhoandatve />}/>
+          <Route path='/questions' element={<Cauhoichung />}/> 
 
           <Route path='/user/change_password' element={<ChangePassword/>}/>
           <Route path='/user/update' element={<UpdateInfor/>}/>
@@ -135,6 +142,13 @@ function App() {
       <Route exact path="/reset_password" element={<ResetPassword/>} />
 
       <Route path='/admin'  element={<AdminLogin/>} />
+      <Route  element={<IndexDriver/>}>
+      
+          <Route path='/driver/dashboard'  element={<DriverIndex />} />
+          <Route path='/driver/trips'  element={<TripOfDriver />} />
+
+      </Route>
+      
       <Route  element={<IndexAdmin />}>
   {/* Nested routes bên trong /admin */}
             <Route path='/admin/dashboard'  element={<DashBoard />} />

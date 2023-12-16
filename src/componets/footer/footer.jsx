@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../assets/css/footer.css';
 import thongbao from '../../assets/images/logoSaleNoti.png'
+import { Link } from 'react-router-dom';
 const Footer = () => {
     return (
         <footer>
@@ -17,7 +18,7 @@ const Footer = () => {
                     </a>{" "}
                   </li>
                   <li className="list-group-item mb-2">
-                    <a href="/">EMAIL: webproticket@gmail.com</a>
+                    <a href="/">EMAIL: ticketproweb@gmail.com</a>
                   </li>
                   <li className="list-group-item mb-2">
                     <a href="/">
@@ -33,16 +34,16 @@ const Footer = () => {
               <div className="mt-4">
                 <ul className="d-flex flex-column text-decoration-none list-style-none text-left ">
                   <li className="list-group-item mb-2 ">
-                    <a href="/">Tra cứu thông tin đặt vé</a>{" "}
+                    <Link to='/searchTicket'>Tra cứu thông tin đặt vé</Link>{" "}
                   </li>
                   <li className="list-group-item mb-2">
-                    <a href="/">Điều khoản sử dụng</a>
+                  <Link to='/rules'>Điều khoản sử dụng</Link>
                   </li>
                   <li className="list-group-item mb-2">
-                    <a href="huongdandatve.html">Hướng dẫn đặt vé trên Web</a>
+                  <Link to='/instruct'>Hướng dẫn đặt vé trên Web</Link>
                   </li>
                   <li className="list-group-item mb-2">
-                    <a href="/">Câu hỏi thường gặp</a>
+                  <Link to='/questions'>Câu hỏi thường gặp</Link>
                   </li>
                 </ul>
               </div>
@@ -103,7 +104,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="bot-footer width-main-items">
-            @Copyright © 2023 WebProTicket
+            @Copyright © 2023 TicketProWeb
           </div>
         </div>
       </footer>

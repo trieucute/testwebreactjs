@@ -60,7 +60,7 @@ const UserList = () => {
 
   };
   // search user
-const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
 const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
   const handlePageClick = ({ selected }) => {
     setPageNumber(selected);
@@ -73,13 +73,14 @@ const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
   };
 
   const applyPaginationAndSearch = (data) => {
+    const sortedById = data?.slice().sort((a, b) => b.id - a.id);
     const filteredData = searchTerm
-      ? data.filter(
+      ? sortedById.filter(
           (list) =>
             list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             list.email.toLowerCase().includes(searchTerm.toLowerCase())
         )
-      : data;
+      : sortedById;
 
     const offset = pageNumber * perPage;
     const pageCount = Math.ceil(filteredData.length / perPage);

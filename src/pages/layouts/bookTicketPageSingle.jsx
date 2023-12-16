@@ -16,7 +16,10 @@ import { postPayment, setFormData, setUserData } from '../../reduxTool/dataTicke
 import Comments from './comment';
 
 
+
 const BookTicketPageSingle  = () => {
+
+
     const tabsStepMobile = () => {
         const tabs = document.querySelectorAll(".tabs-step");
         const butNext = document.querySelectorAll(".button_step");
@@ -65,20 +68,7 @@ const BookTicketPageSingle  = () => {
       const showInforne=()=>{
         setIsInforVisible(!isInforVisible)
       }
-      const showInforBus=()=>{
-        
-        let InforBus= document.getElementById('infor_bus_router');
-        let showInfor= document.querySelector('.infor_bus_router')
-        InforBus.addEventListener("click",()=>{
-            showInfor.classList.add('active-busInfor')
-        })
-        showInfor.classList.remove('active-busInfor');
 
-        let close = document.querySelector('#close-infor');
-        close.addEventListener('click', () => {
-              showInfor.classList.remove('active-busInfor');
-          });
-        }
         
         const navigate= useNavigate()
         const tripId= useSelector(state => state.tripReducer.selectedTrip);
@@ -152,7 +142,7 @@ const BookTicketPageSingle  = () => {
             const tripData = tripResponse.data.data;
             setTripDetail(tripData);
             console.log(tripData );
-    
+           
             // Gọi API lấy thông tin người dùng nếu có token
             if (token) {
               const userInfor = {
@@ -166,7 +156,7 @@ const BookTicketPageSingle  = () => {
             }
   
             setIsLoading(false); // Dừng hiển thị "Loading..." khi đã tải xong dữ liệu
-            
+ 
             tabsStepMobile();
             // showInforBus();
           } catch (error) {
@@ -199,28 +189,54 @@ const BookTicketPageSingle  = () => {
 
 
     const dispatch = useDispatch()
+    const [showNotifi, setShowNotifi] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
     const handlePay=(e)=>{
       e.preventDefault();
       if (selectedSeats.length === 0) {
-        alert('Vui lòng chọn ghế');
+
+        setNotificationMessage('Vui lòng chọn ghế');
+        setShowNotifi(true);
+  
+        // Hide the notification after 3 seconds
+        setTimeout(() => {
+          setShowNotifi(false);
+        }, 3000);
         return;
       }
         // Kiểm tra nếu không có giá trị trong input thì hiển thị thông báo
-    if (!pickupValue.trim()) {
-      alert('Vui lòng chọn điểm đi');
+    if (!pickupValue.trim() || !dropoffValue.trim()) {
+
+      setNotificationMessage('Vui lòng chọn điểm đón và điểm trả' );
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return; // Dừng việc xử lý nếu không có giá trị trong input
     }
-    if (!dropoffValue.trim()) {
-      alert('Vui lòng chọn điểm đến');
-      return; // Dừng việc xử lý nếu không có giá trị trong input
-    }
+   
     if (!isChecked) {
-      alert('Vui lòng chấp nhận điều khoản và chính sách bảo mật của WebProTicket');
+   
+      setNotificationMessage('Vui lòng chấp nhận điều khoản và chính sách bảo mật của TicketProWeb' );
+      setShowNotifi(true);
+
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return;
     }
     if (Object.keys(user).length === 0 && (name === '' || email === '' || phoneNum === '')) {
 
-        alert('Vui lòng nhập đầy đủ thông tin khách hàng');
+        setNotificationMessage('Vui lòng nhập đầy đủ thông tin khách hàng' );
+        setShowNotifi(true);
+  
+        // Hide the notification after 3 seconds
+        setTimeout(() => {
+          setShowNotifi(false);
+        }, 3000);
     return; // Dừng việc xử lý nếu không có giá trị trong input
     }    
      // Lưu dữ liệu vào Redux store bằng cách dispatch các actions
@@ -275,6 +291,7 @@ const BookTicketPageSingle  = () => {
               <Loading/>
       ) : (
         <>
+  
         <form action="">
         <div className='routes-bus-container container  ps-0 pe-0'>
 
@@ -359,6 +376,7 @@ const BookTicketPageSingle  = () => {
         
             <div className=" my-3 ">
           <div className="contents-items-choose container ">
+          {showNotifi &&  <Notification message={notificationMessage} />}
                     <div className='row'>
                         <div className="col-md-8  card backWhite-padding" style={{border:"none"}}>
                             <div className='items-contents'>
@@ -375,17 +393,20 @@ const BookTicketPageSingle  = () => {
                                {isInforVisible &&      <div className='position-absolute infor_bus_router ' >
                                         <div className='py-3'>
                                         <div className='d-flex justify-content-between px-3 pb-2'>
-                                        <ul class="nav nav-tabs mb-1" id="pills-tab" role="tablist">
-                                            <li class="nav-item" role="presentation">
+                                        <ul class="nav nav-tabs mb-1 row-mobile" id="pills-tab" role="tablist">
+                                            <li class="nav-item col-mobile" role="presentation">
                                               <button class="nav-link active" id="pills-main-tab" data-bs-toggle="pill" data-bs-target="#pills-main" type="button" role="tab" aria-controls="pills-main" aria-selected="true">Chính sách</button>
                                             </li>
-                                            <li class="nav-item" role="presentation">
+                                            <li class="nav-item col-mobile" role="presentation">
                                               <button class="nav-link" id="pills-car-tab" data-bs-toggle="pill" data-bs-target="#pills-car" type="button" role="tab" aria-controls="pills-car" aria-selected="false">Hình ảnh xe</button>
                                             </li>
-                                            <li class="nav-item" role="presentation">
+                                            <li class="nav-item col-mobile" role="presentation">
+                                              <button class="nav-link" id="pills-location-tab" data-bs-toggle="pill" data-bs-target="#pills-location" type="button" role="tab" aria-controls="pills-location" aria-selected="false">Điểm đón trả</button>
+                                            </li>
+                                            <li class="nav-item col-mobile" role="presentation">
                                               <button class="nav-link" id="pills-utilities-tab" data-bs-toggle="pill" data-bs-target="#pills-utilities" type="button" role="tab" aria-controls="pills-utilities" aria-selected="false">Tiện ích</button>
                                             </li>
-                                            <li class="nav-item" role="presentation">
+                                            <li class="nav-item col-mobile" role="presentation">
                                               <button class="nav-link" id="pills-star-tab" data-bs-toggle="pill" data-bs-target="#pills-star" type="button" role="tab" aria-controls="pills-star" aria-selected="false">Đánh giá</button>
                                             </li>
                                           </ul>
@@ -488,9 +509,9 @@ const BookTicketPageSingle  = () => {
                                                   <div className='col'>Dùng để phá kính ô tô thoát hiểm trong trường hợp khẩn cấp.</div>
                                                 </div>
                                                 <div className="row mx-0  items-utilities  my-2">
-                                                  <div className='col text-main-item'><i class="fa-solid fa-wifi"></i> Wifi</div>
-                                                  <div className='col text-main-item'><i class="fa-solid fa-snowflake"></i>Điều hoà</div>
-                                                  <div className='col text-main-item'><i class="fa-solid fa-rug"></i>Chăn đắp</div>
+                                                  <div className='col text-main-item ps-0'><i class="fa-solid fa-wifi"></i> Wifi</div>
+                                                  <div className='col text-main-item p-0'><i class="fa-solid fa-snowflake"></i>Điều hoà</div>
+                                                  <div className='col text-main-item pe-0'><i class="fa-solid fa-rug"></i>Chăn đắp</div>
 
                                                 </div>
                                               </div>
@@ -500,7 +521,7 @@ const BookTicketPageSingle  = () => {
                                               <div className='row m-0'>
                                                 <div className='col-sm-6'>
                                                    {tripDetail &&tripDetail.car && <>
-                                                <img src={tripDetail.car.primary_img} alt="" style={{height:"150px", objectFit:"cover"}}/>
+                                                <img src={tripDetail.car.primary_img} alt="" style={{height:"150px", objectFit:"cover", maxWidth:"100%"}}/>
                                               </>}
                                                 </div>
                                                 <div className='col'>
@@ -509,6 +530,83 @@ const BookTicketPageSingle  = () => {
                                                   <span><b>Loại xe:</b>  {tripDetail &&tripDetail.car && tripDetail.car.type}</span> 
                                                   </div>
                                               </div>
+                                             </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
+                                             <div className='location-container-tabs px-3'>
+                                                    <div className='row' >
+                                                      <div className='col col-pick'>
+                                                      <h5 className='text-center'>Điểm đón</h5>
+                                                      <div class="schedule-tour">
+                                                      
+                                                      {tripDetail &&tripDetail.schedule && tripDetail.schedule.filter(i=>i.type==='pickup').map((item,index)=>(
+                                                        <div class="schedule-item">
+                                                          
+                                                        
+                                                            <div class="step-plan"><span>{TimeHM( item.time)}</span></div>
+                                                            <div class="dot-start"></div>
+                                                              <div class="row m-0 flex-column ">
+                                                                  <h6 class="col">{item.name}</h6>
+                                                                  <div class="schedule-item-detail mt-4 col">
+                                                                      {item.address}
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                        ))
+                                                      }
+{/*                                                           
+                                                          // <div class="schedule-item">
+                                                          //     <div class="step-plan"><span>1</span></div>
+                                                          //     <div class="dot-start"></div>
+                                                          //     <div class="row m-0 flex-column ">
+                                                          //         <h6 class="col">HANEDA – TOKYO (Ăn hai bữa)</h6>
+                                                          //         <div class="schedule-item-detail mt-4 col">
+                                                          //             Đoàn đến sân bay quốc tế Haneda (Tokyo), làm thủ tục nhập cảnh và nhận hành lý. Xe đón đoàn khởi hành tham quan:
+                                                          //             <ul class="mt-2">
+                                                          //                 <li><b>Công viên Chidori-ga-fuchi </b>– nằm gần Cung điện Hoàng Gia, một nơi cổ kính để ngắm hoa anh đào. Công viên này tự hào là nơi tập trung rất nhiều người đến để ngắm hoa anh đào ở Tokyo trong suốt giai đoạn cuối tháng 3 và đầu tháng 4. ( Qúy khách vui lòng lưu ý do phụ thuộc vào điều kiện thời tiết nên các loại hoa có thể nở sớm hơn hoặc chậm hơn, mong Qúy khách thông cảm vì đây là trường hợp bất khả kháng)</li>
+                                                          //                 <li><b>Chùa Asakusa Kannon </b>– ngôi chùa linh thiêng bậc nhất Tokyo, nơi diễn ra các lễ hội lớn của quốc gia cùng với truyền thuyết ra đời ngôi đền bí ẩn.</li>
+                                                          //                 <li><b>Tháp truyền hình Tokyo Sky Tree </b>– Từ chùa ngắm nhìn và chụp hình được toàn cảnh của tháp.</li>
+                                                          //                 <li><b>Tham quan và mua sắm tại con đường mua sắm Nakamise Arcade nằm trong khuôn viên chùa </b>– là một trong những khu phố mua sắm cổ nhất Nhật Bản, có chiều dài khoảng 250m kéo dài từ cổng Kaminarimon của chùa Senso-ji đến Hozomon. Trên con phố này có bày bán những món đồ nhỏ mang đậm phong cách Nhật như đồ chơi thời Edo, nơ, kẹp tóc quạt; hay các món ăn vặt như được chế biến trên phố như Ningyoyaki, Kaminari Okoshi. Các cửa hàng nổi tiếng của khu phố cổ thời Edo nằm tiếp nối nhau, những chiếc đèn lồng và đồ trang trí theo mùa ở trước các cửa hàng, con đường lát đá tảng kéo dài từ cổng Kaminarimon đến cổng Hozomon…tạo nên một con phố mang đậm phong cách Nhật Bản.</li>
+                                                                      
+                                                          //             </ul>
+                                                          //             Ăn trưa tại nhà hàng địa phương, đoàn tiếp tục tham quan:
+                                                          //             <ul class="mt-2">
+                                                          //                 <li><b>Chụp ảnh bên ngoài Ngoại thành Hoàng Cung </b>– nơi sinh sống của Hoàng gia Nhật với khuôn viên vườn cây cổ thụ.</li>
+                                                          //                 <li>Qúy khách tự do tham quan mua sắm tại khu phố chuyên bán các mặt hàng điện tử nổi tiếng của Nhật Akihabara.</li>
+                                                          //                 <li>Tiếp tục Qúy khách mua sắm tại khu phố Ginza ( Nếu có thời gian).</li>
+                                                                      
+                                                                      
+                                                          //             </ul>
+                                                          //             Ăn tối tại nhà hàng địa phương, về khách sạn nghỉ ngơi. Nghỉ đêm tại Tokyo.
+                                                          //         </div>
+                                                          //     </div>
+                                                          // </div> */}
+                                                      
+                                                      </div>
+                                                      </div>
+
+                                                      <div className='col col-drop'>
+                                                      <h5 className='text-center '>Điểm trả</h5>
+                                                      <div class="schedule-tour">
+                                                        
+                                                      {tripDetail &&tripDetail.schedule && tripDetail.schedule.filter(i=>i.type==='dropoff').map((item,index)=>(
+                                                        <div class="schedule-item">
+                                                          
+                                                        
+                                                            <div class="step-plan"><span>{TimeHM( item.time)}</span></div>
+                                                            <div class="dot-start"></div>
+                                                              <div class="row m-0 flex-column ">
+                                                                  <h6 class="col">{item.name}</h6>
+                                                                  <div class="schedule-item-detail mt-4 col">
+                                                                      {item.address}
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                        ))
+                                                      }
+                                                      </div>
+                                                      </div>
+                                                    </div>
                                              </div>
                                             </div>
                                            </div>
@@ -526,7 +624,7 @@ const BookTicketPageSingle  = () => {
                                         <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
                                         <div className='row items-content-floor'> */}
                                         {tripDetail && tripDetail.car && tripDetail.car.type === "Limousine" && (
-                                          <div className='items-FloorDown col-sm-4 '>
+                                          <div className='items-FloorDown col-sm-4 width-mobile'>
                                           <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5>
                                           <div className='row items-content-floor'>
                                         {tripDetail.seats &&
@@ -607,7 +705,7 @@ const BookTicketPageSingle  = () => {
                                              
                                               )}
                                           {tripDetail && tripDetail.car && tripDetail.car.type === "Ghế" && (
-                                                  <div className='items-FloorDown col-sm-3 '>
+                                                  <div className='items-FloorDown col-sm-3 width-mobile '>
                                                   {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
                                                   <div className='row items-content-floor'>
                                         {tripDetail.seats &&
@@ -656,7 +754,7 @@ const BookTicketPageSingle  = () => {
                                         <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
                                         <div className='row items-content-floor'> */}
                                         {tripDetail && tripDetail.car && tripDetail.car.type === "Limousine" && (
-                                              <div className='items-FloorUp col-sm-4'>
+                                              <div className='items-FloorUp col-sm-4 width-mobile'>
                                               <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng trên</h5>
                                               <div className='row items-content-floor'>
                                         {tripDetail.seats &&
@@ -734,7 +832,7 @@ const BookTicketPageSingle  = () => {
                                                 </div>
                                               )}
                                     {tripDetail && tripDetail.car && tripDetail.car.type === "Ghế" && (
-                                                  <div className='items-FloorDown col-sm-3 '>
+                                                  <div className='items-FloorDown col-sm-3 width-mobile '>
                                                   {/* <h5 className='text-center' style={{ fontSize: '1.1em'}}>Tầng Dưới</h5> */}
                                                   <div className='row items-content-floor'>
                                                   {/* <div className={`items-content-floor-row items-content-floor-chair`} style={{visibility:'hidden'}}>
@@ -874,7 +972,7 @@ const BookTicketPageSingle  = () => {
 
                                 <div className='chair-chosen'>
                                     <hr />
-                                    <span>Ghế: A10, A11 , B10, B11</span>
+                                    <span>Ghế:  {selectedSeats.length>0 && selectedSeats.join(', ')}</span>
                                 </div>
                                 {/* ------------------------END--- HIỆN SỐ GHẾ ĐÃ CHỌN MOBILE- --------------------------*/}
 
@@ -1016,7 +1114,7 @@ const BookTicketPageSingle  = () => {
                                         <div className='items-terms-notes col-6'>
                                             <h5 className='text-center'>ĐIỀU KHOẢN & LƯU Ý</h5>
                                             <div className='mt-4' style={{textAlign:"justify"}}>
-                                            (*) Quý khách vui lòng có mặt tại bến xuất phát của xe trước ít nhất 30 phút giờ xe khởi hành, mang theo thông báo đã thanh toán vé thành công có chứa mã vé được gửi từ hệ thống WebProTicket. Vui lòng liên hệ Trung tâm tổng đài 1900 6067 để được hỗ trợ.
+                                            (*) Quý khách vui lòng có mặt tại bến xuất phát của xe trước ít nhất 30 phút giờ xe khởi hành, mang theo thông báo đã thanh toán vé thành công có chứa mã vé được gửi từ hệ thống TicketProWeb. Vui lòng liên hệ Trung tâm tổng đài 1900 6067 để được hỗ trợ.
                                             <br />
                                             (*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ Tổng đài trung chuyển 1900 6918 trước khi đặt vé. Chúng tôi không đón/trung chuyển tại những điểm xe trung chuyển không thể tới được.
                                             </div>
@@ -1024,7 +1122,7 @@ const BookTicketPageSingle  = () => {
                                     </div>
                                  <div className='d-flex align-items-center mt-5 submit-checkbox'>
                                     <input type="checkbox" style={{width:"15px", height:"15px", }}  checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
-                                    <div className='text'><span className='ms-3' style={{color:"#E63946"}}>Chấp nhận điều khoản   </span> đặt vé & chính sách bảo mật thông tin của WebProTicket </div>
+                                    <div className='text'><span className='ms-3' style={{color:"#E63946"}}>Chấp nhận điều khoản   </span> đặt vé & chính sách bảo mật thông tin của TicketProWeb </div>
                                 </div>
 
                                    {/* -------------------------- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------*/}

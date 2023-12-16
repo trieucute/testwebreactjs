@@ -85,7 +85,7 @@ const handleUpdateInfor=()=>{
 <>  
     <div className="nav-item dropdown dropdown-inforUser  " >
 <div className='row m-0 align-items-center'>
-  <div className='col ps-0'>
+  {/* <div className='col ps-0'>
       {user.avatar !==null &&
       <div>
         <img src={user.avatar} alt=""  className='' style={{borderRadius:"100%", objectFit:"cover", width:"30px",height: '30px'}}/>
@@ -96,7 +96,7 @@ const handleUpdateInfor=()=>{
       <img src={avatar} alt=""  className='' style={{borderRadius:"100%", objectFit:"cover", width:"30px", height: '30px',backgroundColor:"white"}}/>
       </div>
     }
-    </div>
+    </div> */}
 
 
         <a
@@ -105,7 +105,7 @@ const handleUpdateInfor=()=>{
           id="navbarDropdown"
           role="button"
           data-bs-toggle="dropdown"
-          aria-expanded="false" style={{fontSize:"0.8em"}}
+          aria-expanded="false" style={{fontSize:"0.8em", fontStyle:"italic"}}
         >
           {user.name}
         </a>

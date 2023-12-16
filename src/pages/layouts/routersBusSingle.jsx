@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 // import "../../assets/css/index.css";
 import "../../assets/css/searchBus.css";
-import {acitveBtnFloor, tabs, scrollFunction, filterMobile } from "../../assets/js/routersBus.js";
+import {acitveBtnFloor, scrollFunction} from "../../assets/js/routersBus.js";
 import Book from "../../componets/searchBook/bookTicket";
 import Slideshow from "../../componets/home/slideshow";
 import { formatDate, calculateTimeDifference, TimeHM, timeFromDeparture } from "../../config";
@@ -15,17 +15,42 @@ import { format } from 'date-fns';
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axios-client.js";
 const RoutersBusSingle = () => {
-  useEffect(() => {
-    tabs();
-    acitveBtnFloor();
-    const handleLoad = () => {
-      filterMobile();
-    }
-    window.addEventListener('load', handleLoad);
-    scrollFunction()
-    window.onscroll = function() {scrollFunction()};
+    //   avtive ra bộ lộc tìm kiếm khi dùng mobile 
+//  const filterMobile=()=>{
+//   let checked = document.querySelector('#filter-toggler');
+//   let filterBox= document.querySelector('.search-filters');
+//   if(checked){
+//      checked.addEventListener('click',()=>{
+//       filterBox.classList.toggle('activeFil');
+
+//   })
+//   } 
+//   let closeFil=document.querySelector('.close-filter')
+//  if(closeFil){
+//     closeFil.addEventListener('click',()=>{
+//     filterBox.classList.remove('activeFil');
+   
+//   })
+//  }
+//   let clickbackground=document.querySelector('.background')
+// if(clickbackground){
+//   clickbackground.addEventListener('click',()=>{
+//           filterBox.classList.remove('activeFil');
     
-  }, []);  
+//         })
+// }
+ 
+ 
+// }
+const [isActive, setIsActive] = useState(false);
+
+const handleFilterToggle = () => {
+  setIsActive(!isActive);
+};
+
+const handleFilterClose = () => {
+  setIsActive(false);
+};
 
   const dispatch = useDispatch();
   const [loading, setIsLoading]=useState(false)
@@ -71,6 +96,15 @@ setIsLoading(true)
     amount: amount
   }));
 // 
+// const handleLoad = () => {
+
+// }
+// tabs();
+acitveBtnFloor();
+scrollFunction()
+  // filterMobile();
+
+
 }, [dispatch, startLocation, endLocation, dateOld, amount]);
 
 // if (loading) {
@@ -207,7 +241,7 @@ console.log(routeData);
     {/*-----END  Chọn địa điểm đi -> về  - booking -----*/}
     {/*-----Button Filter mobile -----*/}
  
-    <button className="filter-toggler mt-5" type="button" id="filter-toggler">
+    <button className="filter-toggler mt-5" type="button" id="filter-toggler" onClick={handleFilterToggle}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="1em"
@@ -230,10 +264,10 @@ console.log(routeData);
     <div className="search-bus-routers container my-4 ">
       <div className="content-search-bookTicket row justify-content-center ">
         {/*------Bộ lộc tìm kiếm -  Search Filter -----*/}
-        <div className="search-filters title_home_bus me-4 col-sm backWhite-padding">
-        <div className="background" />
+        <div className={`search-filters title_home_bus me-4 col-sm backWhite-padding ${isActive ? 'activeFil' : ''}`}>
+        <div className="background" onClick={handleFilterClose}/>
         <div className="contents-items-filter">
-          <div className="text-end close-filter">
+          <div className="text-end close-filter" onClick={handleFilterClose}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
@@ -406,8 +440,8 @@ console.log(routeData);
         console.log(resultend, resultstart);
             return (
               <div key={item.id}>
-                  <div className="item-results-bus d-flex mb-4 flex-colum flex-wrap w-100">
-                  <div className="d-flex mb-2 flex-row w-100">
+                  <div className="item-results-bus d-flex mb-4 flex-colum flex-wrap w-100 ">
+                  <div className="d-flex mb-2 flex-row w-100 align-items-center">
                     <span className="time_go">{timeFromDeparture(item.departure_time )}</span>
                     <div className="d-flex align-items-center travel">
                       <span className="icon-dot">

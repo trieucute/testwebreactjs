@@ -64,7 +64,7 @@ const CompletlyPayment = () => {
         }
       );
       const jsonData = await resp.json();
-      if (resp.status == 200) {
+      if (resp.status === 200) {
         console.log(jsonData);
         setUser(jsonData?.data?.bill?.tickets[0]?.user);
         setTickets(jsonData.data.bill.tickets);
@@ -123,7 +123,7 @@ const CompletlyPayment = () => {
           </div>
           <h3 className="booking__ticket mb-2">Mua vé xe thành công</h3>
           <p className="notifies">
-            WebProTicket đã gửi thông tin đặt vé vào email của bạn. Vui lòng
+            TicketProWeb đã gửi thông tin đặt vé vào email của bạn. Vui lòng
             kiểm tra lại.
           </p>
           {/*------------------------ {/* thông tin * /} ---------------*/}

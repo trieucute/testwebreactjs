@@ -12,6 +12,7 @@ import LoadingAd from '../../loadingAdmin';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { fetchPostDetail } from '../../../reduxTool/newsSlice';
+import Notification from '../../NotificationTrip';
 
 
 Quill.register('modules/imageResize', ImageResize);
@@ -50,7 +51,6 @@ const UpdateNews = () => {
   const handleEditorChange = (value) => {
     setContent(value);
   };
-
   const quillRef = useRef(null);
   useEffect(() => {
     if (quillRef.current) {
@@ -68,22 +68,36 @@ const UpdateNews = () => {
       });
     }
   }, [imagesUploaded]);
-
+  const [showNotifi, setShowNotifi] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [message, setMessage]=useState(null)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
   
-    if(sum==='' || active==='' || content===''|| img===''|| title===''){
+    if(sum==='' || active==='' || content===''|| img===''|| title==='' || content===''){
       setLoading(false)
-      alert('Vui lòng nhập đầy đủ nội dung!')
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+      setShowNotifi(true);
+  
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
       return
     }
       // Kiểm tra xem nội dung có chứa hình ảnh hay không
   const hasImage = /<img[^>]+>/g.test(content);
 
-  if (!hasImage) {
+  if ( content!=='' &&!hasImage) {
     setLoading(false);
-    alert('Vui lòng thêm hình ảnh trong khung nội dung!');
+    setNotificationMessage('Vui lòng thêm hình ảnh trong khung nội dung!');
+    setShowNotifi(true);
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+      setShowNotifi(false);
+    }, 3000);
     return;
   }
     try {
@@ -113,7 +127,7 @@ const UpdateNews = () => {
             'Content-Type': 'multipart/form-data'
           }
         });
-        navigate('/admin/news')
+
         console.log(res.data);
         setActive('');
         setContent('');
@@ -122,6 +136,7 @@ const UpdateNews = () => {
         setImg('');
         setImageData([]);
         setLoading(false);
+        setMessage('Cập nhật thành công')
         // Reset form fields and show success message
         // ...
       }
@@ -129,10 +144,12 @@ const UpdateNews = () => {
     } catch (error) {
       setLoading(false);
       console.error(error);
+      setMessage(null)
       // Handle errors
       // ...
     } finally {
       setLoading(false);
+    
       setImagesUploaded(false); // Đảm bảo rằng nếu có lỗi, trạng thái sẽ được reset
     }
   };
@@ -193,6 +210,7 @@ const UpdateNews = () => {
     <div className='addNew-container'>
       {loading ? <LoadingAd/> : (
         <>
+           {showNotifi &&  <Notification message={notificationMessage} />}
            <h3 className='h3-admin mb-4 text-center'> Cập nhật tin</h3>
       <form onSubmit={handleSubmit}  className='addNew-contents'>
         <div className='row m-0 justify-content-between'> 
@@ -232,6 +250,17 @@ const UpdateNews = () => {
        
        <div className='form-group'><button className='btn-add' type="submit">Cập nhật</button></div>
        </div>
+       {message && <>
+                                <div className="form-group"  style={{
+                                                color: "rgb(230, 57, 70)",
+                                                fontWeight: "700",
+                                                marginTop: 5,
+                                                fontSize: "0.8em",
+                                                textAlign: "left",
+                                            }}>
+                                    {message}
+                                </div>
+                            </>}
       </form>
         </>
       )}

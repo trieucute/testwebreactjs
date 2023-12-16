@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import LoadingAd from '../../loadingAdmin';
 import axiosAdmin from '../axois-admin';
+import Notification from '../../NotificationTrip';
 
 const StationsList = () => {
     const navigate = useNavigate();
@@ -42,21 +43,27 @@ const handleShowForm = () => {
 const dispatch = useDispatch();
 const station = useSelector (state => state.stationAdmin)
 const itemList = station?.data?.data
-
+const [loading, setLoading]=useState(false)
 useEffect(()=>{
+  setLoading(true)
 dispatch(fetchStation())
+.then(res=>{
+  setLoading(false)
+})
+
 },[])
 // console.log( itemList );
     // tìm kiếm
 
     const [searchTerm, setSearchTerm] = useState('');
+    const sortedById = itemList?.slice().sort((a, b) => b.id - a.id);
     const currentJob = searchTerm
-      ? itemList?.filter((list) =>
+      ? sortedById?.filter((list) =>
         list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||   list.province.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      : itemList;
+      :  sortedById;
   
-    const [perPage] = useState(5); // Số lượng xe hiển thị mỗi trang
+    const [perPage] = useState(8); // Số lượng xe hiển thị mỗi trang
     const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
   
     const offset = pageNumber * perPage;
@@ -94,11 +101,19 @@ dispatch(fetchStation())
     const [address, setAddress]= useState('')
     const [name, setName]= useState('')
     console.log(pointStationId);
+    const [showNotifi, setShowNotifi] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
     const handleAddStationPoint=(e)=>{
       e.preventDefault()
       if(address ===''|| name===''){
-      alert('Vui lòng nhập đầy đủ thông tin!')
-      return
+        setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+    setShowNotifi(true);
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+      setShowNotifi(false);
+    }, 3000);
+    return
       }
       const newpoint={
         station_id:pointStationId,
@@ -175,6 +190,16 @@ dispatch(fetchStation())
     }
     const handleEditStationPoint =(e)=>{
       e.preventDefault()
+      if(address ===''|| name===''){
+        setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+    setShowNotifi(true);
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+      setShowNotifi(false);
+    }, 3000);
+    return
+      }
       const post={
         name:name,
         address:address
@@ -210,6 +235,8 @@ dispatch(fetchStation())
       })
     }
     return (
+      <>
+      {loading ? <LoadingAd/> :(<>
         <div>
         <div className='tripAdmin-container'>
           <h3 className='h3-admin'>Quản lý bến xe</h3>
@@ -241,8 +268,8 @@ dispatch(fetchStation())
                 {paginatedStations && paginatedStations.map((item, index) => (
                      <tr key={item.id}>
                      <td>{index + offset + 1}</td>
-                    <td> {item.name} </td>
-                    <td>{item.address} </td>
+                    <td style={{maxWidth:"200px"}}> {item.name} </td>
+                    <td  style={{maxWidth:"400px"}}>{item.address} </td>
                     <td> {item.province}</td>
                     <td> <button  className='btn btn-primary'  data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>handlePoint(item.id, item.name)}>Điểm đón / trả</button></td>
 
@@ -292,6 +319,7 @@ dispatch(fetchStation())
 
 
       <>
+            {showNotifi &&  <Notification message={notificationMessage} />}
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Điểm đón / trả của {pointName !== null && pointName} </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -374,6 +402,10 @@ dispatch(fetchStation())
 </div>
 
     </div>
+      
+      </>)}
+      </>
+   
     );
 };
 

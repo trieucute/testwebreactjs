@@ -9,7 +9,7 @@ function AuthWrapperAdmin({ children }) {
   // const [loading, setLoading] = useState(true);
   // const [user, setUser] = useState(null);
   // const tokenAdmin  =localStorage.getItem('adminToken');
-  const { admin, tokenAdmin,setAdmin } = useStateContext();
+  const { admin, tokenAdmin,setAdmin, setDriver, driver, tokenDriver } = useStateContext();
 
   useEffect(() => {
     // Kiểm tra token ở đây và thực hiện điều hướng (redirect) nếu cần
@@ -33,13 +33,15 @@ function AuthWrapperAdmin({ children }) {
                 setAdmin(profile)
                 
                 // navigate('/admin/dashboard');
+            }else if(profile.role === 'driver') {
+              setDriver(profile)
             }
 
         })
         .catch((err)=>{
             console.error(err)
             setAdmin(null)
-      
+            setDriver(null)
         })
 
       //  if( admin===null){
@@ -48,7 +50,7 @@ function AuthWrapperAdmin({ children }) {
      
 
       }
-  }, [navigate, tokenAdmin,setAdmin]);
+  }, [navigate, tokenAdmin,setAdmin, setDriver, tokenDriver]);
 
 //   useEffect(() => {
 //     // Gọi API Laravel để kiểm tra thông tin đăng nhập và xác thực

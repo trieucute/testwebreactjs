@@ -183,17 +183,50 @@ font-weight: 700;
     font-size: 0.9em;
 }
 .infor_bus_router{
-    width: 60%;
+    width: 75%;
     background-color: white;
     z-index: 1;
     top: 3em;
     /* display: none; */
-    left: 37%;
+    left: 23%;
     border-radius: 10px;
     border: 1px solid #C5C1C1;
     max-height: 550px;
     overflow: hidden;
 }
+.infor_bus_router .row-mobile {
+    /* height: 25rem; */
+    white-space: nowrap !important;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .infor_bus_router .row-mobile::-webkit-scrollbar {
+    background-color: #eaeaea;
+    /* width: 2px; */
+  height: 3px;
+  }
+  
+  .infor_bus_router .row-mobile::-webkit-scrollbar-thumb {
+    background-color: var(--colorPrimary);
+  }
+  .infor_bus_router .col-mobile {
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    display: block;
+    /* width: 100%; */
+    /* height: 25rem; */
+    overflow: hidden;
+    border-radius: 2px;
+    white-space: normal;
+  }
 .infor_bus_router.active-busInfor{
     /* display: block; */
 
@@ -332,6 +365,57 @@ font-weight: 700;
 .contents-items-choose .infor-bus-contents .card-body .row .text-end.text-danger {
     color: var(--colorMain) !important;
 }
+
+.schedule-tour {
+    margin-left: 2.2em;
+    border-left: 3px solid rgb(230, 230, 230);
+    font-weight: 500;
+}
+.schedule-tour  .schedule-item{
+    position: relative;
+    margin-bottom: 1em;
+}
+.schedule-tour  .schedule-item h6{
+    font-weight: 700;
+    color: black;
+}
+.schedule-item .step-plan{
+    position: absolute;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    left: -4em;
+    font-size: 0.7em;
+    border-radius: 50%;
+    background-color: var(--colorPrimary);
+    color: white;
+    line-height: 40px;
+    font-weight: 700;
+    text-align: center;
+}
+.schedule-item .dot-start{
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    left: -6px;
+    border-radius: 50%;
+    background-color: var(--colorPrimary);
+}
+.schedule-item .schedule-item-detail {
+    font-size: 0.7em;
+}
+.schedule-item .schedule-item-detail ul{
+    padding-left: 3em !important;
+}
+.schedule-item .schedule-item-detail ul li{
+    padding: 3px 0;
+}
+.location-container-tabs h5{
+    font-size: 14px;
+    color: var(--colorMain);
+    margin-bottom: 10px;
+}
 @media only screen and (max-width:1200px) {
     .contents-items-choose .items-FloorDown .row,  .contents-items-choose .items-FloorUp .row{
         width: 100% ;
@@ -353,12 +437,47 @@ font-weight: 700;
         width: 100%;
         margin-top: 1.2em;
     }
+    .results-search .fixed-item {
+        background-color: var(--colorPrimary);
+        position: fixed;
+        top: 4.2em;
+        padding: 1em 0;
 
+    }
+    .results-search .title-route-search span{
+        display: block;
+        text-align: center;
+    }
+    .results-search .fixed-item .title-route-search{
+        margin: 0 !important;
+    }
 }
 
 
 @media only screen and (max-width:768px) {
+    .contents-items-choose .notifies{
+        /* bottom: 3em !important; */
+        top: 70% !important;
+    }
+    .items-contents .width-mobile{
+        width: 50%;
+        
+    }
+    .results-search .fixed-item {
+        background-color: var(--colorPrimary);
+        position: fixed;
+        top: 4em;
+        padding: 1em 0;
 
+    }
+    .items-FloorUp.width-mobile{
+        margin-top: 0 !important;
+        padding-right: 0;
+    }
+    .items-FloorDown.width-mobile{
+        margin-top: 0 !important;
+        padding-right: 0;
+    }
     .contents-items-choose .col-4 {
         padding-left: 0;
         margin-top: -1.5em;
@@ -448,9 +567,71 @@ font-weight: 700;
 .infor_bus_router h6{
     font-size: 0.85em;
 }
+.contents-items-choose .pickUp-dropOff-location-contents .form-group >div >div{
+    width: 100% !important;
+}
 }
 
 @media only screen and (max-width:560px) {
+    .comment-contents  .items-cmt .col-sm-6{
+        width: 70%;
+        flex: inherit;
+    }
+    .comment-contents  .items-cmt .col-2{
+        width: 100%;
+        text-align: left !important;
+        flex: inherit;
+    }
+    .comment-contents   .items-cmt .col.text-end{
+        width: 30%;
+        font-size: 12px !important;
+        flex: inherit;
+    }
+    .schedule-item .step-plan {
+        width: 35px;
+        height: 35px;
+        left: -3.8em;
+        font-size: 0.7em;
+        line-height: 35px;
+    }
+   .car-container-tabs .col-sm-6{
+        text-align: center;
+    }
+    .schedule-tour {
+        margin-left: 2em;
+    }
+    .schedule-item .schedule-item-detail ul {
+        padding-left: 1em !important;
+    }
+    .infor_bus_router {
+        width: 85%;
+        left: 13%;
+    }
+    .results-search .fixed-item {
+        background-color: var(--colorPrimary);
+        position: fixed;
+        top: 3.6em;
+        padding: 1em 0;
+    }
+    .infor_bus_router{
+        max-height: 400px;
+    }
+    .utilities-contents{
+        height: 300px;
+        overflow-y: scroll;
+    }
+    .utilities-contents::-webkit-scrollbar {
+        width: 5px;
+        background-color: #cccccc;
+        border-radius: 5px;
+      
+        
+      }
+      
+      .utilities-contents::-webkit-scrollbar-thumb {
+        background-color: var(--colorMain);
+        border-radius: 5px;
+      }
     .contents-items-choose{
         margin-top: 11.5em;
       }
@@ -461,6 +642,30 @@ font-weight: 700;
     .contents-items-choose .form-group label{
         font-size: 0.85em;
         
+    }
+    .location-container-tabs{
+        height: 350px;
+        overflow-y: scroll;
+    }
+    .location-container-tabs  .schedule-item-detail{
+        padding-right: 0;
+        padding-left: 5px;
+    }
+    .location-container-tabs::-webkit-scrollbar {
+        width: 5px;
+        background-color: #cccccc;
+        border-radius: 5px;
+      
+        
+      }
+      
+      .location-container-tabs::-webkit-scrollbar-thumb {
+        background-color: var(--colorMain);
+        border-radius: 5px;
+      }
+    .location-container-tabs .col-pick , .location-container-tabs .col-drop{
+        width: 100%;
+        flex: inherit;
     }
     .contents-items-choose span b{
         font-size: 0.8em;
@@ -520,16 +725,17 @@ font-weight: 700;
         margin-top: 1em !important;
         font-size: 0.8em;
     }
-    .infor_bus_router {
-        width: 80%;
-        left: 16%;
-    }
+
     .infor_bus_router .row .items_infor_bus_router ul li{
         font-size: 0.8em;
     }
     .contents-items-choose .infor-bus-contents .card-body .row {
         font-size: 0.8em;
     }
+    .infor_bus_router {
+        max-height: 600px;
+    }
+
 }
 @media only screen and (max-width:400px) {
     .infor_bus_router .row .items_infor_bus_router ul li{
@@ -545,6 +751,33 @@ font-weight: 700;
       .submit-checkbox .text {
         font-size: 0.7em;
     }
+    /* .infor_bus_router {
+        max-height: 680px;
+    } */
+    .utilities-contents .items-utilities {
+        background-color: antiquewhite;
+        padding: 5px;
+        font-size: 12px;
+}
+.utilities-content.px-3{
+    padding: 0 0.4em !important;
+}
+.comment-contents  .sum-star {
+    font-size: 13px;
+}
+.comment-contents .items-cmt .col.px-3{
+    padding: 5px 0 !important;
+}
+.comment-contents  .items-cmt .col-sm-6{
+    width: 75%;
+}
+.comment-contents.px-4{
+    padding: 0 5px !important;
+}
+.comment-contents   .items-cmt .col.text-end{
+    font-size: 11px !important;
+    width: 25%;
+}
 }
 @media only screen and (max-width:340px) {
     .steps-booking-contents {

@@ -267,6 +267,9 @@
     .search-bus-routers.mt {
         margin-top: 5em;
     }
+    .item-results-bus .btn-choose button{
+        color: white;
+    }
     .search-results .btn-choose button a{
         font-size: 16px;
     } 
@@ -431,8 +434,18 @@
 
     top:4.3em;
 }
+.item-results-bus .travel .travel_time {
+    font-size: 0.8rem;
+}
 }
 @media only screen and (max-width:560px) {
+    .item-results-bus .border-b-2 {
+        height: 1px;
+    }
+    .item-results-bus .travel .icon-dotArrive {
+
+        font-size: 0.8rem;
+    }
     .fixed-item{
 
         top:3.7em;
@@ -441,10 +454,13 @@
         max-width: 566px;
     }
     .items-bus-station h5 {
-        font-size: 0.7em;
+        font-size: 0.8em;
     }
     .item-results-bus {
         padding: 15px 9px;
+    }
+    .item-about-bus .list-group-item:first-child {
+        font-size: 0.9rem;
     }
     .item-about-bus .list-group-item {
         font-size: 0.8rem;
@@ -480,11 +496,14 @@
     .results-search h1 {
         font-size: 1em;
     }
+    .book-content_container .notifies{
+        font-size: 13px;
+    }
 }
 @media only screen and (max-width:340px) {
-    .items-bus-station h5 {
+    /* .items-bus-station h5 {
         font-size: 0.6em;
-    }
+    } */
     .results-search .tabs {
         font-size: 0.7em !important;
        

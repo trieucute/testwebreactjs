@@ -58,8 +58,8 @@ const BookTicketPage = () => {
 
 
       useEffect(()=>{
-        tabsStepMobile();
-        showInforBus();
+        // tabsStepMobile();
+        // showInforBus();
         chairChooseGoAndBack();
       },[])
     return (
@@ -2328,7 +2328,7 @@ const BookTicketPage = () => {
                           (*) Quý khách vui lòng có mặt tại bến xuất phát của xe trước
                           ít nhất 30 phút giờ xe khởi hành, mang theo thông báo đã
                           thanh toán vé thành công có chứa mã vé được gửi từ hệ thống
-                          WebProTicket. Vui lòng liên hệ Trung tâm tổng đài 1900 6067
+                          TicketProWeb. Vui lòng liên hệ Trung tâm tổng đài 1900 6067
                           để được hỗ trợ.
                           <br />
                           (*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ
@@ -2348,7 +2348,7 @@ const BookTicketPage = () => {
                         <span className="ms-3" style={{ color: "#FE6531" }}>
                           Chấp nhận điều khoản{" "}
                         </span>{" "}
-                        đặt vé &amp; chính sách bảo mật thông tin của WebProTicket{" "}
+                        đặt vé &amp; chính sách bảo mật thông tin của TicketProWeb{" "}
                       </label>
                     </div>
                     {/* {/* -------------------------- NÚT BẤM TIẾP TỤC TRÊN MOBILE ĐỂ ĐẾN VỚI BƯỚC TIẾP THEO --------------------------* /} */}

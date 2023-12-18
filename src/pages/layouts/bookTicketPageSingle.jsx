@@ -1186,11 +1186,11 @@ const BookTicketPageSingle  = () => {
                                     {
                                       tripDetail && tripDetail.seats &&
                                       (() => {
-                                        const totalPrice = tripDetail.seats
+                                        let totalPrice = tripDetail.seats
                                           .filter(seat => selectedSeats.includes(seat.position))
-                                          .reduce((total, seat) => total + seat.price, 0);
-
-                                        return totalPrice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                                          .reduce((total, seat) => total + parseInt(seat.price), 0);
+                                        // console.log( isInt(totalPrice),'total');
+                                        return parseInt(totalPrice).toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                                       })()
                                     }
 
@@ -1212,9 +1212,9 @@ const BookTicketPageSingle  = () => {
                                       (() => {
                                         const totalPrice = tripDetail.seats
                                           .filter(seat => selectedSeats.includes(seat.position))
-                                          .reduce((total, seat) => total + seat.price, 0);
+                                          .reduce((total, seat) => total + parseInt(seat.price), 0);
 
-                                        return totalPrice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                                        return parseInt(totalPrice).toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                                       })()
                                     }
                                           </div>
@@ -1233,9 +1233,9 @@ const BookTicketPageSingle  = () => {
                                       (() => {
                                         const totalPrice = tripDetail.seats
                                           .filter(seat => selectedSeats.includes(seat.position))
-                                          .reduce((total, seat) => total + seat.price, 0);
+                                          .reduce((total, seat) => total + parseInt(seat.price), 0);
 
-                                        return totalPrice.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                                        return parseInt(totalPrice).toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                                       })()
                                     }
                                           </div>

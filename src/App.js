@@ -27,11 +27,10 @@ import ChangePassword from './pages/auth/changePassword';
 import ForgotPassword from './pages/auth/forgotPassword';
 import ResetPassword from './pages/auth/resetPassword';
 import PostDetail from './pages/layouts/postDetail';
-// import Test from './pages/layouts/test';
 
-import LoadingNews from './pages/newslist';
-import TestRoute from './pages/testRoute';
-import Showroute from './pages/showroute';
+
+
+
 import AdminLogin from './componets/admin/adminLogin';
 import IndexAdmin from './pages/admin';
 
@@ -132,10 +131,6 @@ function App() {
       
       <Route path='/login' element={<Signin/>}/>
 
-      <Route path='/news' element={<LoadingNews/>}/>
-      <Route path='/route' element={<TestRoute/>}/>
-      <Route path='/showroute' element={<Showroute/>}/>
-      <Route path='/showroute?' element={<Showroute/>}/>
 
       <Route path='/signup' element={<Signup/>}/>
       <Route exact path="/auth/google" element={<LoginGG/>} />

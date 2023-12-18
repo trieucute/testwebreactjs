@@ -159,9 +159,9 @@ const dispatch= useDispatch()
       <form onSubmit={handleLogin} className="form" id="form-2">
         <h3 className="heading">Đăng nhập</h3>
         <div className='login-gg-fb row m-0 justify-content-center py-2'>
-          <a data-toggle="tooltip" title="Facebook" href=".." >
+          {/* <a data-toggle="tooltip" title="Facebook" href=".." >
             <i className="fab fa-facebook-f" />
-          </a>
+          </a> */}
 
           {googleLoginUrl && (  <a data-toggle="tooltip" title="Google" type='button'  href={googleLoginUrl} style={{textDecoration:"none"}}>
           <i className="fa-brands fa-google" />

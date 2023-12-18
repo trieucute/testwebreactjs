@@ -135,7 +135,7 @@ const [dataDetail, setDataDetail] = useState('')
                           <td>{item.start_station.province} - {item.start_station.name}</td>
                           <td>{item.end_station.province} - {item.end_station.name }</td>
                         <td>{item.seat.position} ({item.car.name}) </td>
-                        <td>{item.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
+                        <td>{parseInt(item.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
                         <td>{item.status ==='booked' && 'Đã thanh toán'}
                         {item.status ==='pending' && 'Đang thanh toán'}
                         {item.status =='cancelled' && 'Đã huỷ'}
@@ -227,7 +227,7 @@ const [dataDetail, setDataDetail] = useState('')
         </div>
         <div className='row mx-0 my-2'>
             <div className='col text-start'>Tổng tiền: </div>
-            <div className='col text-end'>{dataDetail && dataDetail?.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</div>
+            <div className='col text-end'>{dataDetail && parseInt(dataDetail?.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</div>
         </div>
         <div className='row mx-0 my-2'>
             <div className='col text-start'>Phương thức thanh toán: </div>

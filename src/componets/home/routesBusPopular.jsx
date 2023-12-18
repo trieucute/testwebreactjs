@@ -134,7 +134,7 @@ const navigate= useNavigate()
                   <span>{route.start_station} - {route.end_station}</span>
                   {/* Thêm các thông tin khác nếu cần */}
                   <br />
-                  <span>từ {route.min_price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
+                  <span>từ {parseInt(route.min_price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
                 </div>
               </div>
             </div>

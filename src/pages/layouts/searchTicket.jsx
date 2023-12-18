@@ -151,7 +151,7 @@ const SearchTicket = () => {
                             </div>
                             <div className='row mx-0 price-ticket  mt-2'>
                                 <div className='col text-start'>GIÁ VÉ</div>
-                                <div className='col text-end'>{data.seat.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</div>
+                                <div className='col text-end'>{parseInt(data.seat.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</div>
                             </div>
                         </div>
                     </div>
@@ -188,7 +188,7 @@ const SearchTicket = () => {
                         <div className='col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-ms-12 col-price-trip '>
                             <div className='row m-0 flex-column'>
                             <div className='text-centers'><img src={dot} alt=""  className='img-fluid' style={{maxWidth:"160px"}} /></div>
-                            <div className='col text-end price-ticket mt-2'>{data.seat.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}/vé</div>
+                            <div className='col text-end price-ticket mt-2'>{parseInt(data.seat.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}/vé</div>
                             </div>
                         </div>
                         </div>

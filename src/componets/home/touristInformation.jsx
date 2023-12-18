@@ -1,7 +1,6 @@
 
 import React, { useEffect } from "react";
 import { slide } from "../../assets/js/slideshowHome.js";
-
 import { fetchnews } from "../../reduxTool/newsSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ import Slider from "react-slick";
 
 const TouristInformation = () => {
   const settings = {
-    // dots: true, 
+    // dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 4,

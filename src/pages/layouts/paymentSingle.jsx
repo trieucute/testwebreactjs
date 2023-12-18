@@ -36,7 +36,7 @@ const Payment = () => {
     );
     if (resp.status == 200) {
       window.location.assign(
-        `http://127.0.0.1:3000/dathanhtoan?code_bill=${data.code_bill}&total=${data.vnp_Amount}`
+        `https://deece.vn/dathanhtoan?code_bill=${data.code_bill}&total=${data.vnp_Amount}`
       );
     }
     if (resp.status >= 400) {
@@ -75,7 +75,7 @@ const Payment = () => {
       } else {
         alert(jsonData?.messages || "Có lỗi xảy ra");
         nav(-1);
-        // window.location.assign("http://127.0.0.1:3000");
+        // window.location.assign("https://deece.vn");
       }
       first.current = false;
     } catch (e) {
@@ -140,7 +140,7 @@ const Payment = () => {
   // const timepickup= trip?.schedule.find(i=>i.name===ticket?.pickup_location)?.time;
   // console.log (  timepickup.slice(0, 5));
   const toCurrency = (amount) => {
-    return amount?.toLocaleString("it-IT", {
+    return parseInt(amount)?.toLocaleString("it-IT", {
       style: "currency",
       currency: "VND",
     });

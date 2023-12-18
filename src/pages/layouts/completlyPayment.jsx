@@ -78,7 +78,7 @@ const CompletlyPayment = () => {
     }
   };
   const toCurrency = (amount) => {
-    return amount?.toLocaleString("it-IT", {
+    return parseInt(amount)?.toLocaleString("it-IT", {
       style: "currency",
       currency: "VND",
     });

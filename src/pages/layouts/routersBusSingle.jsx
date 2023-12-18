@@ -15,33 +15,7 @@ import { format } from 'date-fns';
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axios-client.js";
 const RoutersBusSingle = () => {
-    //   avtive ra bộ lộc tìm kiếm khi dùng mobile 
-//  const filterMobile=()=>{
-//   let checked = document.querySelector('#filter-toggler');
-//   let filterBox= document.querySelector('.search-filters');
-//   if(checked){
-//      checked.addEventListener('click',()=>{
-//       filterBox.classList.toggle('activeFil');
-
-//   })
-//   } 
-//   let closeFil=document.querySelector('.close-filter')
-//  if(closeFil){
-//     closeFil.addEventListener('click',()=>{
-//     filterBox.classList.remove('activeFil');
-   
-//   })
-//  }
-//   let clickbackground=document.querySelector('.background')
-// if(clickbackground){
-//   clickbackground.addEventListener('click',()=>{
-//           filterBox.classList.remove('activeFil');
-    
-//         })
-// }
- 
- 
-// }
+  
 const [isActive, setIsActive] = useState(false);
 
 const handleFilterToggle = () => {
@@ -107,14 +81,7 @@ scrollFunction()
 
 }, [dispatch, startLocation, endLocation, dateOld, amount]);
 
-// if (loading) {
-//   return <Loading/>;
-// }
-  
-// if (error) {
-//   alert("Vui lòng chọn lại điểm đi và điểm đến!!!");
-  
-// }
+
 const navigate = useNavigate()
 const handleChooseTrip=(id)=>{
     dispatch(setSelectedTrip(id))
@@ -463,7 +430,7 @@ console.log(routeData);
                   <div className="d-flex w-100 mt-2 align-items-center flex-wrap">
                     <div className="item-about-bus w-75">
                       <ul className="d-flex p-0 w-100 m-0">
-                        <li className="list-group-item ">{item.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</li>
+                        <li className="list-group-item ">{parseInt(item.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</li>
                         <li className="list-group-item ">
                           <span className="icon-dot ps-4">
                             <i className="fa-solid fa-circle" />

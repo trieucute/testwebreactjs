@@ -68,21 +68,21 @@ const CompletlyPaymentMomo = () => {
         setTickets(jsonData.data.bill.tickets);
         setBill(jsonData.data.bill);
         setStatus(jsonData.success ? STATUS.SUCCESS : STATUS.FAIL);
-        if (jsonData.success) {
-          const res = await fetch(
-            `${API_BASE_URL}/api/send-order-confirmation?email=${jsonData?.data?.bill?.tickets[0].user.email}&code_bill=${code_bill}`,
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (res.status == 200) {
-            // alert("Đơn hàng đã được gửi đến mail của bạn hãy kiếm tra");
-          }
-        }
+        // if (jsonData.success) {
+        //   const res = await fetch(
+        //     `${API_BASE_URL}/api/send-order-confirmation?email=${jsonData?.data?.bill?.tickets[0].user.email}&code_bill=${code_bill}`,
+        //     {
+        //       method: "POST",
+        //       headers: {
+        //         Accept: "application/json",
+        //         "Content-Type": "application/json",
+        //       },
+        //     }
+        //   );
+        //   if (res.status == 200) {
+        //     // alert("Đơn hàng đã được gửi đến mail của bạn hãy kiếm tra");
+        //   }
+        // }
       }
       first.current = false;
     } catch (e) {
@@ -91,7 +91,7 @@ const CompletlyPaymentMomo = () => {
     }
   };
   const toCurrency = (amount) => {
-    return amount?.toLocaleString("it-IT", {
+    return parseInt(amount)?.toLocaleString("it-IT", {
       style: "currency",
       currency: "VND",
     });

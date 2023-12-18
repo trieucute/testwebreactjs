@@ -375,7 +375,7 @@ const UpdateInfor = () => {
                                 <p>Ghế đã chọn: {item.seat.position}</p>
                                 <p>Trạng thái thanh toán: {item.status==='cancelled' && 'Đã huỷ'} {item.status==='pending' && 'Đang thanh toán'} {item.status==='booked' && 'Đã thanh toán'}</p>
                                 <p>Trạng thái xe: {item.trip.status}</p>
-                                <p style={{ color: "#FE6531" }}>Tổng tiền: {item.seat.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</p>
+                                <p style={{ color: "#FE6531" }}>Tổng tiền: {parseInt(item.seat.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</p>
                                 {/* {isButtonVisible === 'pending' && <button className='cancel' style={{ backgroundColor: "#e2e2e2", color: "#fe6531" }}> Hủy vé</button>} */}
 
                             </div>

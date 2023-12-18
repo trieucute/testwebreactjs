@@ -4,7 +4,7 @@ import { API_BASE_URL } from "../../../config.js";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import LoadingAd from "../../loadingAdmin.js";
-import Tooltip from '@mui/material/Tooltip';
+
 const UserList = () => {
   const [users, setUsers] = useState([]);
   // const [ client setClient] = useState([]);

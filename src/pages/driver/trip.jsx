@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import car from '../../assets/images/bus1.jpg'
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip } from 'react-tooltip'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeStatus, deleteTripAdmin, fetchTripAdmin, fetchTripAdminDetail } from '../../reduxTool/tripSlice';
 import ReactPaginate from 'react-paginate';

@@ -5,8 +5,10 @@ import {  updateSearchData } from '../../reduxTool/routesBookingSlice';
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from 'react-autocomplete';
 import Notification from "../../pages/NotificationTrip";
-import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+// import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
+// import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { format } from 'date-fns';
 const Book = () => {
 
@@ -420,20 +422,22 @@ console.log(filteredDataProvinces, 'filtereDATA');
 
             <div className="form-group">
               <label htmlFor="date_go">Ngày đi</label>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
         <DatePicker
           // label="Ngày đi"
           slotProps={{ textField: { name: 'date' }}}
           value={selectedDate}
           // views={["year", "month", "day"]}
-          format="dd/MM/yyyy" 
+          format="dd/MM/yyyy"
+          selected={selectedDate} 
           // name="date"
+          dateFormat="dd/MM/yyyy"
           onChange={handleDateChange}
           renderInput={(params) => <input {...params} />} // Render thành input thay vì TextField
           minDate={new Date()} // Hạn chế chọn ngày trước ngày hiện tại
         />
 
-      </LocalizationProvider>
+      {/* </LocalizationProvider> */}
             </div>
             {/* <div className="form-group">
               <label htmlFor="date_go">Ngày về</label>

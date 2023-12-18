@@ -57,7 +57,7 @@ import UpdateNews from './pages/admin/news/updateNews';
 import UpdateCar from './pages/admin/car/updateCar';
 import UpdateTrip from './pages/admin/trips/updateTrip';
 import UpdateJob from './pages/admin/jobs/updateJob';
-import AddNewUser from './pages/admin/user/newuser';
+import AddNewUser from './pages/admin/user/newUser';
 import UpdateUser from './pages/admin/user/updateUser';
 import UpdateStation from './pages/admin/stations/updateStation';
 import SearchTicket from './pages/layouts/searchTicket';

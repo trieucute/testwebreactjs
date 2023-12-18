@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip } from 'react-tooltip'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeStatus, deleteTripAdmin, fetchTripAdmin, fetchTripAdminDetail } from '../../../reduxTool/tripSlice';
 import ReactPaginate from 'react-paginate';
@@ -476,13 +476,19 @@ if (timeUntilDesiredTime > 0) {
                 <td>{item.car}</td>
                 <td>{item.driver}</td>
                 <td>{formatDateTimeAdminTrip( item.departure_time)}</td>
-                <td><Tooltip  style={{width:"400px"}} title={
+                {/* <a id="clickable">◕‿‿◕</a>
+              <Tooltip anchorSelect="#clickable" clickable>
+                <button>You can click me!</button>
+              </Tooltip> */}
+                <td>
+                
+                  <Tooltip  style={{width:"400px"}} title={
                                                           <div ><h6 className='text-center' style={{fontSize:"15px", marginBottom:"10px",paddingTop:"5px"}}>Cập nhật trạng thái xe</h6>                                              
                                                             <button type='button' style={{fontSize:"13px", marginRight:"5px", padding:"5px 4px"}} className={`btn ${item.status==='Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Chờ khởi hành')}>Chờ khởi hành</button>
                                                             <button type='button' style={{fontSize:"13px",marginRight:"5px",padding:"5px 4px"}}  className={`btn ${item.status==='Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đang khởi hành')}>Đang khởi hành</button>
                                                             <button type='button' style={{fontSize:"13px",padding:"5px 4px"}}  className={`btn ${item.status==='Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đã hoàn thành')}>Đã hoàn thành</button>    
                                                        </div>}
-                                                        placement="top" arrow>{item.status} <i class="far fa-hand"></i></Tooltip>
+                                                     anchorSelect="#clickable" clickable>{item.status} <i class="far fa-hand"></i></Tooltip>
                                                         
                 </td>
                 <td>

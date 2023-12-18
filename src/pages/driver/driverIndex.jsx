@@ -35,7 +35,6 @@ const DriverIndex = () => {
 
             setMessage('Cập nhật thông tin thành công')
             // alert("Cập nhật thành công")
-            window.location.reload();
             // Handle the response, update UI, etc.
             console.log(response.data); // Log the response data or handle it accordingly
             dispatch(fetchUserProfile(tokenDriver))
@@ -43,6 +42,8 @@ const DriverIndex = () => {
                     console.log(res);
                     // setUser(res.payload.data)
                     setUpdateinf(res.payload.data)
+                    setImg(res.payload.data.avatar)
+
                     console.log('update xong', res.payload.data);
                 })
                 .catch((err) => {
@@ -56,10 +57,10 @@ const DriverIndex = () => {
             if (response) {
                 const errors = response.data.errors;
                 console.log(errors);
-                if (errors.phone_number == "The phone number has already been taken.") {
+                if (errors.phone_number == "Trường phone number đã có trong cơ sở dữ liệu.") {
                     setMessage("Số điện thoại đã được sử dụng!");
                     console.log(errors.phone_number);
-                } else if (errors.phone_number == "The phone number field must be at least 10 characters.") {
+                } else if (errors.phone_number == "Trường phone number phải có tối thiểu 10 kí tự.") {
                     setMessage("Số điện thoại ít nhất 10 số!");
                     // console.log(errors.phone_number);
                 }
@@ -103,10 +104,11 @@ const DriverIndex = () => {
         if (driver) {
             // setLoading(true)
             console.log(driver);
-        } else {
-            // setLoading(false);
-            navigate('/admin')
         }
+        //  else {
+        //     // setLoading(false);
+        //     navigate('/admin')
+        // }
     }, [])
 
 

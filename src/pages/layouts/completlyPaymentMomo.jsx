@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../../assets/css/completlyPayment.css";
 // import "../../assets/css/index.css";
-import QRCode from 'qrcode.react';
-import { saveAs } from 'file-saver';
+import QRCode from "qrcode.react";
+import { saveAs } from "file-saver";
 import down from "../../assets/images/push-down.png";
 import check from "../../assets/images/check.png";
 import qr from "../../assets/images/QR.png";
@@ -10,7 +10,7 @@ import { API_BASE_URL, TimeHM } from "../../config";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
-const CompletlyPayment = () => {
+const CompletlyPaymentMomo = () => {
   const STATUS = {
     PENDING: 0,
     FAIL: -1,
@@ -49,32 +49,45 @@ const CompletlyPayment = () => {
   const checkPaymentStatus = async () => {
     try {
       first.current = true;
-      const vnp_TxnRef = queryParameters.get("vnp_TxnRef");
-      const vnp_TransactionStatus = queryParameters.get(
-        "vnp_TransactionStatus"
-      );
-      const vnp_Amount = queryParameters.get("vnp_Amount");
+      const code_bill = queryParameters.get("code_bill");
+      const total = queryParameters.get("total");
       const resp = await fetch(
-        `${API_BASE_URL}/api/vnpay-return?vnp_TxnRef=${vnp_TxnRef}&vnp_TransactionStatus=${vnp_TransactionStatus}&vnp_Amount=${vnp_Amount}`,
+        `${API_BASE_URL}/api/bank-return?code_bill=${code_bill}&vnp_Amount=${total}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       );
       const jsonData = await resp.json();
-      if (resp.status === 200) {
+      if (resp.status == 200) {
         console.log(jsonData);
         setUser(jsonData?.data?.bill?.tickets[0]?.user);
         setTickets(jsonData.data.bill.tickets);
         setBill(jsonData.data.bill);
         setStatus(jsonData.success ? STATUS.SUCCESS : STATUS.FAIL);
+        if (jsonData.success) {
+          const res = await fetch(
+            `${API_BASE_URL}/api/send-order-confirmation?email=${jsonData?.data?.bill?.tickets[0].user.email}&code_bill=${code_bill}`,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (res.status == 200) {
+            // alert("Đơn hàng đã được gửi đến mail của bạn hãy kiếm tra");
+          }
+        }
       }
       first.current = false;
     } catch (e) {
       console.log(e);
-      console.error(e)
+      console.error(e);
     }
   };
   const toCurrency = (amount) => {
@@ -84,12 +97,12 @@ const CompletlyPayment = () => {
     });
   };
   function getInfoFromQR(qrData) {
-    qrData = 'sdt, tên, email';
+    qrData = "sdt, tên, email";
     return qrData;
   }
 
-  const [scannedInfo, setScannedInfo] = useState('');
-  const [qrData, setQrData]= useState('')
+  const [scannedInfo, setScannedInfo] = useState("");
+  const [qrData, setQrData] = useState("");
 
   function handleScan(qrData) {
     const info = getInfoFromQR(qrData);
@@ -97,22 +110,22 @@ const CompletlyPayment = () => {
   }
 
   function downloadQRCode() {
-    const canvas = document.getElementById('qr-code-img');
+    const canvas = document.getElementById("qr-code-img");
 
     // Get the base64 representation of the QR code from the image element
-    const base64Image = canvas.toDataURL('image/png');
+    const base64Image = canvas.toDataURL("image/png");
 
     // Convert the base64 image to a Blob
-    const byteCharacters = atob(base64Image.split(',')[1]);
+    const byteCharacters = atob(base64Image.split(",")[1]);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/png' });
+    const blob = new Blob([byteArray], { type: "image/png" });
 
     // Use FileSaver.js to save the blob as a file
-    saveAs(blob, 'ma-qr.png');
+    saveAs(blob, "ma-qr.png");
   }
   return (
     <div className="mt-10">
@@ -323,4 +336,4 @@ const CompletlyPayment = () => {
   );
 };
 
-export default CompletlyPayment;
+export default CompletlyPaymentMomo;

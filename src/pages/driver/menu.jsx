@@ -52,7 +52,7 @@ const MenuSidebar =() => {
     }
     
     return (
-        <AuthWrapperAdmin>
+        <div className='driver-admin'>
        {driver!==null && <div >
               <div className="bodyAdmin"  id="body-pd" >
   <header className="headerAdmin" id="headerAdmin"  >
@@ -125,7 +125,7 @@ const MenuSidebar =() => {
 </div>
         </div>
         } 
-        </AuthWrapperAdmin>
+        </div>
     );
 };
 

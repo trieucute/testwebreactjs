@@ -1,12 +1,7 @@
 
 import React, { useEffect } from "react";
 import { slide } from "../../assets/js/slideshowHome.js";
-import hoxh from '../../assets/images/ho-xuan-huong-da-lat-4.webp';
-import caubt from '../../assets/images/cau-vang-da-nang.jpg';
-import thacpe from '../../assets/images/thac-prenn.jpg';
-import nuilangbi from '../../assets/images/Đỉnh_Langbiang.jpg';
-import chodalat from '../../assets/images/cho-da-lat-ve-dem.jpg';
-import doicat from '../../assets/images/doi-cat-mui-ne-2.jpg'
+
 import { fetchnews } from "../../reduxTool/newsSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +11,7 @@ import Slider from "react-slick";
 
 const TouristInformation = () => {
   const settings = {
-    // dots: true,
+    // dots: true, 
     infinite: true,
     speed: 500,
     slidesToShow: 4,

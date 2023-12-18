@@ -12,7 +12,7 @@ import TripAdminReducer from './tripSlice'
 import stationAdminReducer from './stationSlice'
 import ticketAdminReducer from './ticketSlice'
 import historyTicketReducer from './historyTicketSlice'
-
+import TripDriverReducer from './tripDriverSlice'
 // import routesBookingReducer from './formdata'
 export const store=configureStore({
     reducer:{
@@ -28,6 +28,7 @@ export const store=configureStore({
         stationAdmin:stationAdminReducer,
         ticketAdmin: ticketAdminReducer,
         historyTicket:historyTicketReducer,
+        tripDriver:TripDriverReducer,
         // routesBookingReducer ,
 
     }

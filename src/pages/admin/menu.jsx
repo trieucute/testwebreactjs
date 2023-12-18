@@ -66,7 +66,7 @@ const MenuSidebar =() => {
         navigate('/admin')
       }
       }, [])
-    console.log(admin);
+    // console.log(admin);
     const handLogout=()=>{
         // const token= localStorage.getItem('adminToken')
         if( tokenAdmin){
@@ -79,7 +79,7 @@ const MenuSidebar =() => {
     }
     
     return (
-        <AuthWrapperAdmin>
+        <>
        {admin !==null && <div >
               <div className="bodyAdmin"  id="body-pd" >
   <header className="headerAdmin" id="headerAdmin"  >
@@ -197,7 +197,7 @@ const MenuSidebar =() => {
 </div>
         </div>
         } 
-        </AuthWrapperAdmin>
+        </>
     );
 };
 

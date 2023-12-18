@@ -121,7 +121,7 @@ const ChangePassword = () => {
         <div className='mt-10'>
         <div className='changePass-container container'>
           
-            <form  onSubmit={handleChange} className='form-change' style={{   backgroundImage: `url(${dark})`}}> 
+            <form  onSubmit={handleChange} className='form-change ' style={{backgroundColor:"white", color:"black" }}> 
              <h3 className='text-uppercase text-center'>Đổi mật khẩu</h3>
                 <div className='form-group'>
                     <label htmlFor="">Mật khẩu cũ: </label>

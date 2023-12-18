@@ -180,6 +180,13 @@
 .admin-contents{
     padding: 1em ;
 }
+.status-mobile{
+    display: none;
+    border-bottom: none !important;
+}
+.btn-mobile-admin{
+    display: none;
+}
 @media screen and (min-width: 768px) {
     .bodyAdmin {
         margin: calc(var(--header-height) + 1rem) 0 0 0;
@@ -210,6 +217,128 @@
     }
 
 
+}
+@media screen and (max-width: 768px) {
+    .login-admin-container .w-50.mx-auto{
+        width: 80% !important;
+    }
+    .bodyAdmin .header_img {
+        width: 50px;
+    }
+    .bodyAdmin  .height-100.bg-light.body-pd{
+        /* padding-left: 30px;  */
+        padding-left: 0 !important;
+        transition: .5s;
+       margin-left: 0 !important;
+    }
+    .bodyAdmin    .header_toggle.body-pd{
+        position: fixed;
+        transition: .5s;
+        top: 10px;
+        right: 10px;
+    }
+    .bodyAdmin .l-navbar.show {
+        position: fixed;
+        top: 0;
+        left: 0%;
+        width: 50%  !important ;
+    }
+    .status-destop{
+        display: none;
+    }
+    .status-mobile{
+        display: block;
+    }
+    .tripAdmin-container .table-dataUser th{
+        font-size: 15px;
+        white-space: nowrap; /* Ngăn chặn việc xuống dòng */
+        padding-left: 5px !important ;
+        padding-right: 5px  !important;
+    }
+    .tripAdmin-container .table-dataUser td{
+        font-size: 14px;
+    }
+    .btn-mobile-admin-destop{
+        display: none;
+    }
+    .btn-mobile-admin{
+        display: block;
+    }
+    .tripAdmin-container  .row-mobile-tabs {
+        /* height: 25rem; */
+        white-space: nowrap !important;
+        display: flex;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        overflow-y: hidden;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tripAdmin-container  .row-mobile-tabs::-webkit-scrollbar {
+        background-color: #eaeaea;
+        /* width: 2px; */
+      height: 3px;
+      }
+      
+      .tripAdmin-container .items-FloorDown{
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        margin-top: 10px;
+      }
+      .tripAdmin-container .row-mobile-tabs::-webkit-scrollbar-thumb {
+        background-color: #4339B4;
+      }
+      .tripAdmin-container  .col-mobile-tabs {
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        display: block;
+        /* width: 100%; */
+        /* height: 25rem; */
+        overflow: hidden;
+        border-radius: 2px;
+        white-space: normal;
+      }
+    .tripAdmin-container  .row-mobile{
+        white-space: nowrap !important;
+        display: flex;
+        display: -ms-flexbox;
+        flex-wrap: nowrap;
+        overflow-y: hidden;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .tripAdmin-container   .col-mobile{
+        flex-shrink: 0;
+    display: block;
+    /* width: 100%; */
+    /* height: 25rem; */
+    overflow-x: scroll;
+    border-radius: 2px;
+    white-space: nowrap;
+    }
+}
+@media screen and (max-width: 568px) {
+    .bodyAdmin .l-navbar.show {
+        position: fixed;
+        top: 0;
+        left: 0%;
+        width: 60%  !important ;
+    }
+    .admin-contents .items-FloorDown.col-sm-4.chair-mobile-admin{
+        width: 50% !important;
+    }
+}
+@media screen and (max-width: 408px) {
+    .bodyAdmin .l-navbar.show {
+        position: fixed;
+        top: 0;
+        left: 0%;
+        width: 70%  !important ;
+    }
 }
 .admin-contents .pagination .next a ,.admin-contents .pagination .previous a{
     background-color: white;

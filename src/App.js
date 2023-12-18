@@ -68,6 +68,7 @@ import TripOfDriver from './pages/driver/trip';
 import IndexDriver from './pages/driver';
 import Dieukhoandatve from './pages/layouts/dieukhoandatve';
 import Cauhoichung from './pages/layouts/cauhoichung';
+import CompletlyPaymentMomo from './pages/layouts/completlyPaymentMomo';
 
 
 // import Editor from './pages/admin/news/edit';
@@ -112,7 +113,7 @@ function App() {
           <Route path='/thanhtoan1chieu' element={<PaymentSingle/>}/>
           <Route path='/thanhtoan' element={<Payment/>}/>
           <Route path='/dathanhtoan' element={<CompletlyPayment/>}/>
-
+          <Route path='/dathanhtoan/qr' element={<CompletlyPaymentMomo/>}/>
           {/* <Route path='/slide' element={<Slideshows/>}/> */}
         
 

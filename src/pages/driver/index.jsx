@@ -12,7 +12,7 @@ const IndexDriver = () => {
  const {driver}=  useStateContext();
  const navigate= useNavigate()
   useEffect(()=>{
-    if(!driver){
+    if(driver===null){
       navigate('/admin')
     }
 },[])

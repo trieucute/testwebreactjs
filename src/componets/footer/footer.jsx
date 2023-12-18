@@ -39,9 +39,7 @@ const Footer = () => {
                   <li className="list-group-item mb-2">
                   <Link to='/rules'>Điều khoản sử dụng</Link>
                   </li>
-                  <li className="list-group-item mb-2">
-                  <Link to='/instruct'>Hướng dẫn đặt vé trên Web</Link>
-                  </li>
+               
                   <li className="list-group-item mb-2">
                   <Link to='/questions'>Câu hỏi thường gặp</Link>
                   </li>

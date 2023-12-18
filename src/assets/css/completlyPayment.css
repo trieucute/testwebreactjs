@@ -188,6 +188,10 @@
        /* margin: 0 auto; */
        width: 100%;
    }
+   .complete-pay-container .infor__trip {
+ 
+    padding: 0 10px !important;
+}
 }
 @media only screen and (max-width: 992px){
    .complete-pay-container .slide .col-md-3 {
@@ -222,6 +226,7 @@
  
 }
 @media only screen and (max-width: 768px){
+   
     .complete-pay-container .booking__ticket{
         font-size: 22px;
     }

@@ -75,9 +75,13 @@ export  const fetchAddPoint = createAsyncThunk("station/fecthAddPoint", async(da
   }
 })
 
-export  const updatePoint = createAsyncThunk("station/updatePoint", async (id) => {
+export  const updatePoint = createAsyncThunk("station/updatePoint", async (id,data) => {
   try {
-      const Point  = await axiosAdmin.put(`/timepoint/${id}`)
+      const Point  = await axiosAdmin.put(`/timepoint/${id}`,data,{
+        headers: {
+          'Content-Type': 'application/json',
+  }
+      })
       return Point.data
   } catch (error) {
       console.log(error);

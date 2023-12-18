@@ -6,7 +6,7 @@
 .changePass-container h3{
     
  font-weight: 800;
-    color: white;
+    color: rgb(0, 0, 0);
     margin-bottom: 40px;
 }
 .form-change{
@@ -28,11 +28,10 @@
 .form-change .form-group label{
    font-weight: 700;
     margin-bottom: 5px;
-    color: white;
 }
 .form-change .form-control{
     font-size: 15px;
-    color: #ffffff;
+    color: #000000;
     line-height: 1.2;
     display: block;
     width: 100%;
@@ -43,7 +42,7 @@
     border-bottom: 1px solid gainsboro !important;
 }
 .form-change .form-control:focus {
-    color: white;
+    color: rgb(0, 0, 0);
     background: transparent;
     border-color: transparent;
     outline: 0;
@@ -65,8 +64,15 @@
     box-shadow: 0 0 0 0.3rem  var(--colorMain);
 
 }
+.changePass-container .eyes-pass i{
+    color: gainsboro;
+}
 .changePass-container .form-group{
     position: relative;
+
+}
+.changePass-container .form-group label{
+    color: black;
 }
 .changePass-container .eyes-pass{
     top: 27px;

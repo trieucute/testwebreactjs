@@ -19,9 +19,11 @@ const TripList = () => {
 
     const handleAddStart=()=>{
       setShowAddStart(!showAddStart)
+      setEditPoint(false)
     }
     const handleAddEnd=()=>{
       setShowAddEnd(!showAddEnd)
+      setEditPointEnd(false)
     }
     const dispatch= useDispatch();
     const tripData= useSelector(state=>state.tripAdmin)
@@ -40,35 +42,6 @@ const TripList = () => {
     // Tạo đối tượng Date hiện tại
 const now= new Date();
 
-// Đặt giờ và phút cho thời gian khởi hành là 18:00
-// now.setHours(18, 12, 0, 0);
-
-// // Tạo đối tượng Date cho thời gian đến sau 9 tiếng
-// const arrivalTime = new Date(now);
-// arrivalTime.setHours(arrivalTime.getHours() + 9);
-
-// const postDatas = {
-//   departure_time: now.toISOString().slice(0, 19).replace('T', ' '), // Format lại thời gian thành ISO string (vd: "2023-12-13 18:00:00")
-//   car_id: 1,
-//   driver_id: 9,
-//   arrival_time: arrivalTime.toISOString().slice(0, 19).replace('T', ' '), // Thời gian đến sau 9 tiếng
-//   start_station: 1,
-//   end_station: 3,
-//   status: 'Chờ khởi hành',
-//   pickups: [
-//     {
-//       time: '19:00',
-//       pointId: 1,
-//     }
-//   ],
-//   dropoff: [
-//     {
-//       time: `${arrivalTime.getHours()}:${arrivalTime.getMinutes()}`, // Thời gian sau 9 tiếng
-//       pointId: 7,
-//     }
-//   ],
-//   // Các thông tin khác của postData
-// };
 
 // Tính toán số mili giây cần chờ để đến thời gian 18:15
 const timeUntilDesiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 29, 0, 0) - now;
@@ -103,7 +76,8 @@ if (timeUntilDesiredTime > 0) {
 
     axiosAdmin.post('/trip', postDatas, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+ 
       }
     })
     .then(res => {
@@ -203,7 +177,7 @@ if (timeUntilDesiredTime > 0) {
         // console.log(stationPoint?.point);
         // console.log(dataDetail,'detail');
 
-
+    // const [loading, setLoading]=useState(false)
         // thêm sửa xoá point
         const [pointStart, setPointStart]= useState({
           time:'',
@@ -216,12 +190,21 @@ if (timeUntilDesiredTime > 0) {
   
         })
 
+        const [showNotifi, setShowNotifi] = useState(false);
+        const [notificationMessage, setNotificationMessage] = useState('');
 
         const handleAddTimePointStart=(e)=>{
       
           e.preventDefault()
           if(pointStart.point_id==='' || pointStart.time===''){
-            alert('Vui lòng nhập đầy đủ thông tin!')
+            
+            setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+            setShowNotifi(true);
+        
+            // Hide the notification after 3 seconds
+            setTimeout(() => {
+              setShowNotifi(false);
+            }, 3000);
             return
           }
           const pointPost={
@@ -246,10 +229,18 @@ if (timeUntilDesiredTime > 0) {
           })
         
         }
+       
         const handleAddTimePointEnd=(e)=>{
           e.preventDefault()
           if(pointEnd.point_id==='' || pointEnd.time===''){
-            alert('Vui lòng nhập đầy đủ thông tin!')
+          
+            setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+            setShowNotifi(true);
+        
+            // Hide the notification after 3 seconds
+            setTimeout(() => {
+              setShowNotifi(false);
+            }, 3000);
             return
           }
           const pointPost={
@@ -343,7 +334,15 @@ if (timeUntilDesiredTime > 0) {
         point_id:null,
           time:null
       });
+      const [pointEndEdit, setPointEndEdit] = useState({
+        point_id:null,
+          time:null
+      });
       const [editPoint,setEditPoint ]= useState(false)
+      const [editPointEnd,setEditPointEnd ]= useState(false)
+
+      const [editIdStart,setEditIdStart ]= useState('')
+      const [editIdEnd,setEditIdEnd ]= useState('')
 
       const handleChangeinputedit=(e)=>{
         setPointStartEdit((prevPointStartEdit) => ({
@@ -352,26 +351,83 @@ if (timeUntilDesiredTime > 0) {
         }));
       
       }
-      const handleUpdatePoint=(id, value, time, idtrip)=>{
+      
+      const handleChangeinputeditEnd=(e)=>{
+        setPointEndEdit((prevPointEndEdit) => ({
+          ...prevPointEndEdit,
+          [e.target.name]: e.target.value,
+        }));
+      
+      }
+      const handleUpdatePoint=(id, value, time, idtrip,idpoint)=>{
         setEditPoint(!editPoint)
-        // console.log(seat,'seatedit');
-        // setPointStartEdit(seat)
-        console.log(id, value, time, idtrip);
+        setShowAddStart(false)
+
+        // console.log(id, value, time, idtrip, idpoint);
         setPointStartEdit({
-          point_id:id,
+          point_id:idpoint,
           time:time
         })
-       
+       setEditIdStart(id)
+      }
+      const handleUpdatePointEnd=(id, value, time, idtrip,idpoint)=>{
+        setEditPointEnd(!editPointEnd)
+        setShowAddEnd(false)
+
+        console.log(id, value, time, idtrip,idpoint);
+        setPointEndEdit({
+          point_id:idpoint,
+          time:time
+        })
+        setEditIdEnd(id)
+
       }
       console.log('editPoint',pointStartEdit);    
-          // dispatch(updatePoint(id))
-        // .then((res) => {
-        //   console.log(res);
-        //   dispatch(fetchTripAdminDetail(tripId))// Gọi lại action fetchCarSeat để load lại dữ liệu
-        // })
-        // .catch((err) => {
-        //   console.error(err);
-        // });
+ 
+      const handleSubmitUpdatePointStart=(e)=>{
+        e.preventDefault()
+        // const data={
+        //   point_id:parseInt(pointStartEdit.id, 10),
+        //   time:pointStartEdit.time
+        // }
+        // dispatch(updatePoint({id,data}))
+        axiosAdmin.put(`/timepoint/${editIdStart}`,pointStartEdit,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+         }
+        })
+        .then((res) => {
+          console.log(res);
+          dispatch(fetchTripAdminDetail(tripId))// Gọi lại action fetchCarSeat để load lại dữ liệu
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      }
+
+      
+      const handleSubmitUpdatePointEnd=(e)=>{
+        e.preventDefault()
+        // const data={
+        //   point_id:parseInt(pointStartEdit.id, 10),
+        //   time:pointStartEdit.time
+        // }
+        // dispatch(updatePoint({id,data}))
+        axiosAdmin.put(`/timepoint/${editIdEnd}`,pointEndEdit,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+         }
+        })
+        .then((res) => {
+          console.log(res);
+          dispatch(fetchTripAdminDetail(tripId))// Gọi lại action fetchCarSeat để load lại dữ liệu
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      }
     return (
         <div>
           {loading ? (
@@ -424,7 +480,7 @@ if (timeUntilDesiredTime > 0) {
                                                           <div ><h6 className='text-center' style={{fontSize:"15px", marginBottom:"10px",paddingTop:"5px"}}>Cập nhật trạng thái xe</h6>                                              
                                                             <button type='button' style={{fontSize:"13px", marginRight:"5px", padding:"5px 4px"}} className={`btn ${item.status==='Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Chờ khởi hành')}>Chờ khởi hành</button>
                                                             <button type='button' style={{fontSize:"13px",marginRight:"5px",padding:"5px 4px"}}  className={`btn ${item.status==='Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đang khởi hành')}>Đang khởi hành</button>
-                                                            <button type='button' style={{fontSize:"13px",padding:"5px 4px"}}  className={`btn ${item.status==='Đã đến' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đã đến')}>Đã đến</button>    
+                                                            <button type='button' style={{fontSize:"13px",padding:"5px 4px"}}  className={`btn ${item.status==='Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đã hoàn thành')}>Đã hoàn thành</button>    
                                                        </div>}
                                                         placement="top" arrow>{item.status} <i class="far fa-hand"></i></Tooltip>
                                                         
@@ -952,7 +1008,7 @@ if (timeUntilDesiredTime > 0) {
                                   <td  style={{maxWidth:"400px"}}>{item.address}</td>
                                   <td> { formatTimeAdminTrip( item.time)}</td>
                                   <td>
-                                  <i class="fas fa-pen-to-square"  onClick={()=> handleUpdatePoint(item.id,'pickup', item.time,tripId)}></i>
+                                  <i class="fas fa-pen-to-square"  onClick={()=> handleUpdatePoint(item.id,'pickup', item.time,tripId, item.point_id)}></i>
                                   <i class="fas fa-trash" onClick={()=> handleDeletePoint(item.id)}></i>
                                   </td>
                                 </tr>
@@ -993,19 +1049,17 @@ if (timeUntilDesiredTime > 0) {
                           }
                              {editPoint&& 
                         <div className='form-add-start-end'>
-                          <form action="" className='row m-0 ' >
+                          <form action="" className='row m-0 ' onSubmit={ handleSubmitUpdatePointStart}>
                             <div className='form-group w-50'>
                               <label htmlFor="">Điểm đón</label>
                               <input type="text"  value={pointStartEdit.point_id}/>
                               <select id="" className='form-select' name="point_id" value={pointStartEdit.point_id} onChange={handleChangeinputedit} >
                               <option value=''>Chọn điểm đón</option>
                                 {dataDetail && nameStart&& nameStart.map(i=>(
-                                  // <>
-                                  //  <option value={pointStartEdit.point_id===i.id ? 'selected':''}>{i.name}</option>
-                                  // <option value={i.id}>{i.name}</option>
-                                  <option key={i.id} value={i.id} selected={pointStartEdit.point_id === i.id ? 'selected' : ''}>
-                                  {i.name}
-                                </option>
+                               
+                               <option key={i.id} value={i.id}>
+                               {i.name} 
+                             </option>
                                   // </>
                                 ))}
                         
@@ -1055,7 +1109,7 @@ if (timeUntilDesiredTime > 0) {
                                     <td  style={{maxWidth:"400px"}}>{item.address}</td>
                                     <td> { formatTimeAdminTrip( item.time)}</td>
                                     <td>
-                                    <i class="fas fa-pen-to-square" onClick={()=> handleUpdatePoint(item.id)}></i>
+                                    <i class="fas fa-pen-to-square" onClick={()=>handleUpdatePointEnd(item.id,'dropoff', item.time,tripId, item.point_id)}></i>
                                     <i class="fas fa-trash"  onClick={()=> handleDeletePoint(item.id)}></i>
                                     </td>
                                   </tr>
@@ -1087,6 +1141,37 @@ if (timeUntilDesiredTime > 0) {
                             </div>
                             <div className='form-group text-center mt-3'>
                             <button className='btn-add' type='submit'>Thêm</button>
+                            </div>
+                          </form>
+                        </div>
+                          }
+                                      {editPointEnd&& 
+                        <div className='form-add-start-end'>
+                          <form action="" className='row m-0 '  onSubmit={ handleSubmitUpdatePointEnd}>
+                            <div className='form-group w-50'>
+                              <label htmlFor="">Điểm đón</label>
+                              <input type="text"  value={pointEndEdit.point_id}/>
+                              <select id="" className='form-select' name="point_id" value={pointEndEdit.point_id} onChange={handleChangeinputeditEnd} >
+                              <option value=''>Chọn điểm đón</option>
+                                {dataDetail &&  nameEnd&&  nameEnd.map(i=>(
+                                  // <>
+                                  //  <option value={pointStartEdit.point_id===i.id ? 'selected':''}>{i.name}</option>
+                                  // <option value={i.id}>{i.name}</option>
+                                  <option key={i.id} value={i.id}>
+                                  {i.name}
+                                </option>
+                                  // </>
+                                ))}
+                        
+                        </select>
+                            </div>
+     
+                            <div className='form-group w-50'>
+                              <label htmlFor="">Thời gian đón</label>
+                             <input type="time" className='form-control' name='time' value={pointEndEdit.time} onChange={handleChangeinputeditEnd}/>
+                            </div>
+                            <div className='form-group text-center mt-3'>
+                            <button className='btn-add' type='submit'>Cập nhật</button>
                             </div>
                           </form>
                         </div>

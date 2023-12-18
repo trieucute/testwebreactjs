@@ -7,18 +7,21 @@ import banking from "../../assets/images/banking.jpg";
 import momos from "../../assets/images/momo.png";
 import { postPayment } from "../../reduxTool/dataTicketSlice";
 import { API_BASE_URL } from "../../config";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
+import Timer from "./Timer";
 import LoadingAd from "../loadingAdmin";
 
 const Payment = () => {
   // khi nhấn vnpay thì hiện vnpay , tương tự momo
   const [ticket, setTicket] = useState(null);
+  const [timer, setTimer] = useState({ minute: 8, second: 59 });
   const [trip, setTrip] = useState(null);
   const [momo, setMomo] = useState(null);
   const { profile } = useSelector((state) => state.authAdmin);
   const dispatch = useDispatch();
   const nav = useNavigate();
   const first = useRef(false);
+  useEffect(() => {}, [timer]);
   const handleCheckPay = async () => {
     console.log(momo);
     const data = {
@@ -34,12 +37,15 @@ const Payment = () => {
         },
       }
     );
+    const jsonData = await resp.json();
     if (resp.status == 200) {
       window.location.assign(
-        `http://127.0.0.1:3000/dathanhtoan?code_bill=${data.code_bill}&total=${data.vnp_Amount}`
+        `http://127.0.0.1:3000/dathanhtoan/qr/?code_bill=${data.code_bill}&total=${data.vnp_Amount}`
       );
     }
     if (resp.status >= 400) {
+      console.log(jsonData);
+      setTimer({ minute: 8, second: 59 });
       alert("Bạn chưa thanh toán");
     }
   };
@@ -57,6 +63,8 @@ const Payment = () => {
         pickup_location: ticket_?.pickup_location,
         dropoff_location: ticket_?.dropoff_location,
         email: ticket_?.email,
+        name:ticket_?.name,
+        phone_number:ticket_?.phone_number,
       };
       const resp = await fetch(`${API_BASE_URL}/api/getbankqr`, {
         method: "POST",
@@ -68,10 +76,12 @@ const Payment = () => {
       });
       const jsonData = await resp.json();
       if (resp.status == 200) {
+        console.log("trip data ::", jsonData);
         setMomo(jsonData?.data);
         setLoading(false)
       } else {
         alert(jsonData?.messages || "Có lỗi xảy ra");
+        setLoading(false)
         nav(-1);
         // window.location.assign("http://127.0.0.1:3000");
       }
@@ -82,12 +92,14 @@ const Payment = () => {
     }
   };
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (!first.current) {
       first.current = true;
       // getQr();
     }
   }, [ticket]);
+ 
+  
+
   useEffect(() => {
     // tabs();
     const inputs = document.querySelectorAll(".input-pay");
@@ -194,7 +206,7 @@ const Payment = () => {
                       borderRadius: "5px",
                     }}
                   >
-                    <div className="card-body">
+                     <div className="card-body">
                       <h5 className="card-title text-start">
                         Chọn phương thức thanh toán
                       </h5>
@@ -320,8 +332,16 @@ const Payment = () => {
                           ) : (
                             <>
                               {/* Hiển thị mã QR */}
+                              <Timer
+                          minute={timer?.minute || 8}
+                          second={timer?.second || 59}
+                          handleWhenCountEnd={handleCheckPay}
+                        />
                               <div className="img-ckMomo" dangerouslySetInnerHTML={{ __html: momo?.qr }} />
                               {/* Hướng dẫn thanh toán */}
+                              <div className="text-center mb-2">
+                                Sau khi thanh toán xong, bạn vui lòng đợi vài giây, sau đó nhấn hoàn thành giao dịch
+                              </div>
                               <h5 className="card-title text-start text-success">
                                 Hướng dẫn thanh toán quét mã
                               </h5>
@@ -353,6 +373,82 @@ const Payment = () => {
                             </>
                           )
                         )}
+                        {/* <Timer
+                          minute={timer?.minute || 9}
+                          second={timer?.second || 59}
+                          handleWhenCountEnd={handleCheckPay}
+                        />
+                        <div
+                          className="momo-img"
+                          dangerouslySetInnerHTML={{ __html: momo?.qr }}
+                        />
+                        <h5 className="card-title text-start text-success">
+                          Hướng dẫn thanh toán quét mã
+                        </h5>
+                        <div className="containers text-center">
+                          <div className="row">
+                            <div
+                              className="col-sm-1"
+                              style={{ marginTop: "0.5em" }}
+                            >
+                              ❶
+                            </div>
+                            <div className="col-sm text-start">
+                              Mở ứng dụng Momo hoặc app ngân hàng trên điện
+                              thoại
+                            </div>
+                          </div>
+                        </div>
+                        <div className="containers text-center">
+                          <div className="row">
+                            <div
+                              className="col-sm-1"
+                              style={{ marginTop: "0.1em" }}
+                            >
+                              ❷
+                            </div>
+                            <div className="col-sm text-start">
+                              Dùng biểu tượng [-] để quét mã QR
+                            </div>
+                          </div>
+                        </div>
+                        <div className="containers text-center">
+                          <div className="row">
+                            <div
+                              className="col-sm-1"
+                              style={{ marginTop: "0.1em" }}
+                            >
+                              ❸
+                            </div>
+                            <div className="col-sm text-start">
+                              Quét mã ở trang này và thanh toán
+                            </div>
+                          </div>
+                        </div>
+                        <div className="containers text-center">
+                          <div className="row">
+                            <div
+                              className="col-sm-1"
+                              style={{ marginTop: "0.1em" }}
+                            >
+                              ❸
+                            </div>
+                            <div className="col-sm text-start">
+                              Sau khi thanh toán thành công hay ấn nút kiểm tra
+                              bên dưới
+                            </div>
+                          </div>
+                        </div>
+                        <div className="container fluid">
+                          <div className="row m-4">
+                            <button
+                              onClick={handleCheckPay}
+                              className="btn btn-warning text-white"
+                            >
+                              Hoàn thành giao dịch
+                            </button>
+                          </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

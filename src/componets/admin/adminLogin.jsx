@@ -50,16 +50,16 @@ const AdminLogin = () => {
             setErrorMessage(error.message);
         }
     };
-    console.log(admin);
-useEffect(()=>{
-  if(admin ){
-    navigate('/admin/dashboard');
-  }
+// useEffect(()=>{
+//   if(!admin ){
+//     navigate('/admin/dashboard');
+//   }
+//   // console.log(admin);
 
-},[])
+// },[])
     return (
         <AuthWrapperAdmin>
-        <div className='mt-5'>
+        <div className='mt-5 login-admin-container'>
             <h1 className='text-center fs-2'>Login Admin</h1>
             <form className='w-50 mx-auto mt-4' onSubmit={handleLogin}>
   <div className="mb-3">

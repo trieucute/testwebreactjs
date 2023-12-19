@@ -6,7 +6,7 @@ import city from "../../assets/images/city2.jpg";
 import banking from "../../assets/images/banking.jpg";
 import momos from "../../assets/images/momo.png";
 import { postPayment } from "../../reduxTool/dataTicketSlice";
-import { API_BASE_URL } from "../../config";
+import { API_BASE_URL, formatDate } from "../../config";
 import { json, useNavigate } from "react-router-dom";
 import Timer from "./Timer";
 import LoadingAd from "../loadingAdmin";
@@ -196,8 +196,8 @@ const Payment = () => {
               <img src={xe2} alt="" style={{ width: "65%" }} />
             </div>
             <div className="text-center w-50 ">
-              <h5 className="p-0 m-0">TP.Hồ Chí Minh - Đà Lạt</h5>
-              <span className="date_go">10/08/2023</span>
+              <h5 className="p-0 m-0">{trip?.start_station.province} - {trip?.end_station.province}</h5>
+              <span className="date_go">{trip && formatDate( trip?.departure_time.split(' ')[0])}</span>
             </div>
             <div className="w-25 text-center">
               <img src={city} alt="" style={{ width: "63%" }} />

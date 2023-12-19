@@ -9,8 +9,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import AuthWrapper from '../../componets/auth/authWrapper';
 import { API_BASE_URL } from '../../config';
+import { useStateContext } from '../../context/ContextProvider';
 const Signup = () => {
-    const [message, setMessage] = useState(false);
+    const [message, setMessage] = useState('');
     const [seconds, setSeconds] = useState(5);
 
     const [error, setError] = useState(false);
@@ -31,11 +32,16 @@ const Signup = () => {
 
     const passwordConfirmationRef = createRef();
     // const {setUser, setToken} = useStateContext()
-
+const {user}= useStateContext()
 
 
     const onSubmit = ev => {
         ev.preventDefault()
+
+      if( nameRef.current.value==='' || emailRef.current.value===''||phoneRef.current.value===''|| passwordRef.current.value===''||  passwordConfirmationRef.current.value===''){
+        setMessage('Vui lòng nhập đầy đủ thông tin')
+        return
+      }
 
         const payload = {
 
@@ -49,7 +55,11 @@ const Signup = () => {
 
         }
 
-        axiosClient.post('/register', payload)
+        axiosClient.post('/register', payload,{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
             .then((res) => {
                 setMessage(true)
                 //    alert('Đăng ký thành công! Mời bạn đăng nhập');
@@ -170,6 +180,21 @@ const Signup = () => {
     const hanleNavigateLogin =()=>{
       navigate('/login')
     }
+    useEffect(()=>{
+      // if(token){
+      //   if(user){
+      //     navigate('/')
+      //   }
+      // }
+      if (user) {
+        // setLoading(true)
+        // console.log(user);
+        navigate('/')
+    } else {
+        // setLoading(false);
+        
+    }
+    },[])
     return (
         <AuthWrapper>
         <div>

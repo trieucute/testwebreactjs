@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import car from '../../../assets/images/bus1.jpg'
 import { Tooltip } from 'react-tooltip'
+
 import { useDispatch, useSelector } from 'react-redux';
 import { changeStatus, deleteTripAdmin, fetchTripAdmin, fetchTripAdminDetail } from '../../../reduxTool/tripSlice';
 import ReactPaginate from 'react-paginate';
@@ -15,7 +16,7 @@ const TripList = () => {
     navigate('/admin/trips/addnew')
     }
     const [showAddStart, setShowAddStart]= useState(false);
-    const [showAddEnd, setShowAddEnd]= useState(false);
+    const [showAddEnd, setShowAddEnd]= useState(false); 
 
     const handleAddStart=()=>{
       setShowAddStart(!showAddStart)
@@ -476,19 +477,16 @@ if (timeUntilDesiredTime > 0) {
                 <td>{item.car}</td>
                 <td>{item.driver}</td>
                 <td>{formatDateTimeAdminTrip( item.departure_time)}</td>
-                {/* <a id="clickable">◕‿‿◕</a>
-              <Tooltip anchorSelect="#clickable" clickable>
-                <button>You can click me!</button>
-              </Tooltip> */}
+          
                 <td>
-                
-                  <Tooltip  style={{width:"400px"}} title={
+                <span key={item.id} id={`clickable-${item.id}`}>  {item.status}  <i class="far fa-hand"></i></span>
+                  <Tooltip    anchorSelect={`#clickable-${item.id}`} clickable>
                                                           <div ><h6 className='text-center' style={{fontSize:"15px", marginBottom:"10px",paddingTop:"5px"}}>Cập nhật trạng thái xe</h6>                                              
                                                             <button type='button' style={{fontSize:"13px", marginRight:"5px", padding:"5px 4px"}} className={`btn ${item.status==='Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Chờ khởi hành')}>Chờ khởi hành</button>
                                                             <button type='button' style={{fontSize:"13px",marginRight:"5px",padding:"5px 4px"}}  className={`btn ${item.status==='Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đang khởi hành')}>Đang khởi hành</button>
                                                             <button type='button' style={{fontSize:"13px",padding:"5px 4px"}}  className={`btn ${item.status==='Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={()=>handleChangeStatus(item.id,'Đã hoàn thành')}>Đã hoàn thành</button>    
-                                                       </div>}
-                                                     anchorSelect="#clickable" clickable>{item.status} <i class="far fa-hand"></i></Tooltip>
+                                                       </div>
+                                                   </Tooltip>
                                                         
                 </td>
                 <td>
@@ -551,6 +549,10 @@ if (timeUntilDesiredTime > 0) {
               <div className='col text-start'>Loại xe</div>
               <div className='col text-end'>{dataDetail && dataDetail.car.type}</div>
             </div>
+            <div className='row m-0'>
+              <div className='col text-start'>Ngày khởi hành</div>
+              <div className='col text-end'>{dataDetail && dataDetail.departure_time}</div>
+            </div>
           </div>
         </div>
         <div className="row px-4 py-3  tab-contents-car">
@@ -570,14 +572,10 @@ if (timeUntilDesiredTime > 0) {
                                               .map(seat => (
                                                 <div className={`items-content-floor-row  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                                       </div>}
-                                                        placement="top" arrow>
+                                                  
+                                              
                                                        
-                                                <div
+                                                <div key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -604,7 +602,11 @@ if (timeUntilDesiredTime > 0) {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -633,14 +635,9 @@ if (timeUntilDesiredTime > 0) {
                                               .map(seat => (
                                                 <div className={`items-content-floor-row  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                                       </div>}
-                                                        placement="top" arrow>
+                                               
                                                        
-                                                <div
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -667,7 +664,11 @@ if (timeUntilDesiredTime > 0) {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -694,14 +695,8 @@ if (timeUntilDesiredTime > 0) {
                                               .map(seat => (
                                                 <div className={`items-content-floor-row items-content-floor-double  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                                       </div>}
-                                                        placement="top" arrow>
-                                                       
-                                                <div
+                                                
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -728,7 +723,11 @@ if (timeUntilDesiredTime > 0) {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -757,14 +756,9 @@ if (timeUntilDesiredTime > 0) {
                                               .map(seat => (
                                                 <div className={`items-content-floor-row items-content-floor-double  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                                       </div>}
-                                                        placement="top" arrow>
+                                               
                                                        
-                                                <div
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -791,7 +785,11 @@ if (timeUntilDesiredTime > 0) {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -818,14 +816,9 @@ if (timeUntilDesiredTime > 0) {
                                               .map(seat => (
                                                 <div className={`items-content-floor-row items-content-floor-chair  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                                       </div>}
-                                                        placement="top" arrow>
+                                               
                                                        
-                                                <div
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -852,7 +845,11 @@ if (timeUntilDesiredTime > 0) {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -881,14 +878,9 @@ if (timeUntilDesiredTime > 0) {
                                               .map(seat => (
                                                 <div className={`items-content-floor-row items-content-floor-chair  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending'? 'Chosen-seat' : ''}`}>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                             {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                                       </div>}
-                                                        placement="top" arrow>
+                                               
                                                        
-                                                <div
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -915,7 +907,11 @@ if (timeUntilDesiredTime > 0) {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                

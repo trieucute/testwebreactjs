@@ -7,9 +7,7 @@
 
 
 /*---------------------------------------------*/
-.forgot-password-container{
 
-}
 .forgot-password-container a {
   /* font-family: Poppins-Regular; */
   font-size: 14px;
@@ -517,13 +515,7 @@ flex-wrap: wrap;
 width: 40%;
 }
 
-.booking__history__container .button{
-/* display: flex;
-width: 60%;
-margin: 0 auto;
-text-align: center;
-margin-bottom: 2%; */
-}
+
 .booking__history__container .buttons .buton:last-child{
   margin-bottom: 0px;
 

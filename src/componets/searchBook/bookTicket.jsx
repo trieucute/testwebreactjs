@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 // import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 // import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { format } from 'date-fns';
+import { error } from "jquery";
 const Book = () => {
 
   const handleCheckedKhuHoi = () => {
@@ -225,15 +226,27 @@ const Book = () => {
       date: format(date, 'yyyy-MM-dd')
     }));
   };
-
+  const [error, setError] = useState(false);
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-
+    // setFormData((prevFormData) => ({
+    //   ...prevFormData,
+    //   [name]: value,
+    // }));
+    if (name === 'amount' && Number(value) < 0) {
+      setError(true)
+      // // Ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
+    } else {
+      setError(false); // Xóa thông báo lỗi nếu giá trị hợp lệ
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
     if (name === 'start_location' ) {
       setFilteredDataProvinces(dataProvinces);
       const filteredLocations = dataProvinces.filter((locationObj) =>
@@ -306,7 +319,7 @@ console.log(filteredDataProvinces, 'filtereDATA');
     // dispatch(searchTrip({ startLocation, endLocation, date }));
     dispatch(updateSearchData(formData));
 
-    navigate(`/lichtrinh1chieu/?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=${amount}`);
+    navigate(`/schedule/?start_location=${encodeURIComponent(startLocation)}&end_location=${encodeURIComponent(endLocation)}&date=${date}&amount=${amount}`);
   };
 
   useEffect(() => {
@@ -346,7 +359,7 @@ console.log(filteredDataProvinces, 'filtereDATA');
     <div className='book-content_container container'>
        {showNotifi && <Notification message="Vui lòng nhập đầy đủ thông tin!" />}
        {messLocation && <Notification message="Vui lòng chọn điểm đến và điểm đi khác nhau!" />}
-
+       {error && <Notification message="Vui lòng nhập số dương!" />}
     <div className="book-contents" style={{display:"flex", alignItems:"center"}}>
       <div className="booking-content">
      
@@ -431,6 +444,8 @@ console.log(filteredDataProvinces, 'filtereDATA');
           format="dd/MM/yyyy"
           selected={selectedDate} 
           // name="date"
+          placeholderText="dd/mm/yyyy"
+          className="form-control"
           dateFormat="dd/MM/yyyy"
           onChange={handleDateChange}
           renderInput={(params) => <input {...params} />} // Render thành input thay vì TextField
@@ -452,6 +467,7 @@ console.log(filteredDataProvinces, 'filtereDATA');
               <input
                 type="number" name="amount" value={formData.amount} onChange={(event) => handleChange(event)}
                 className="form-control "
+                // defaultValue={1}
                 id="date_go" 
               />
             </div>

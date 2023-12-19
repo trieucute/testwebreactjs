@@ -13,7 +13,9 @@
     --normal-font-size: 1rem;
     --z-fixed: 100
 }
-
+.core-styles-module_show__Nt9eE {
+    opacity: 1 !important;
+}
 *,
 ::before,
 ::after {

@@ -86,7 +86,7 @@ const navigate = useNavigate()
 const handleChooseTrip=(id)=>{
     dispatch(setSelectedTrip(id))
     console.log(setSelectedTrip(id));
-  navigate(`/datve1chieu/${id}`);
+  navigate(`/book-tickets/${id}`);
 
 }
 

@@ -1,5 +1,7 @@
 import moment from 'moment';
 export const API_BASE_URL = 'https://ticketpro.deece.vn';
+// export const API_BASE_URL = 'http://127.0.0.1:8000';
+
 
 export function formatDate(dateString) {
     const dateParts = dateString.split("-");
@@ -65,7 +67,24 @@ return hour_minute
   
 
 
+// Hàm chuyển đổi từ chuỗi ngày tháng sang định dạng mới
+ export  function convertDateFormat(dateString) {
+  // Tạo đối tượng Date từ chuỗi
+  const date = new Date(dateString);
 
+  // Lấy thông tin ngày, tháng, năm, giờ, phút, giây từ đối tượng Date
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần +1
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  // Tạo chuỗi mới theo định dạng dd/mm/yyyy h:m:s
+  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDate;
+}
 
   export  function formatDateTimeAdminTrip(dateTimeString) {
     const dateTime = new Date(dateTimeString);

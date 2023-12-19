@@ -8,19 +8,22 @@ import { useEffect } from "react";
 
 import MenuSidebar from "./menu";
 import { useStateContext } from "../../context/ContextProvider";
+import AuthWrapperDriver from "../../componets/admin/authWrapperDriver";
 const IndexDriver = () => {
  const {driver}=  useStateContext();
  const navigate= useNavigate()
   useEffect(()=>{
-    if(driver===null){
-      navigate('/admin')
+    if(driver){
+    
+    }else{
+      navigate('/driver')
     }
-},[])
+},[driver])
 
   return (
-    // <AuthWrapperAdmin>
+    // <AuthWrapperDriver>
       <MenuSidebar/>
-    // </AuthWrapperAdmin>
+    // </AuthWrapperDriver>
     
   );
 };

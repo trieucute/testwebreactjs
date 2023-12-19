@@ -314,7 +314,10 @@ useEffect(() => {
                               <td>{item.car}</td>
                               <td>{item.driver}</td>
                               <td>{formatDateTimeAdminTrip(item.departure_time)}</td>
-                              <td className='status-destop'><Tooltip style={{ width: "650px" }} title={
+                              <td className='status-destop'>
+                                <span key={item.id} id={`clickable-${item.id}`}>{item.status} <i class="far fa-hand"></i></span>
+                              
+                                <Tooltip     anchorSelect={`#clickable-${item.id}`} clickable>
                                 <div ><h6 className='text-center' style={{ fontSize: "15px", marginBottom: "10px", paddingTop: "5px" }}>Cập nhật trạng thái xe</h6>
                 
                                        
@@ -323,8 +326,8 @@ useEffect(() => {
                                            
                                   <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đang khởi hành', item.departure_time)}>Đang khởi hành</button>
                                   <button type='button' style={{ fontSize: "12.5px", padding: "5px 4px" }} className={`btn ${item.status === 'Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đã hoàn thành', item.departure_time)}>Đã hoàn thành</button>
-                                </div>}
-                                placement="top" arrow>{item.status} <i class="far fa-hand"></i></Tooltip>
+                                </div>
+                               </Tooltip>
 
                               </td>
                               <td className='status-mobile'>
@@ -399,13 +402,20 @@ useEffect(() => {
                               <td>{item.car}</td>
                               <td>{item.driver}</td>
                               <td>{formatDateTimeAdminTrip(item.departure_time)}</td>
-                              <td className='status-destop'><Tooltip style={{ width: "650px" }} title={
-                                <div ><h6 className='text-center' style={{ fontSize: "15px", marginBottom: "10px", paddingTop: "5px" }}>Cập nhật trạng thái xe</h6>
-                                  <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Chờ khởi hành',item.departure_time)}>Chờ khởi hành</button>
-                                  <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đang khởi hành', item.departure_time)}>Đang khởi hành</button>
-                                  <button type='button' style={{ fontSize: "12.5px", padding: "5px 4px" }} className={`btn ${item.status === 'Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đã hoàn thành', item.departure_time)}>Đã hoàn thành</button>
-                                </div>}
-                                placement="top" arrow>{item.status} <i class="far fa-hand"></i></Tooltip>
+                              <td className='status-destop'>
+                              <span key={item.id} id={`clickable-${item.id}`}>{item.status} <i class="far fa-hand"></i></span>
+                              
+                              <Tooltip     anchorSelect={`#clickable-${item.id}`} clickable>
+                              <div ><h6 className='text-center' style={{ fontSize: "15px", marginBottom: "10px", paddingTop: "5px" }}>Cập nhật trạng thái xe</h6>
+              
+                                     
+                                 < button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Chờ khởi hành', item.departure_time)}>Chờ khởi hành</button>
+                                            
+                                         
+                                <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đang khởi hành', item.departure_time)}>Đang khởi hành</button>
+                                <button type='button' style={{ fontSize: "12.5px", padding: "5px 4px" }} className={`btn ${item.status === 'Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đã hoàn thành', item.departure_time)}>Đã hoàn thành</button>
+                              </div>
+                             </Tooltip>
 
                               </td>
                               <td className='status-mobile'>
@@ -479,13 +489,21 @@ useEffect(() => {
                               <td>{item.car}</td>
                               <td>{item.driver}</td>
                               <td>{formatDateTimeAdminTrip(item.departure_time)}</td>
-                              <td  className='status-destop'><Tooltip style={{ width: "650px" }} title={
-                                <div ><h6 className='text-center' style={{ fontSize: "15px", marginBottom: "10px", paddingTop: "5px" }}>Cập nhật trạng thái xe</h6>
-                                  <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Chờ khởi hành', item.departure_time)}>Chờ khởi hành</button>
-                                  <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đang khởi hành', item.departure_time)}>Đang khởi hành</button>
-                                  <button type='button' style={{ fontSize: "12.5px", padding: "5px 4px" }} className={`btn ${item.status === 'Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đã hoàn thành', item.departure_time)}>Đã hoàn thành</button>
-                                </div>}
-                                placement="top" arrow>{item.status} <i class="far fa-hand"></i></Tooltip>
+                              <td  className='status-destop'>
+                              <span key={item.id} id={`clickable-${item.id}`}>{item.status} <i class="far fa-hand"></i></span>
+                              
+                              <Tooltip     anchorSelect={`#clickable-${item.id}`} clickable>
+                              <div ><h6 className='text-center' style={{ fontSize: "15px", marginBottom: "10px", paddingTop: "5px" }}>Cập nhật trạng thái xe</h6>
+              
+                                     
+                                 < button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Chờ khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Chờ khởi hành', item.departure_time)}>Chờ khởi hành</button>
+                                            
+                                         
+                                <button type='button' style={{ fontSize: "12.5px", marginRight: "3px", padding: "5px 4px" }} className={`btn ${item.status === 'Đang khởi hành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đang khởi hành', item.departure_time)}>Đang khởi hành</button>
+                                <button type='button' style={{ fontSize: "12.5px", padding: "5px 4px" }} className={`btn ${item.status === 'Đã hoàn thành' ? 'btn-success' : 'btn-light'}`} onClick={() => handleChangeStatus(item.id, 'Đã hoàn thành', item.departure_time)}>Đã hoàn thành</button>
+                              </div>
+                             </Tooltip>
+
 
                               </td>
                               <td className='status-mobile'>
@@ -590,14 +608,8 @@ useEffect(() => {
                                 .map(seat => (
                                   <div className={`items-content-floor-row  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending' ? 'Chosen-seat' : ''}`}>
                                     <div className="d-flex  justify-content-center  m-auto py-1">
-                                      <Tooltip title={
-                                        <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                          {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                        </div>}
-                                        placement="top" arrow>
-
-                                        <div
+                                     
+                                        <div key={seat.id} id={`clickable-${seat.id}`}
                                           className=" position-relative"
                                           style={{ cursor: "pointer" }}
                                         >
@@ -624,7 +636,11 @@ useEffect(() => {
                                           </span>
 
                                         </div>
-                                      </Tooltip>
+                                        <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                     </div>
                                   </div>
 
@@ -653,14 +669,8 @@ useEffect(() => {
                                 .map(seat => (
                                   <div className={`items-content-floor-row  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending' ? 'Chosen-seat' : ''}`}>
                                     <div className="d-flex  justify-content-center  m-auto py-1">
-                                      <Tooltip title={
-                                        <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                          {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                        </div>}
-                                        placement="top" arrow>
-
-                                        <div
+                                      
+                                        <div key={seat.id} id={`clickable-${seat.id}`}
                                           className=" position-relative"
                                           style={{ cursor: "pointer" }}
                                         >
@@ -687,7 +697,11 @@ useEffect(() => {
                                           </span>
 
                                         </div>
-                                      </Tooltip>
+                                        <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                     </div>
                                   </div>
 
@@ -714,14 +728,9 @@ useEffect(() => {
                                 .map(seat => (
                                   <div className={`items-content-floor-row items-content-floor-double  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending' ? 'Chosen-seat' : ''}`}>
                                     <div className="d-flex  justify-content-center  m-auto py-1">
-                                      <Tooltip title={
-                                        <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                          {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                        </div>}
-                                        placement="top" arrow>
+                                     
 
-                                        <div
+                                        <div key={seat.id} id={`clickable-${seat.id}`}
                                           className=" position-relative"
                                           style={{ cursor: "pointer" }}
                                         >
@@ -748,7 +757,11 @@ useEffect(() => {
                                           </span>
 
                                         </div>
-                                      </Tooltip>
+                                        <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                     </div>
                                   </div>
 
@@ -777,14 +790,9 @@ useEffect(() => {
                                 .map(seat => (
                                   <div className={`items-content-floor-row items-content-floor-double  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending' ? 'Chosen-seat' : ''}`}>
                                     <div className="d-flex  justify-content-center  m-auto py-1">
-                                      <Tooltip title={
-                                        <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                          {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                        </div>}
-                                        placement="top" arrow>
+                                      
 
-                                        <div
+                                        <div key={seat.id} id={`clickable-${seat.id}`}
                                           className=" position-relative"
                                           style={{ cursor: "pointer" }}
                                         >
@@ -811,7 +819,11 @@ useEffect(() => {
                                           </span>
 
                                         </div>
-                                      </Tooltip>
+                                        <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                     </div>
                                   </div>
 
@@ -838,14 +850,9 @@ useEffect(() => {
                                 .map(seat => (
                                   <div className={`items-content-floor-row items-content-floor-chair  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending' ? 'Chosen-seat' : ''}`}>
                                     <div className="d-flex  justify-content-center  m-auto py-1">
-                                      <Tooltip title={
-                                        <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                          {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                        </div>}
-                                        placement="top" arrow>
+                                   
 
-                                        <div
+                                        <div key={seat.id} id={`clickable-${seat.id}`}
                                           className=" position-relative"
                                           style={{ cursor: "pointer" }}
                                         >
@@ -872,7 +879,11 @@ useEffect(() => {
                                           </span>
 
                                         </div>
-                                      </Tooltip>
+                                        <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                     </div>
                                   </div>
 
@@ -901,14 +912,8 @@ useEffect(() => {
                                 .map(seat => (
                                   <div className={`items-content-floor-row items-content-floor-chair  ${seat.status === 'Available' ? 'available-seat' : ''} ${seat.status === 'booked' || seat.status === 'pending' ? 'Chosen-seat' : ''}`}>
                                     <div className="d-flex  justify-content-center  m-auto py-1">
-                                      <Tooltip title={
-                                        <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                          {/* <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i> */}
-                                        </div>}
-                                        placement="top" arrow>
-
-                                        <div
+                                     
+                                        <div key={seat.id} id={`clickable-${seat.id}`}
                                           className=" position-relative"
                                           style={{ cursor: "pointer" }}
                                         >
@@ -935,7 +940,11 @@ useEffect(() => {
                                           </span>
 
                                         </div>
-                                      </Tooltip>
+                                     <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}  </span>
+                                                            
+                                                       </div>
+                                                       </Tooltip>
                                     </div>
                                   </div>
 

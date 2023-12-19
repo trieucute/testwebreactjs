@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 const Signin = () => {
   const emailRef = createRef()
   const passwordRef = createRef()
-    const {  setToken, setUser } = useStateContext()
+    const {  token, user,setToken, setUser } = useStateContext()
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true); 
     const [erroremail, setErroremail] = useState(null);
@@ -25,12 +25,21 @@ const Signin = () => {
 const dispatch= useDispatch()
     const handleLogin = (e) => {
     e.preventDefault();
- 
+
+      if(emailRef.current.value==='' || passwordRef.current.value===''){
+        setMessage('Vui lòng nhập đầy đủ thông tin!!'); 
+        return
+      }
       const payload = {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       }
-        axiosClient.post('/login', payload)
+      console.log(payload);
+        axiosClient.post('/login', payload,{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((res) => {
           // setUser(data.user)
         console.log(res.data.data.access_token);
@@ -53,26 +62,31 @@ const dispatch= useDispatch()
         //   })
         })
         .catch((err) => {
+          console.error(err)
           const response = err.response;
           console.log(response.data.errors);
           const errors=response.data.errors;
             // setMessage(response.data.errors)
-            if(!errors.password && !errors.emai){
-              setMessage(response.data.errors)
-            }else {
-              setMessage(null)
-  
+            if(errors)
+            {
+              if(!errors.password && !errors.emai){
+                setMessage(response.data.errors)
+              }else {
+                setMessage(null)
+    
+              }
+              if (errors.email) {
+                setErroremail(errors.email)
+            } else {
+                setErroremail(null); // ẩn thông báo lỗi
             }
-            if (errors.email) {
-              setErroremail(errors.email)
-          } else {
-              setErroremail(null); // ẩn thông báo lỗi
-          }
-          if (errors.password) {
-              setErrorpassword(errors.password)
-          } else {
-              setErrorpassword(null); // ẩn thông báo lỗi
-          }
+            if (errors.password) {
+                setErrorpassword(errors.password)
+            } else {
+                setErrorpassword(null); // ẩn thông báo lỗi
+            }
+          
+            }
         
         })
 
@@ -118,6 +132,22 @@ const dispatch= useDispatch()
   const hanleNavigateLogin =()=>{
     navigate('/signup')
   }
+  useEffect(()=>{
+    // if(token){
+    //   if(user){
+    //     navigate('/')
+    //   }
+    // }
+    if (user) {
+      // setLoading(true)
+      console.log(user);
+      navigate('/')
+  } else {
+      // setLoading(false);
+     
+  }
+  },[])
+
     return (
       <AuthWrapper>
           {loading ? (

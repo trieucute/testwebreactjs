@@ -107,7 +107,7 @@ const navigate= useNavigate()
     }));
  
    
-    navigate(`/lichtrinh1chieu/?start_location=${encodeURIComponent(start_station)}&end_location=${encodeURIComponent(end_station)}&date=${date}&amount=1`);
+    navigate(`/schedule/?start_location=${encodeURIComponent(start_station)}&end_location=${encodeURIComponent(end_station)}&date=${date}&amount=1`);
   }
 
 

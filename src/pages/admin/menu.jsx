@@ -40,32 +40,7 @@ const MenuSidebar =() => {
     // const [user, setUser]= useState('')
     const { admin, tokenAdmin,setAdmin , setTokenAdmin} = useStateContext();
     // const token= localStorage.getItem('adminToken')
-    useEffect(() => {
-        // const userInfor = {
-        //   headers: {
-        //     Authorization: `Bearer ${tokenAdmin}`,
-        //   },
-        // }
-        // axiosClient.get("/user/profile", userInfor)
-        //   .then((resp) => {
-        //     const data = resp.data.data;
-        //     console.log(data);
-        //     setAdmin(data);
 
-        //   })
-        //   .catch((err) => {
-          
-        //     console.log(err);
-        //     navigate('/admin')
-
-        //   })
-      // if(admin===null){
-      //   navigate('/admin')
-      // }
-      if(!tokenAdmin){
-        navigate('/admin')
-      }
-      }, [])
     // console.log(admin);
     const handLogout=()=>{
         // const token= localStorage.getItem('adminToken')

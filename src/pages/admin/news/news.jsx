@@ -139,7 +139,7 @@ setPageNumber(0); // Reset trang khi thực hiện tìm kiếm
 
                           </div>
                           </td>
-                          <td className='text-center'>{item.active===1 ? (<i class="fas fa-check"></i>) :  '' }</td>
+                          <td className='text-center'>{parseInt(item.active)===1 ? (<i class="fas fa-check"></i>) :  '' }</td>
                         <td>{item.view}</td>
                         <td>{formatDateNews(item.created_at)}</td>
                         <td >

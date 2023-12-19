@@ -8,7 +8,7 @@ const RenderStars = ({ rate }) => {
     const stars = [];
     // Tạo một mảng chứa số sao tương ứng với giá trị rate từ 1 đến 5
     for (let i = 1; i <= 5; i++) {
-      if (i <= rate) {
+      if (i <= parseInt(rate)) {
         stars.push(<i key={i} className="fas fa-star" style={{ color: 'yellow' }}></i>);
       } else {
         stars.push(<i key={i} className="far fa-star" style={{ color: 'grey' }}></i>);
@@ -38,7 +38,7 @@ const filteredComments = data.filter(comment => comment.status === 1);
     // Tính tổng số sao từ danh sách đánh giá (nếu data không rỗng)
     if (filteredComments.length > 0) {
         filteredComments.forEach(comment => {
-        totalStars += comment.rate;
+        totalStars += parseInt(comment.rate);
       });
     }
   
@@ -81,7 +81,7 @@ const filteredComments = data.filter(comment => comment.status === 1);
                                 <span style={{fontSize:"13px"}}>
                                   {item.user.name}</span>
                                 
-                                <RenderStars rate={item.rate} />
+                                <RenderStars rate={parseInt(item.rate)} />
                                     
                             </div>
                             <div className='col p-0 text-end' style={{fontSize:"13px"}}>{formatDateNews(item.created_at)}</div>

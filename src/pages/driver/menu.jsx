@@ -48,7 +48,7 @@ const MenuSidebar =() => {
         }
         localStorage.removeItem('driverToken');
         setTokenDriver(null)
-        navigate('/admin')
+        navigate('/driver')
     }
     
     return (

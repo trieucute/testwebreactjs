@@ -8,7 +8,7 @@ import { fetchticketAdmin } from '../../../reduxTool/ticketSlice';
 import axiosAdmin from '../axois-admin';
 import ReactPaginate from 'react-paginate';
 import LoadingAd from '../../loadingAdmin';
-import { formatDateNews } from '../../../config';
+import { convertDateFormat, formatDateNews } from '../../../config';
 
 const TicketList = () => {
     const navigate = useNavigate();
@@ -199,6 +199,10 @@ const [dataDetail, setDataDetail] = useState('')
               <div className='col text-start'>Loại xe:</div>
               <div className='col text-end'>{dataDetail && dataDetail?.car.type}</div>
             </div>
+            <div className='row m-0'>
+              <div className='col text-start'>Ngày khởi hành</div>
+              <div className='col text-end'>{dataDetail && dataDetail?.departure_time}</div>
+            </div>
           </div>
         </div>
         <div className='row mx-0 my-2'>
@@ -237,14 +241,14 @@ const [dataDetail, setDataDetail] = useState('')
             <div className='col text-start'>Trạng thái: </div>
             <div className='col text-end'>{dataDetail && dataDetail?.status ==='booked' && 'Đã thanh toán'}
                         {dataDetail && dataDetail?.status ==='pending' && 'Đang thanh toán'}
-                        {dataDetail && dataDetail?.status ==='canceled' && 'Đã huỷ'}
+                        {dataDetail && dataDetail?.status ==='cancelled' && 'Đã huỷ'}
             
             </div>
         </div>
      
         <div className='row mx-0 my-2'>
             <div className='col text-start'>Ngày đặt:</div>
-            <div className='col text-end'>{dataDetail &&  formatDateNews(dataDetail?.created_at)}</div>
+            <div className='col text-end'>{dataDetail &&  convertDateFormat(dataDetail?.created_at)}</div>
         </div>
       </div>
       </>

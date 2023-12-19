@@ -10,17 +10,19 @@ import { API_BASE_URL } from "../../config";
 import { json, useNavigate } from "react-router-dom";
 import Timer from "./Timer";
 import LoadingAd from "../loadingAdmin";
+import Notification from "../NotificationTrip";
 
 const Payment = () => {
   // khi nhấn vnpay thì hiện vnpay , tương tự momo
   const [ticket, setTicket] = useState(null);
-  const [timer, setTimer] = useState({ minute: 8, second: 59 });
+  const [timer, setTimer] = useState({ minute: 4, second: 59 });
   const [trip, setTrip] = useState(null);
   const [momo, setMomo] = useState(null);
   const { profile } = useSelector((state) => state.authAdmin);
   const dispatch = useDispatch();
   const nav = useNavigate();
   const first = useRef(false);
+  const [showNotifi, setShowNotifi]= useState(false)
   useEffect(() => {}, [timer]);
   const handleCheckPay = async () => {
     console.log(momo);
@@ -48,8 +50,13 @@ const Payment = () => {
     }
     if (resp.status >= 400) {
       console.log(jsonData);
-      setTimer({ minute: 8, second: 59 });
-      alert("Bạn chưa thanh toán");
+      // setTimer({ minute: 4, second: 59 });
+      // alert("");
+      setShowNotifi(true)
+      // Ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
     }
   };
   const [loading, setLoading] = useState(false);
@@ -178,6 +185,7 @@ const Payment = () => {
   };
   return (
     <div className="mt-10">
+             {showNotifi && <Notification message="Bạn chưa thanh toán" />}
       <div className="pay_container width-main container">
         <div className="routes-bus-container container  ps-0 pe-0">
           <div
@@ -337,7 +345,7 @@ const Payment = () => {
                             <>
                               {/* Hiển thị mã QR */}
                               <Timer
-                          minute={timer?.minute || 8}
+                          minute={timer?.minute || 4}
                           second={timer?.second || 59}
                           handleWhenCountEnd={handleCheckPay}
                         />

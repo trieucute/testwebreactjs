@@ -16,6 +16,10 @@
     font-weight: 500;
     
 }
+.form-book-ticket .react-datepicker-wrapper{
+
+    display: block;
+}
 .book-contents .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
     font: inherit;
     /* letter-spacing: inherit; */

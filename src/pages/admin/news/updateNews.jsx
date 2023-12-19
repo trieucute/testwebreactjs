@@ -129,11 +129,11 @@ const UpdateNews = () => {
         });
 
         console.log(res.data);
-        setActive('');
-        setContent('');
-        setTitle('');
-        setSum('');
-        setImg('');
+        // setActive('');
+        // setContent('');
+        // setTitle('');
+        // setSum('');
+        // setImg('');
         setImageData([]);
         setLoading(false);
         setMessage('Cập nhật thành công')
@@ -231,8 +231,8 @@ const UpdateNews = () => {
           <div className='form-group'>
             <label htmlFor="">Hiện / ẩn</label>
             <div className='form-control'>
-            <input type="radio" name='active' id='active1' value={1} placeholder='active'  checked={active === 1}  onChange={handleActiveChange} /><label htmlFor="active1 m-0" onChange={handleActiveChange} style={{fontSize:"16px"}} >Hiện</label>
-            <input type="radio" name='active' id='active0' value={0} placeholder='active'  checked={active === 0} onChange={handleActiveChange} /> <label htmlFor="active0 m-0" onChange={handleActiveChange} style={{fontSize:"16px"}} >Ẩn</label>
+            <input type="radio" name='active' id='active1' value={1} placeholder='active'  checked={parseInt(active) === 1}  onChange={handleActiveChange} /><label htmlFor="active1 m-0" onChange={handleActiveChange} style={{fontSize:"16px"}} >Hiện</label>
+            <input type="radio" name='active' id='active0' value={0} placeholder='active'  checked={parseInt(active)=== 0} onChange={handleActiveChange} /> <label htmlFor="active0 m-0" onChange={handleActiveChange} style={{fontSize:"16px"}} >Ẩn</label>
             </div>
             
           </div>

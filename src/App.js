@@ -12,7 +12,7 @@ import Thuexe from './pages/layouts/thuexe';
 import CompletlyPayment from './pages/layouts/completlyPayment';
 import Recruitment from './pages/layouts/recruitment';
 import Posts from './pages/layouts/posts';
-import RoutersBus from './pages/layouts/routersBus';
+// import RoutersBus from './pages/layouts/routersBus';
 import RoutersBusSingle from './pages/layouts/routersBusSingle';
 import PaymentSingle from './pages/layouts/paymentSingle';
 import Payment from './pages/layouts/payment';
@@ -68,6 +68,7 @@ import IndexDriver from './pages/driver';
 import Dieukhoandatve from './pages/layouts/dieukhoandatve';
 import Cauhoichung from './pages/layouts/cauhoichung';
 import CompletlyPaymentMomo from './pages/layouts/completlyPaymentMomo';
+import DriverLogin from './componets/admin/driverLogin';
 
 
 // import Editor from './pages/admin/news/edit';
@@ -91,26 +92,26 @@ function App() {
           <Route path='/introduce' element={<Introduce/>}/>
           <Route path='/recruitment' element={<Recruitment/>}/>
           <Route path='/news' element={<Posts/>}/>
-          <Route path='/thuexe' element={<Thuexe/>}/>
+          {/* <Route path='/thuexe' element={<Thuexe/>}/> */}
           <Route path='/contact' element={<Contact/>}/>
           {/* <Route path='/test' element={<Test/>}/> */}
           <Route path='/searchTicket' element={<SearchTicket/>}/>
 
-          <Route path='/lichtrinh' element={<RoutersBus/>}/>
+          {/* <Route path='/lichtrinh' element={<RoutersBus/>}/> */}
 
 
-          <Route path='/lichtrinh1chieu' element={<RoutersBusSingle/>}/>
-          <Route path='/lichtrinh1chieu/:location' element={<RoutersBusSingle/>}/>
-          <Route path='/lichtrinhkhuhoi' element={<RoutersBus/>}/>
+          <Route path='/schedule' element={<RoutersBusSingle/>}/>
+          <Route path='/schedule/:location' element={<RoutersBusSingle/>}/>
+          {/* <Route path='/lichtrinhkhuhoi' element={<RoutersBus/>}/> */}
           {/* <Route path='/test' element={<ChairChoose/>}/> */}
  
           <Route path='/tinchitiet/:idNews' element={<PostDetail/>}/>
-          <Route path='/datve1chieu' element={<BookTicketPageSingle/>}/>
-          <Route path='/datve1chieu/:id' element={<BookTicketPageSingle/>}/>
+          <Route path='/book-tickets' element={<BookTicketPageSingle/>}/>
+          <Route path='/book-tickets/:id' element={<BookTicketPageSingle/>}/>
 
           <Route path='/datve' element={<BookTicketPage/>}/>
           <Route path='/thanhtoan1chieu' element={<PaymentSingle/>}/>
-          <Route path='/thanhtoan' element={<Payment/>}/>
+          <Route path='/pay' element={<Payment/>}/>
           <Route path='/dathanhtoan' element={<CompletlyPayment/>}/>
           <Route path='/dathanhtoan/qr' element={<CompletlyPaymentMomo/>}/>
           {/* <Route path='/slide' element={<Slideshows/>}/> */}
@@ -138,6 +139,8 @@ function App() {
       <Route exact path="/reset_password" element={<ResetPassword/>} />
 
       <Route path='/admin'  element={<AdminLogin/>} />
+      <Route path='/driver'  element={<DriverLogin/>} />
+
       <Route  element={<IndexDriver/>}>
       
           <Route path='/driver/dashboard'  element={<DriverIndex />} />

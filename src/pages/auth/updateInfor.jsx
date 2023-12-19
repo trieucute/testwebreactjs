@@ -218,7 +218,7 @@ const UpdateInfor = () => {
             const comment = {
                 car_id: car_id,
                 content: content,
-                rate: starValue
+                rate: parseInt(starValue)
             }
             console.log(comment, 'cmt');
             const res = await axiosClient.post('/user/comment', comment, {

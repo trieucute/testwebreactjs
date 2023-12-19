@@ -14,10 +14,13 @@ const IndexAdmin = () => {
  const {admin}=  useStateContext();
  const navigate= useNavigate()
   useEffect(()=>{
-    if(!admin){
+    if(admin){
+      // navigate('/admin')
+
+    }else{
       navigate('/admin')
     }
-},[])
+},[admin])
 
   return (
     // <AuthWrapperAdmin>

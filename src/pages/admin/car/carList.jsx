@@ -80,7 +80,7 @@ const CarList = () => {
   // Tính trung bình số sao (rate) từ mảng comment và làm tròn
   const calculateRoundedAverageRate = (comments) => {
     const totalRates = comments.reduce((acc, comment) => {
-      return acc + comment.rate;
+      return acc + parseInt(comment.rate);
     }, 0);
 
     const averageRate = totalRates / comments.length;
@@ -417,14 +417,9 @@ const CarList = () => {
                                               .map(seat => (
                                                 <div className='items-content-floor-row'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}   {seat.id} </span>
-                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
-                                                       </div>}
-                                                        placement="top" arrow>
-                                                       
-                                                <div
+                                            
+                                                        
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -451,7 +446,12 @@ const CarList = () => {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}    </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -477,14 +477,8 @@ const CarList = () => {
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-double'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                                                 <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
-                                                       </div>}
-                                                        placement="top" arrow>
-                                                       
-                                                <div
+                                              
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -511,7 +505,12 @@ const CarList = () => {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}    </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -537,14 +536,8 @@ const CarList = () => {
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-chair'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
-                                                       </div>}
-                                                        placement="top" arrow>
-                                                       
-                                                <div
+                                                
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -571,7 +564,12 @@ const CarList = () => {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                    <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}    </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -606,14 +604,8 @@ const CarList = () => {
                                               .map(seat => (
                                                 <div className='items-content-floor-row'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                                              <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
-                                                       </div>}
-                                                        placement="top" arrow>
-                                                       
-                                                <div
+                                                
+                                                <div  key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -640,7 +632,12 @@ const CarList = () => {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}    </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -666,14 +663,9 @@ const CarList = () => {
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-double'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                         <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
-                                                       </div>}
-                                                        placement="top" arrow>
+                                               
                                                        
-                                                <div
+                                                <div key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -700,7 +692,12 @@ const CarList = () => {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}    </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -727,14 +724,9 @@ const CarList = () => {
                                               .map(seat => (
                                                 <div className='items-content-floor-row items-content-floor-chair'>
                                                 <div className="d-flex  justify-content-center  m-auto py-1">
-                                                <Tooltip title={
-                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {seat.price}  </span>
-                                                                           <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
-                                                             <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
-                                                       </div>}
-                                                        placement="top" arrow>
+                                            
                                                        
-                                                <div
+                                                <div key={seat.id} id={`clickable-${seat.id}`}
                                                     className=" position-relative"
                                                     style={{ cursor: "pointer" }}
                                                   >
@@ -761,7 +753,12 @@ const CarList = () => {
                                                     </span>
                                                
                                                   </div>
-                                                  </Tooltip>
+                                                  <Tooltip      anchorSelect={`#clickable-${seat.id}`} clickable>
+                                                          <div><span> Ghế: {seat.position}, Loại: {seat.type}, Giá: {parseInt(seat.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}    </span>
+                                                             <i class='fas fa-pen-to-square' style={{paddingLeft:"10px", cursor:"pointer"}} onClick={()=>handleEditChair(seat)}></i>
+                                                            <i class='fas fa-trash' onClick={()=>handleDeleteChair(seat.id)} style={{paddingLeft:"10px", cursor:"pointer"}}></i>
+                                                       </div>
+                                                       </Tooltip>
                                                   </div>
                                                   </div>
                
@@ -851,11 +848,11 @@ const CarList = () => {
                           <div className='row m-0'>
                             <div className='col text-start content-rate'>{comment.content}</div>
                             <div className='col-3 text-end'>
-                              {Array(comment.rate).fill().map((_, i) => (
+                              {Array(parseInt(comment.rate)).fill().map((_, i) => (
                                 <i key={i} class="fas fa-star" style={{color:"yellow"}}></i>
                               ))}
-                              {Array(5 - comment.rate).fill().map((_, i) => (
-                                <i key={i + comment.rate} class="far fa-star" style={{color:"grey"}}></i>
+                              {Array(5 - parseInt(comment.rate)).fill().map((_, i) => (
+                                <i key={i + parseInt(comment.rate)} class="far fa-star" style={{color:"grey"}}></i>
                               ))}
                             </div>
                           </div>
@@ -866,120 +863,7 @@ const CarList = () => {
                  
           
           )}
-                  {/* <div className='row m-0 item-rate'>
-          <div className='col-3'>
-            <img src={user} alt="" className='img-fluid' />
-          
-            <div className='text-center nameUser'>Nguyễn Trần</div>
-          </div>
-          <div className='col'>
-            <div className='row m-0'>
-              <div className='col text-start content-rate'>Thoải mái, tạm ổn, Nhân viên nhiệt tình</div>
-              <div className='col-3 text-end '>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="far fa-star" style={{color:"grey"}}></i>  
-              </div>
-            </div>
-          </div>
-        </div> */}
-        {/* <div className='row m-0 item-rate'>
-          <div className='col-3'>
-            <img src={user} alt="" className='img-fluid' />
-          
-            <div className='text-center'>Triệu Trần</div>
-          </div>
-          <div className='col'>
-            <div className='row m-0'>
-              <div className='col text-start'>Thoải mái</div>
-              <div className='col-3 text-end'>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='row m-0 item-rate'>
-          <div className='col-3'>
-            <img src={user} alt="" className='img-fluid' />
-          
-            <div className='text-center nameUser'>Nguyễn Trần</div>
-          </div>
-          <div className='col'>
-            <div className='row m-0'>
-              <div className='col text-start content-rate'>Thoải mái, tạm ổn, Nhân viên nhiệt tình</div>
-              <div className='col-3 text-end '>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="far fa-star" style={{color:"grey"}}></i>  
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='row m-0 item-rate'>
-          <div className='col-3'>
-            <img src={user} alt="" className='img-fluid' />
-          
-            <div className='text-center nameUser'>Nguyễn Trần</div>
-          </div>
-          <div className='col'>
-            <div className='row m-0'>
-              <div className='col text-start content-rate'>Thoải mái, tạm ổn, Nhân viên nhiệt tình</div>
-              <div className='col-3 text-end '>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="far fa-star" style={{color:"grey"}}></i>  
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='row m-0 item-rate'>
-          <div className='col-3'>
-            <img src={user} alt="" className='img-fluid' />
-          
-            <div className='text-center nameUser'>Nguyễn Trần</div>
-          </div>
-          <div className='col'>
-            <div className='row m-0'>
-              <div className='col text-start content-rate'>Thoải mái, tạm ổn, Nhân viên nhiệt tình</div>
-              <div className='col-3 text-end '>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="far fa-star" style={{color:"grey"}}></i>  
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='row m-0 item-rate'>
-          <div className='col-3'>
-            <img src={user} alt="" className='img-fluid' />
-          
-            <div className='text-center nameUser'>Nguyễn Trần</div>
-          </div>
-          <div className='col'>
-            <div className='row m-0'>
-              <div className='col text-start content-rate'>Thoải mái, tạm ổn, Nhân viên nhiệt tình</div>
-              <div className='col-3 text-end '>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="fas fa-star" style={{color:"yellow"}}></i>
-              <i class="far fa-star" style={{color:"grey"}}></i>  
-              </div>
-            </div>
-          </div>
-        </div> */}
+                 
                   </div>
                 </div>
               
@@ -988,10 +872,7 @@ const CarList = () => {
             </div>
    
       </div>
-      <div class="modal-footer">
-        {/* <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> */}
-        {/* <button type="button" class="btn btn-primary">Save changes</button> */}
-      </div>
+     
     </div>
   </div>
 </div>

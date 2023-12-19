@@ -126,7 +126,7 @@ const JobList = () => {
                      <td>{item.location}</td>
                       <td>{parseInt(item.salary).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
                       <td>{formatDateJob(item.created_at)}</td>
-                      <td className='text-center'>{item.status=== 1 ? (<i class="fas fa-check"></i>) : ''}</td>
+                      <td className='text-center'>{parseInt(item.status)=== 1 ? (<i class="fas fa-check"></i>) : ''}</td>
                       <td >
                         <Link to={`/admin/jobs/update/${item.id}`} ><i class="fas fa-pen-to-square"></i></Link>
                         <i onClick={() => handleDelete(item.id)} class="fas fa-trash"></i>

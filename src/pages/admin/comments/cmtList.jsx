@@ -12,10 +12,7 @@ import LoadingAd from '../../loadingAdmin';
 
 const CommentList = () => {
 
-  useEffect(() => {
-    console.log('CommentListcomponent loaded');
-    // Kiểm tra điều kiện chuyển hướng ở đây
-  }, []);
+
   const navigate = useNavigate()
   const handleAdd = (e) => {
     e.preventDefault();
@@ -151,16 +148,16 @@ function formatDateCmt(inputDate) {
                   </div>
                   </td>
                   <td>
-                  {Array(item.rate).fill().map((_, i) => (
+                  {Array(parseInt(item.rate)).fill().map((_, i) => (
                                 <i key={i} class="fas fa-star" style={{color:"yellow"}}></i>
                               ))}
-                              {Array(5 - item.rate).fill().map((_, i) => (
-                                <i key={i + item.rate} class="far fa-star" style={{color:"grey"}}></i>
+                              {Array(5 - parseInt(item.rate)).fill().map((_, i) => (
+                                <i key={i + parseInt(item.rate)} class="far fa-star" style={{color:"grey"}}></i>
                               ))}
                   </td>
                 <td>{formatDateCmt(item.created_at)}</td>
                 <td>
-                {item.status===0 &&   <button className='btn btn-primary loading_cmt' onClick={()=>handleputStatus(item.id,'1')}>
+                {parseInt(item.status)===0 &&   <button className='btn btn-primary loading_cmt' onClick={()=>handleputStatus(item.id,'1')}>
                     <div class="spinner-border text-light" role="status" style={{marginRight:"5px"}}>
                       <span class="visually-hidden">Loading...</span>
 
@@ -170,7 +167,7 @@ function formatDateCmt(inputDate) {
                     </span>
                   </button>} 
                  
-                  {item.status===1 &&    <button className='btn btn-success loading_cmt' onClick={()=>handleputStatus(item.id,'0')}>
+                  {parseInt(item.status)===1 &&    <button className='btn btn-success loading_cmt' onClick={()=>handleputStatus(item.id,'0')}>
                   <span style={{marginRight:"5px"}}><i class="fas fa-check"></i></span>
                     <span >Đã duyệt</span>
                   </button>} 

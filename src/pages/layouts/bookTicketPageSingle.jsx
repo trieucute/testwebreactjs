@@ -272,7 +272,7 @@ const BookTicketPageSingle  = () => {
   // });
   localStorage.setItem("ticket_ordered", JSON.stringify(data));
   setTimeout(() => {
-    navigate("/thanhtoan");
+    navigate("/pay");
   }, 1000);
     }
     useEffect(() => {

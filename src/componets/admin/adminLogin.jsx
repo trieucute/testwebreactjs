@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch,} from 'react-redux';
 import { fetchUserProfile, loginAdmin } from '../../reduxTool/authSlice';
-import { useEffect } from 'react';
+
 
 import { useNavigate } from 'react-router-dom';
 import AuthWrapperAdmin from './authWrapperAdmin';
 import { useStateContext } from '../../context/ContextProvider';
+import axiosClient from '../../axios-client';
 
 const AdminLogin = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { admin, setAdmin, tokenAdmin, setTokenAdmin, setDriver, driver, setTokenDriver, tokenDriver} = useStateContext();
+    const { tokenAdmin, setAdmin, setTokenAdmin, setDriver, setTokenDriver, } = useStateContext();
     // const admin = useSelector(state=>state.authAdmin)
     const [errorMessage, setErrorMessage] = useState('');
     // console.log(admin);
@@ -35,11 +36,12 @@ const AdminLogin = () => {
                         // localStorage.setItem('adminToken', loginResponse.payload.data.access_token);
                         setTokenAdmin(loginResponse.payload.data.access_token)
                         setAdmin(profile)
+                        console.log(profile);
                         navigate('/admin/dashboard');
-                    } else if (profile.role === 'driver'){
-                      setTokenDriver(loginResponse.payload.data.access_token)
-                        setDriver(profile)
-                        navigate('/driver/dashboard');
+                    // } else if (profile.role === 'driver'){
+                    //   setTokenDriver(loginResponse.payload.data.access_token)
+                    //     setDriver(profile)
+                    //     navigate('/driver/dashboard');
                     }else{
                       alert('Bạn không có quyền truy cập trang admin');
 
@@ -51,12 +53,24 @@ const AdminLogin = () => {
         }
     };
 // useEffect(()=>{
-//   if(!admin ){
-//     navigate('/admin/dashboard');
+//   if(tokenAdmin ){
+//     axiosClient.get('/user/profile',{
+//       headers: {
+//         Authorization: `Bearer ${tokenAdmin}`,
+//       },
+//     })
+//     .then((res=>{
+//       console.log(res);
+//       navigate('/admin/dashboard');
+//     }))
+//     .catch((res=>{
+//       navigate('/admin')
+//     }))
+   
 //   }
 //   // console.log(admin);
 
-// },[])
+// },[ ])
     return (
         <AuthWrapperAdmin>
         <div className='mt-5 login-admin-container'>
@@ -91,7 +105,7 @@ const AdminLogin = () => {
 </form>
 {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
         </div>
-        </AuthWrapperAdmin>
+      </AuthWrapperAdmin>
     );
 };
 

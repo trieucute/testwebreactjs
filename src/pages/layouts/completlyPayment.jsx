@@ -211,7 +211,7 @@ const CompletlyPayment = () => {
                           className="col-sm-8 ticket__code p-0 text-center mb-2"
                           sty
                         >
-                          Mã vé {val.code_tickets}
+                          Mã vé {val.code}
                         </h5>
                         <div
                           className="col  text-end ps-0"

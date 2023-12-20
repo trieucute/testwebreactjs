@@ -864,6 +864,9 @@ font-weight: 700;
 
         
 }
+.andestop>.tab-content {
+    margin-top: 11.5em;
+}
 }
 @media only screen and (max-width:400px) {
     .steps-booking-contents {
@@ -873,9 +876,16 @@ font-weight: 700;
     }
 }
 @media only screen and (max-width:388px) {
+    .andestop>.tab-content{
+        margin-top: 11em;
+    }
     .steps-booking-contents {
-        margin-top: 10em !important;
+        top: 5.4em;
         display: flex;
         flex:row;
     }
 }
+@media only screen and (max-width: 335px){
+.steps-booking-contents {
+    top: 5.5em;
+}}

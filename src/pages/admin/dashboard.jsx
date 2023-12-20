@@ -144,7 +144,7 @@ console.log(admin);
     const chartData = statistics.tickets_sale_in_6_month
         ? Object.entries(statistics.tickets_sale_in_6_month).map(([month, tickets]) => ({
         x: month,
-        y: tickets,
+        y: parseInt(tickets),
         }))
         : [];
     //biểu đồ hình tr

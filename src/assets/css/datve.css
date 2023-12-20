@@ -802,9 +802,11 @@ font-weight: 700;
         display: none;
     }
     .steps-booking-contents {
-        margin-top: 9em !important;
+        width: 100%;
+        position: fixed;
         display: flex;
-        flex:row;
+        flex: row 1;
+        top: 5.8em;
     }
         .steps-booking-contents .nav-item{
         width: 25%;
@@ -826,26 +828,29 @@ font-weight: 700;
 .andestop{
     display: block;
 }
+.andestop>.tab-content{
+    margin-top: 12em;
+}
 }
 
 
 @media only screen and (max-width:660px) {
     .steps-booking-contents {
-        margin-top: 8.6em !important;
         display: flex;
+        top: 5em;
         flex:row;
     }
 }
 @media only screen and (max-width:560px) {
     .steps-booking-contents {
-        margin-top: 9.7em !important;
+        top: 5.8em;
         display: flex;
         flex:row;
     }
 }
 @media only screen and (max-width:478px) {
     .steps-booking-contents {
-        margin-top: 11em !important;
+        top: 6.5em;
         display: flex;
         flex:row;
     }
@@ -862,7 +867,7 @@ font-weight: 700;
 }
 @media only screen and (max-width:400px) {
     .steps-booking-contents {
-        margin-top: 10.5em !important;
+        top: 6em;
         display: flex;
         flex:row;
     }

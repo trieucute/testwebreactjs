@@ -545,6 +545,10 @@ margin-left: 0%;
   font-size: 13px;
   padding: 8px 11px;
 }
+.tripDrivers .pagination li a {
+  font-size: 13px;
+  padding: 8px 11px;
+}
 /* .right__container>p{
 text-align: center;
 } */
@@ -559,6 +563,10 @@ bottom: 100%;
   padding: 9px 5px;
 }
 .updateInfor-container .pagination li a {
+  font-size: 12px;
+  padding: 8px 6px;
+}
+.tripDrivers .pagination li a {
   font-size: 12px;
   padding: 8px 6px;
 }

@@ -255,7 +255,7 @@ useEffect(() => {
       ) : (
         <>
    {showNotifi &&  <Notification message={notificationMessage} />}
-          <div className='tripAdmin-container'>
+          <div className='tripAdmin-container tripDrivers'>
             <h3 className='h3-admin'>Lịch trình chuyến xe</h3>
             <div className='row mx-0 my-2'>
               {/* <div className='col ps-0 '>

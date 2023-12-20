@@ -1187,19 +1187,19 @@ useEffect(()=>{
                                         <div className='d-flex justify-content-between px-3 pb-2'>
                                         <ul class="nav nav-tabs mb-1 row-mobile" id="pills-tab" role="tablist">
                                             <li class="nav-item col-mobile" role="presentation">
-                                              <button class="nav-link active" id="pills-main-tab" data-bs-toggle="pill" data-bs-target="#pills-main" type="button" role="tab" aria-controls="pills-main" aria-selected="true">Chính sách</button>
+                                              <button class="nav-link active" id="pills-main2-tab" data-bs-toggle="pill" data-bs-target="#pills-main2" type="button" role="tab" aria-controls="pills-main2" aria-selected="true">Chính sách</button>
                                             </li>
                                             <li class="nav-item col-mobile" role="presentation">
-                                              <button class="nav-link" id="pills-car-tab" data-bs-toggle="pill" data-bs-target="#pills-car" type="button" role="tab" aria-controls="pills-car" aria-selected="false">Hình ảnh xe</button>
+                                              <button class="nav-link" id="pills-car2-tab" data-bs-toggle="pill" data-bs-target="#pills-car2" type="button" role="tab" aria-controls="pills-car2" aria-selected="false">Hình ảnh xe</button>
                                             </li>
                                             <li class="nav-item col-mobile" role="presentation">
-                                              <button class="nav-link" id="pills-location-tab" data-bs-toggle="pill" data-bs-target="#pills-location" type="button" role="tab" aria-controls="pills-location" aria-selected="false">Điểm đón trả</button>
+                                              <button class="nav-link" id="pills-location2-tab" data-bs-toggle="pill" data-bs-target="#pills-location2" type="button" role="tab" aria-controls="pills-location2" aria-selected="false">Điểm đón trả</button>
                                             </li>
                                             <li class="nav-item col-mobile" role="presentation">
-                                              <button class="nav-link" id="pills-utilities-tab" data-bs-toggle="pill" data-bs-target="#pills-utilities" type="button" role="tab" aria-controls="pills-utilities" aria-selected="false">Tiện ích</button>
+                                              <button class="nav-link" id="pills-utilities2-tab" data-bs-toggle="pill" data-bs-target="#pills-utilities2" type="button" role="tab" aria-controls="pills-utilities2" aria-selected="false">Tiện ích</button>
                                             </li>
                                             <li class="nav-item col-mobile" role="presentation">
-                                              <button class="nav-link" id="pills-star-tab" data-bs-toggle="pill" data-bs-target="#pills-star" type="button" role="tab" aria-controls="pills-star" aria-selected="false">Đánh giá</button>
+                                              <button class="nav-link" id="pills-star2-tab" data-bs-toggle="pill" data-bs-target="#pills-star2" type="button" role="tab" aria-controls="pills-star2" aria-selected="false">Đánh giá</button>
                                             </li>
                                           </ul>
                                           <span className='pe-1' id='close-infor' style={{cursor:"pointer"}}  onClick={showInforne}>
@@ -1209,7 +1209,7 @@ useEffect(()=>{
                                                 </span>
                                             </div>
                                           <div class="tab-content" id="pills-tabContent">
-                                       <div class="tab-pane px-1 fade show active" id="pills-main" role="tabpanel" aria-labelledby="pills-main-tab">
+                                       <div class="tab-pane px-1 fade show active" id="pills-main2" role="tabpanel" aria-labelledby="pills-main2-tab">
                                           <div className='row overflow-auto infor-bus-content' style={{width:"95%", margin:"0 auto"}}>
                                                 <div className='items_infor_bus_router '>
                                                     <h6>Chính sách huỷ vé</h6>
@@ -1271,14 +1271,14 @@ useEffect(()=>{
                                                 </div>
                                            </div>
                                            </div>
-                                           <div class="tab-pane fade" id="pills-star" role="tabpanel" aria-labelledby="pills-star-tab">
+                                           <div class="tab-pane fade" id="pills-star2" role="tabpanel" aria-labelledby="pills-star2-tab">
                                            {tripDetail && tripDetail.car &&
                                                   <Comments id={tripDetail.car.id}/>
                                            
                                          
                                           }
                                             </div>
-                                            <div class="tab-pane fade" id="pills-utilities" role="tabpanel" aria-labelledby="pills-utilities-tab">
+                                            <div class="tab-pane fade" id="pills-utilities2" role="tabpanel" aria-labelledby="pills-utilities2-tab">
                                               <div className='utilities-contents px-3'>
                                                 <div className='row mx-0 flex-column items-utilities my-2'>
                                                   <div className='col text-main-item'><i class="fas fa-language"></i>Nhân viên sử dụng tiếng anh</div>
@@ -1308,7 +1308,7 @@ useEffect(()=>{
                                                 </div>
                                               </div>
                                             </div>
-                                            <div class="tab-pane fade" id="pills-car" role="tabpanel" aria-labelledby="pills-car-tab">
+                                            <div class="tab-pane fade" id="pills-car2" role="tabpanel" aria-labelledby="pills-car2-tab">
                                              <div className='car-container-tabs px-3'>
                                               <div className='row m-0'>
                                                 <div className='col-sm-6'>
@@ -1324,7 +1324,7 @@ useEffect(()=>{
                                               </div>
                                              </div>
                                             </div>
-                                            <div class="tab-pane fade" id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
+                                            <div class="tab-pane fade" id="pills-location2" role="tabpanel" aria-labelledby="pills-location2-tab">
                                              <div className='location-container-tabs px-3'>
                                                     <div className='row' >
                                                       <div className='col col-pick'>

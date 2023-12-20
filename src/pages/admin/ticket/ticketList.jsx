@@ -138,7 +138,7 @@ const [dataDetail, setDataDetail] = useState('')
                         <td>{parseInt(item.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
                         <td>{item.status ==='booked' && 'Đã thanh toán'}
                         {item.status ==='pending' && 'Đang thanh toán'}
-                        {item.status ==='cancelled' && 'Đã huỷ'}
+                        {item.status ==='cancelled' || item.status ==='đã huỷ' ? 'Đã huỷ': ''}
                         </td>
                   
                         <td>
@@ -241,7 +241,7 @@ const [dataDetail, setDataDetail] = useState('')
             <div className='col text-start'>Trạng thái: </div>
             <div className='col text-end'>{dataDetail && dataDetail?.status ==='booked' && 'Đã thanh toán'}
                         {dataDetail && dataDetail?.status ==='pending' && 'Đang thanh toán'}
-                        {dataDetail && dataDetail?.status ==='cancelled' && 'Đã huỷ'}
+                        {dataDetail?.status ==='cancelled' || dataDetail.status ==='đã huỷ' ? 'Đã huỷ': ''}
             
             </div>
         </div>

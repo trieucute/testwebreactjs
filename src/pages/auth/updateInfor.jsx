@@ -373,7 +373,7 @@ const UpdateInfor = () => {
                                 <p style={{ fontWeight: "700" }}>Xe: {item.car.name}</p>
                                 <p>Biển số xe: {item.car.license_plate} </p>
                                 <p>Ghế đã chọn: {item.seat.position}</p>
-                                <p>Trạng thái thanh toán: {item.status==='cancelled' && 'Đã huỷ'} {item.status==='pending' && 'Đang thanh toán'} {item.status==='booked' && 'Đã thanh toán'}</p>
+                                <p>Trạng thái thanh toán: {item.status==='cancelled' || item.status ==='đã huỷ' ? 'Đã huỷ': ''} {item.status==='pending' && 'Đang thanh toán'} {item.status==='booked' && 'Đã thanh toán'}</p>
                                 <p>Trạng thái xe: {item.trip.status}</p>
                                 <p style={{ color: "#FE6531" }}>Tổng tiền: {parseInt(item.seat.price).toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</p>
                                 {/* {isButtonVisible === 'pending' && <button className='cancel' style={{ backgroundColor: "#e2e2e2", color: "#fe6531" }}> Hủy vé</button>} */}
@@ -382,7 +382,7 @@ const UpdateInfor = () => {
                             <div className='buttons'>
                                 {item.status === 'pending' && <button onClick={() => handleCancel(item.id)} className='button' style={{ backgroundColor: "#e2e2e2", color: "#fe6531" }}> Hủy vé</button>}
                               
-                                {item.status === 'cancelled' && ''}
+                                {item.status === 'cancelled' || item.status ==='đã huỷ' ? '': ''}
                                 {item.status === 'booked' && item.trip.status==='Đã đến'  && userCmt &&<button className='button'data-bs-toggle="modal" onClick={() => handleDetailIdCar(item.car.id)}
                                     data-bs-target="#exampleModal" > Đánh giá xe</button>}
                               

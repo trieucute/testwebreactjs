@@ -1169,7 +1169,7 @@ useEffect(()=>{
             <div className=" my-3 ">
           <div className="contents-items-choose container ">
           {showNotifi &&  <Notification message={notificationMessage} />}
-                    <div className='row'>
+                    <div className='row mobile-datve' >
                         <div className="col-md-8  card backWhite-padding" style={{border:"none"}}>
                             <div className='items-contents'>
                                 {/* --------------------------- BƯỚC 1 CHỌN GHẾ---------------------------*/}

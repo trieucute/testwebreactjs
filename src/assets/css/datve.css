@@ -542,7 +542,15 @@ font-weight: 700;
   .Client-information-contents .form-control {
     width: 100%;
 }
+.admin-contents .pagination-contents {
+    margin: 0em;
+    padding: 1em;
+}
+.admin-contents .pagination li a {
 
+    font-size: 14px;
+    padding: 4px 10px;
+}
 .infor_bus_router {
 
     top:4em;
@@ -755,6 +763,11 @@ font-weight: 700;
       }
       .submit-checkbox .text {
         font-size: 0.7em;
+    }
+    .admin-contents .pagination li a {
+  
+        font-size: 12px;
+        padding: 3px 5px;
     }
     /* .infor_bus_router {
         max-height: 680px;

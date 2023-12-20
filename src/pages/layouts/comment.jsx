@@ -26,7 +26,7 @@ const Comments = ({id}) => {
     const dataCmt = useSelector(state => state.comment);
     const data = dataCmt.data?.data || []; // Sử dụng optional chaining để kiểm tra dataCmt.data
   // Lọc các comment có status = 1
-const filteredComments = data.filter(comment => comment.status === 1);
+const filteredComments = data.filter(comment =>parseInt( comment.status) === 1);
 
     useEffect(() => {
       dispatch(fetchCommentDetail(id));

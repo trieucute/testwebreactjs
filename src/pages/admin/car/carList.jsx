@@ -786,7 +786,7 @@ const CarList = () => {
                  
                           <div className='form-group col'>
                             <label htmlFor="">Giá ghế</label>
-                            <input type="number" className='form-control'  placeholder='500.000' name='price' onChange={e=>handleChangeinput(e)}/>
+                            <input type="number" className='form-control'  placeholder='500000' name='price' onChange={e=>handleChangeinput(e)}/>
                           </div>
                           <div className='form-group col'>
                             <label htmlFor="">Loại ghế</label>
@@ -814,7 +814,7 @@ const CarList = () => {
                  
                           <div className='form-group col'>
                             <label htmlFor="">Giá ghế</label>
-                            <input type="number" className='form-control'  placeholder='500.000' name='price' value={editingSeat.price} onChange={e=>handleChangeinputedit(e)}/>
+                            <input type="number" className='form-control'  placeholder='500.000' name='price' value={parseInt(editingSeat.price)} onChange={e=>handleChangeinputedit(e)}/>
                           </div>
                           <div className='form-group col'>
                             <label htmlFor="">Loại ghế</label>

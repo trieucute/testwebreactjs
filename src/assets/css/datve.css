@@ -549,7 +549,7 @@ font-weight: 700;
 .admin-contents .pagination li a {
 
     font-size: 14px;
-    padding: 4px 10px;
+    padding: 4px 10px !important;
 }
 .infor_bus_router {
 
@@ -767,7 +767,7 @@ font-weight: 700;
     .admin-contents .pagination li a {
   
         font-size: 12px;
-        padding: 3px 5px;
+        padding: 3px 5px  !important; 
     }
     /* .infor_bus_router {
         max-height: 680px;

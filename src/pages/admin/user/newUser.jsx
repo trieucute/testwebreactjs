@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosAdmin from "../axois-admin";
+import Notification from "../../NotificationTrip";
 
 const AddNewUser = () => {
   const [userUpdate, setUserUpdate] = useState({});
@@ -15,7 +16,8 @@ const AddNewUser = () => {
   const [errorPhone, setErrorPhone]= useState('')
   const [errorPassword, setErrorPassword]= useState('')
 const [messageSuccess, setMessageSuccess]=useState('')
-
+const [showNotifi, setShowNotifi] = useState(false);
+const [notificationMessage, setNotificationMessage] = useState('');
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewUserData((prevData) => ({
@@ -27,7 +29,14 @@ const [messageSuccess, setMessageSuccess]=useState('')
   const handleAddUser = async (e) => {
     e.preventDefault()
     if(newUserData.name==='' || newUserData.email===''|| newUserData.phone_number===''|| newUserData.role ===''|| newUserData.password===''){
-        alert('Vui lòng nhập đầy đủ thông tin!')
+
+      setNotificationMessage('Vui lòng nhập đầy đủ thông tin!');
+      setShowNotifi(true);
+  
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        setShowNotifi(false);
+      }, 3000);
         return
     }
     try {
@@ -83,6 +92,7 @@ const [messageSuccess, setMessageSuccess]=useState('')
   return (
     <div>
       <div className="addNew-container">
+      {showNotifi &&  <Notification message={notificationMessage} />}
         {/* <h3 className="h3-admin mb-5">Thêm người dùng</h3> */}
         <h3 className="h3-admin mb-4 text-center"> Thêm người dùng</h3>
         <form onSubmit={handleAddUser} className="addNew-contents">

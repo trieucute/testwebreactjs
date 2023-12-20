@@ -51,7 +51,7 @@ const UserList = () => {
       try {
         await axiosAdmin.delete(`/user/${userId}`);
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-        alert("Xóa thành công");
+        // alert("Xóa thành công");
         await fetchUsers();
       } catch (error) {
         console.error("Error deleting user:", error);

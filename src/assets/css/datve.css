@@ -795,11 +795,8 @@ font-weight: 700;
     .mobile-datve{
         display: none;
     }
-    .steps-booking-contents {
-        margin-top: 9em !important;
-        display: flex;
-        flex:row;
-    }
+;
+    
         .steps-booking-contents .nav-item{
         width: 25%;
         padding: 10px 0;
@@ -814,35 +811,17 @@ font-weight: 700;
     background-color: transparent;
     border: none;
 }
-.infor_bus_router {
-    top: 15em;
-}
+
 .tab-content .fade.tab-pane.active.show{
     display: block;
 }
 }
 
 
-@media only screen and (max-width:660px) {
-    .steps-booking-contents {
-        margin-top: 8.6em !important;
-        display: flex;
-        flex:row;
-    }
-}
-@media only screen and (max-width:560px) {
-    .steps-booking-contents {
-        margin-top: 9.7em !important;
-        display: flex;
-        flex:row;
-    }
-}
+
+
 @media only screen and (max-width:478px) {
-    .steps-booking-contents {
-        margin-top: 11em !important;
-        display: flex;
-        flex:row;
-    }
+ 
     .steps-booking-contents {
         font-size: 0.7em;
     }
@@ -853,18 +832,4 @@ font-weight: 700;
 
         
 }
-}
-@media only screen and (max-width:400px) {
-    .steps-booking-contents {
-        margin-top: 10.5em !important;
-        display: flex;
-        flex:row;
-    }
-}
-@media only screen and (max-width:388px) {
-    .steps-booking-contents {
-        margin-top: 10em !important;
-        display: flex;
-        flex:row;
-    }
 }

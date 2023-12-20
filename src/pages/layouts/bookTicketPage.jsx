@@ -254,7 +254,30 @@ useEffect(()=>{
               <Loading/>
       ) : (
         <>
-      <Tabs
+     
+        <form action="">
+        <div className='routes-bus-container container  ps-0 pe-0'>
+
+                <div className=" d-flex align-items-center" style={{backgroundColor:"white"}}>
+                    <div className='w-25 text-center'><img src={xe2} alt="" style={{width:"65%"}} /></div>
+                    <div className='text-center w-50 ' >
+                        <h5 className='p-0 m-0'>
+                        {tripDetail&& tripDetail.start_station &&  tripDetail.end_station&&(
+                          <>{tripDetail.start_station.province} - {tripDetail.end_station.province}</>
+                        )
+                        }
+                          {/* TP.Hồ Chí Minh - Đà Lạt */}
+                          </h5>
+                        <span className='date_go'> {tripDetail && tripDetail.departure_time&&(
+                                       <>{formatDate( tripDetail.departure_time.split(' ')[0])}</>
+                                      )}
+                        </span>
+                    </div>
+                    <div className='w-25 text-center'><img src={city} alt=""  style={{width:"63%"}} /></div>
+                </div>
+
+            {/* ---------------------------CÁC BƯỚC THỰC HIỆN MUA VÉ TRÊN MOBILE----------------------------*/}
+            <Tabs
         id="controlled-tabs"
         activeKey={key}
         onSelect={(k) => setKey(k)}
@@ -1083,29 +1106,6 @@ useEffect(()=>{
                         </div>
         </Tab>
       </Tabs>
-        <form action="">
-        <div className='routes-bus-container container  ps-0 pe-0'>
-
-                <div className=" d-flex align-items-center" style={{backgroundColor:"white"}}>
-                    <div className='w-25 text-center'><img src={xe2} alt="" style={{width:"65%"}} /></div>
-                    <div className='text-center w-50 ' >
-                        <h5 className='p-0 m-0'>
-                        {tripDetail&& tripDetail.start_station &&  tripDetail.end_station&&(
-                          <>{tripDetail.start_station.province} - {tripDetail.end_station.province}</>
-                        )
-                        }
-                          {/* TP.Hồ Chí Minh - Đà Lạt */}
-                          </h5>
-                        <span className='date_go'> {tripDetail && tripDetail.departure_time&&(
-                                       <>{formatDate( tripDetail.departure_time.split(' ')[0])}</>
-                                      )}
-                        </span>
-                    </div>
-                    <div className='w-25 text-center'><img src={city} alt=""  style={{width:"63%"}} /></div>
-                </div>
-
-            {/* ---------------------------CÁC BƯỚC THỰC HIỆN MUA VÉ TRÊN MOBILE----------------------------*/}
-
                 {/* <div className='steps-booking-contents'>
                 <div className='row align-items-center p-2' style={{margin:"0 auto", width:"98%"}}>
                     <div className='col text-center tabs-step active-step' data-tabs="step1">

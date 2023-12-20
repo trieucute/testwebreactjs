@@ -7,6 +7,7 @@ import down from "../../assets/images/push-down.png";
 import check from "../../assets/images/check.png";
 import qr from "../../assets/images/QR.png";
 import { API_BASE_URL, TimeHM } from "../../config";
+import axiosClient from "../../axios-client";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,6 +21,7 @@ const CompletlyPayment = () => {
   const [user, setUser] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [bill, setBill] = useState(null);
+  const [idTrip, setIdTrip] = useState('');
   const [status, setStatus] = useState(STATUS.PENDING);
   const first = useRef(false);
   const slide = () =>
@@ -67,8 +69,16 @@ const CompletlyPayment = () => {
       if (resp.status === 200) {
         console.log(jsonData);
         setUser(jsonData?.data?.bill?.tickets[0]?.user);
-        setTickets(jsonData.data.bill.tickets);
+        setTickets(jsonData.data);
+        // setIdTrip(jsonData?.data.trip.id)
+
+        axiosClient.get(`/trip/${jsonData?.data.trip.id}`)
+        .then(res=>{
+          console.log(res);
+          setIdTrip(res.data.data)
+        })
         setBill(jsonData.data.bill);
+
         setStatus(jsonData.success ? STATUS.SUCCESS : STATUS.FAIL);
       }
       first.current = false;
@@ -128,6 +138,7 @@ const CompletlyPayment = () => {
           </p>
           {/*------------------------ {/* thông tin * /} ---------------*/}
         </div>
+        
         <div className="my-4">
           <h3 className="title__ticket__infor mb-4">Thông tin mua vé</h3>
           <div className="ticket__infor row justify-content-between">
@@ -205,7 +216,7 @@ const CompletlyPayment = () => {
                           className="col-sm-8 ticket__code p-0 text-center mb-2"
                           sty
                         >
-                          Mã vé {val.code}
+                          Mã vé {val.code_tickets}
                         </h5>
                         <div
                           className="col  text-end ps-0"

@@ -58,8 +58,8 @@ const BookTicketPage = () => {
 
 
       useEffect(()=>{
-        // tabsStepMobile();
-        // showInforBus();
+        tabsStepMobile();
+        showInforBus();
         chairChooseGoAndBack();
       },[])
     return (

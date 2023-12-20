@@ -14,56 +14,15 @@ import { useStateContext } from '../../context/ContextProvider';
 import Loading from '../loadingTrip';
 import { postPayment, setFormData, setUserData } from '../../reduxTool/dataTicketSlice';
 import Comments from './comment';
+import { tabsStepMobile } from '../../assets/js/bookTicketPage';
 
 
 
 const BookTicketPageSingle  = () => {
 
 
-    const tabsStepMobile = () => {
-        const tabs = document.querySelectorAll(".tabs-step");
-        const butNext = document.querySelectorAll(".button_step");
-        const content = document.querySelectorAll(".items-choose");
-      
-        const openTabs = (e) => {
-          const btn = e.currentTarget;
-          const dataTab = btn.dataset.tabs;
 
-          const dataNext = btn.dataset.next;
-      
-          content.forEach((el) => {
-            el.classList.remove("active-step-item");
-          });
-          tabs.forEach((el) => {
-            el.classList.remove("active-step");
-          });
-      
-          if (dataTab) {
-            document.querySelector("#" + dataTab).classList.add("active-step-item");
-            btn.classList.add("active-step");
-          }
-      
-          if (dataNext) {
-            document.querySelector("#" + dataNext).classList.add("active-step-item");
-            const id = document.querySelector('.active-step-item').getAttribute("id");
-            document.querySelectorAll(".tabs-step").forEach((e) => {
-              if (e.dataset.tabs === id) {
-                e.classList.add("active-step");
-              }
-            });
-          }
-      
-      
-        };
-      
-        tabs.forEach((e) => {
-          e.addEventListener("click", openTabs);
-        });
-        butNext.forEach((e) => {
-          e.addEventListener("click", openTabs);
-        });
-   
-      };
+
       const [isInforVisible, setIsInforVisible] = useState(false);
       const showInforne=()=>{
         setIsInforVisible(!isInforVisible)

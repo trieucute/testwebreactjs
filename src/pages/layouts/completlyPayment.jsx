@@ -69,14 +69,9 @@ const CompletlyPayment = () => {
       if (resp.status === 200) {
         console.log(jsonData);
         setUser(jsonData?.data?.bill?.tickets[0]?.user);
-        setTickets(jsonData.data);
-        // setIdTrip(jsonData?.data.trip.id)
-
-        axiosClient.get(`/trip/${jsonData?.data.trip.id}`)
-        .then(res=>{
-          console.log(res);
-          setIdTrip(res.data.data)
-        })
+      
+        setTickets(jsonData.data.bill.tickets);
+        setBill(jsonData.data.bill);
         setBill(jsonData.data.bill);
 
         setStatus(jsonData.success ? STATUS.SUCCESS : STATUS.FAIL);

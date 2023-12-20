@@ -161,7 +161,7 @@ const CarList = () => {
     dispatch(postCarSeat({id:idCar,payload:data}))
     .then(res=>{
       console.log(res);
-      alert("Thêm ghế thành công")
+      // alert("Thêm ghế thành công")
       setDataChair({
         position:'',
         type:'',

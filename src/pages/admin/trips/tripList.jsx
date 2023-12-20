@@ -40,58 +40,6 @@ const TripList = () => {
     })
     },[])
 
-    // Tạo đối tượng Date hiện tại
-const now= new Date();
-
-
-// Tính toán số mili giây cần chờ để đến thời gian 18:15
-const timeUntilDesiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 29, 0, 0) - now;
-
-// Nếu thời gian đã vượt qua thời gian mong muốn, không gửi request
-if (timeUntilDesiredTime > 0) {
-  setTimeout(() => {
-    // Thời gian đã đạt đến 18:15, gửi dữ liệu lên server
-    const postDatas = {
-      departure_time: '2023-12-14 18:00:00', // Format lại thời gian thành ISO string (vd: "2023-12-13 18:00:00")
-      car_id: 1,
-      driver_id: 9,
-      arrival_time: '2023-12-14 23:00:00', // Thời gian đến sau 9 tiếng
-      start_station: 1,
-      end_station: 3,
-      status: 'Chờ khởi hành',
-      pickups: [
-        {
-          time: '19:00',
-          pointId: 1,
-        }
-      ],
-      dropoff: [
-        {
-          time: '20:00', // Thời gian sau 9 tiếng
-          pointId: 7,
-        }
-      ],
-      // Các thông tin khác của postData
-    };
-    console.log('postDatas',postDatas);
-
-    axiosAdmin.post('/trip', postDatas, {
-      headers: {
-        'Content-Type': 'application/json',
- 
-      }
-    })
-    .then(res => {
-      console.log(res,'postne'); 
-    })
-    .catch(e => {
-      console.error(e);
-    });
-  }, timeUntilDesiredTime);
-} else {
-  console.log('Đã vượt qua thời gian 18:18 ngày hôm nay.');
-}
-
     // console.log(trips);
         // tìm kiếm
         const [searchTerm, setSearchTerm] = useState('');
@@ -550,8 +498,12 @@ if (timeUntilDesiredTime > 0) {
               <div className='col text-end'>{dataDetail && dataDetail.car.type}</div>
             </div>
             <div className='row m-0'>
-              <div className='col text-start'>Ngày khởi hành</div>
+              <div className='col text-start'>Thời gian khởi hành</div>
               <div className='col text-end'>{dataDetail && dataDetail.departure_time}</div>
+            </div>
+            <div className='row m-0'>
+              <div className='col text-start'>Thời gian đến</div>
+              <div className='col text-end'>{dataDetail && dataDetail.arrival_time}</div>
             </div>
           </div>
         </div>
@@ -1054,7 +1006,7 @@ if (timeUntilDesiredTime > 0) {
                           <form action="" className='row m-0 ' onSubmit={ handleSubmitUpdatePointStart}>
                             <div className='form-group w-50'>
                               <label htmlFor="">Điểm đón</label>
-                              <input type="text"  value={pointStartEdit.point_id}/>
+                              {/* <input type="text"  value={pointStartEdit.point_id}/> */}
                               <select id="" className='form-select' name="point_id" value={pointStartEdit.point_id} onChange={handleChangeinputedit} >
                               <option value=''>Chọn điểm đón</option>
                                 {dataDetail && nameStart&& nameStart.map(i=>(
@@ -1152,7 +1104,7 @@ if (timeUntilDesiredTime > 0) {
                           <form action="" className='row m-0 '  onSubmit={ handleSubmitUpdatePointEnd}>
                             <div className='form-group w-50'>
                               <label htmlFor="">Điểm đón</label>
-                              <input type="text"  value={pointEndEdit.point_id}/>
+                              {/* <input type="text"  value={pointEndEdit.point_id}/> */}
                               <select id="" className='form-select' name="point_id" value={pointEndEdit.point_id} onChange={handleChangeinputeditEnd} >
                               <option value=''>Chọn điểm đón</option>
                                 {dataDetail &&  nameEnd&&  nameEnd.map(i=>(

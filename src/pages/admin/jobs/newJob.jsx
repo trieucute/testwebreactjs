@@ -11,7 +11,7 @@ const AddNewJob = () => {
   const [salary, setSalary] = useState('');
   const [status, setStatus] = useState('');
   const [description, setDescription] = useState('');
-
+  const [message, setMessage]=useState(null)
   const [loading, setLoading] = useState('');
   const [showNotifi, setShowNotifi] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -50,6 +50,7 @@ const AddNewJob = () => {
       setSalary('');
       setStatus('');
       setDescription('');
+      setMessage('Thêm mới thành công')
       setLoading(false)
     } catch (error) {
       setLoading(false);
@@ -120,6 +121,17 @@ const AddNewJob = () => {
             </div>
             <div className='form-group mt-3 w-100'><button className='btn-add' type="submit">Thêm mới</button></div>
           </div>
+          {message && <>
+                                <div className="form-group"  style={{
+                                                color: "rgb(230, 57, 70)",
+                                                fontWeight: "700",
+                                                marginTop: 5,
+                                                fontSize: "0.8em",
+                                                textAlign: "left",
+                                            }}>
+                                    {message}
+                                </div>
+                            </>}
         </form>
       </>
 )}

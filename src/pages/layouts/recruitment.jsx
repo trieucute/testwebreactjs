@@ -54,7 +54,7 @@ const  Recruitment= () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = itemListVacancies?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = itemListVacancies?.slice(indexOfFirstItem, indexOfLastItem).filter(i=>parseInt(i.status)===1);
   return (
     <div className='mt-10'>
 <div className="container recruitment-containers ">

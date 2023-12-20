@@ -21,7 +21,7 @@ const UpdateJob = () => {
   const [description, setDescription] = useState('');
 
   const [loading, setLoading] = useState('');
-
+  const [message, setMessage]=useState(null)
   const dispatch = useDispatch()  
   const {jobDetail} = useSelector(state => state.job)
   const itemList = jobDetail.data
@@ -96,6 +96,7 @@ const UpdateJob = () => {
       setLocation('');
       setSalary('');
       setStatus('');
+      setMessage('Cập nhật thành công')
     //   setCreat_at('');
       setDescription('');
       setLoading(false)
@@ -166,6 +167,17 @@ const UpdateJob = () => {
             </div>
             <div className='form-group mt-3 w-100'><button className='btn-add' type="submit">Cập nhật</button></div>
           </div>
+          {message && <>
+                                <div className="form-group"  style={{
+                                                color: "rgb(230, 57, 70)",
+                                                fontWeight: "700",
+                                                marginTop: 5,
+                                                fontSize: "0.8em",
+                                                textAlign: "left",
+                                            }}>
+                                    {message}
+                                </div>
+                            </>}
         </form>
       </>
 )}

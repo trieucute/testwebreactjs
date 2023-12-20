@@ -44,8 +44,8 @@ const Posts= () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = itemList?.slice(indexOfFirstItem, indexOfLastItem).filter(i=>parseInt(i.active)===1);
-  const currentPopularNews = popularNews.filter((item, index) => index < 3)
-  const currentlastestNews = lastestNews.filter((item, index) => index < 3)
+  const currentPopularNews = popularNews.filter(i=>parseInt(i.active)===1).filter((item, index) => index < 3)
+  const currentlastestNews = lastestNews.filter(i=>parseInt(i.active)===1).filter((item, index) => index < 3)
   console.log(currentPopularNews);
   const navigate= useNavigate()
   const handlnewsDetail= (id)=>{
@@ -163,7 +163,7 @@ const Posts= () => {
                     Tin xem nhiều
                   </div>
                   <ul className="list-group list-group-flush">
-                    {currentPopularNews?.filter(i=>parseInt(i.active)===1).map((item, index) => (
+                    {currentPopularNews?.map((item, index) => (
                       <li className="list-group-item " onClick={()=>handlnewsDetail(item.id)} style={{cursor:"pointer"}}>
                         <div className="row m-0 align-items-center">
                           <div className="col-md-auto">
@@ -194,7 +194,7 @@ const Posts= () => {
                     Tin mới
                   </div>
                   <ul className="list-group list-group-flush">
-                    {currentlastestNews?.filter(i=>parseInt(i.active)===1).map((item, index) => (
+                    {currentlastestNews?.map((item, index) => (
                       <li className="list-group-item "onClick={()=>handlnewsDetail(item.id)} style={{cursor:"pointer"}}>
                         <div className="row m-0 align-items-center">
                           <div className="col-md-auto">

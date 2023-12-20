@@ -22,9 +22,9 @@ const PostDetail = () => {
     window.scrollTo(0, 0);
   }, [])
 
-  const currentPopularNews = popularNews.filter((item, index) => index < 3)
-  const currentlastestNews = lastestNews.filter((item, index) => index < 3)
-  const currentRelatedNews = itemList?.filter((item, index) => index < 4)
+  const currentPopularNews = popularNews.filter(i=>parseInt(i.active)===1).filter((item, index) => index < 3)
+  const currentlastestNews = lastestNews.filter(i=>parseInt(i.active)===1).filter((item, index) => index < 3)
+  const currentRelatedNews = itemList?.filter(i=>parseInt(i.active)===1).filter((item, index) => index < 4)
   const navigate= useNavigate()
   const handlnewsDetail= (id)=>{
     // window.load()
@@ -83,7 +83,7 @@ const PostDetail = () => {
                     Tin xem nhiều
                   </div>
                   <ul className="list-group list-group-flush">
-                    {currentPopularNews?.filter(i=>parseInt(i.active)===1).map((item, index) => (
+                    {currentPopularNews?.map((item, index) => (
                       <li className="list-group-item " onClick={()=>handlnewsDetail(item.id)} style={{cursor:"pointer"}}>
                         <div className="row m-0 align-items-center">
                           <div className="col-md-auto">
@@ -115,7 +115,7 @@ const PostDetail = () => {
                     Tin mới
                   </div>
                   <ul className="list-group list-group-flush">
-                    {currentlastestNews?.filter(i=>parseInt(i.active)===1).map((item, index) => (
+                    {currentlastestNews?.map((item, index) => (
                       <li className="list-group-item " onClick={()=>handlnewsDetail(item.id)} style={{cursor:"pointer"}}>
                         <div className="row m-0 align-items-center">
                           <div className="col-md-auto">
@@ -143,7 +143,7 @@ const PostDetail = () => {
           <div className="container backWhite-padding">
             <h3 className="text-uppercase">Tin Tức Liên Quan</h3>
             <div className="row m-0 justify-content-between">
-              {currentRelatedNews?.filter(i=>parseInt(i.active)===1).map((item, index) => (
+              {currentRelatedNews?.map((item, index) => (
                 <div className="items-relate-news col-xl-3 col-lg-3 col-sm-6 ">
                   <a className="card " style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",cursor:"pointer", border: "none" }}  onClick={()=>handlnewsDetail(item.id)} >
                     <img alt=""

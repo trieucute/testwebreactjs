@@ -5,6 +5,7 @@ import { fetchlastest, fetchnews, fetchpopular } from "../../reduxTool/newsSlice
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../loadingTrip";
+import { formatDateNews } from "../../config";
 
 const Posts= () => {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ const Posts= () => {
                       </div>
                       <div className="card-body p-0">
                         <div className="header-news-items my-3 row">
-                          <div className="col col-cmt">
+                          {/* <div className="col col-cmt">
                             <div className="row">
                               <div className="col-md-auto">
                                 <i
@@ -87,7 +88,7 @@ const Posts= () => {
                               </div>
                               <div className="col-md-auto text-start">2 Comments</div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="col col-star">
                             <div className="row">
                               <div className="col-md-auto text-start">
@@ -100,7 +101,7 @@ const Posts= () => {
                             </div>
                           </div>
                           <div className="col">
-                            <div className="col-md-auto text-start">Dec 05, 2017</div>
+                            <div className="col-md-auto text-start">{formatDateNews(item.created_at)}</div>
                           </div>
                           <div className="col text-end">
                             <button className="btn btn-shareFB">

@@ -438,7 +438,7 @@ console.log(admin);
                 </div>
                 <div className='row'>
                 <div className='col'>Ngày khởi hành</div>
-                <div className='col'>{convertDateFormat( i.trip.departure_time)} </div>
+                <div className='col'>{ i.trip.departure_time} </div>
                 </div>
                 <div className='row'>
                 <div className='col'>Tổng ghế</div>

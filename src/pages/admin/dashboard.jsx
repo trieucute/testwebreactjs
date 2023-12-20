@@ -48,7 +48,7 @@ console.log(admin);
     const fetchTripDataDetail = async () => {
         try {
         const currentDate = new Date();
-        const formattedDate = format(currentDate, 'dd/MM/yyyy');
+        const formattedDate = format(currentDate, 'yyyy-MM-dd');
         // setDay( formattedDate )
         const tripResponse = await axiosAdmin.post('/statisticalTripDetail/trip', {day: formattedDate });
         console.log(tripResponse.data.data );

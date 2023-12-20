@@ -312,7 +312,7 @@ return
            <select  id=""     className='form-select' name="car_id" value={idCar} onChange={e=>setIdCar(e.target.value)}>
            <option value="">Chọn xe</option>
            {carData && carData
-           .filter(i=>i.status===1)
+           .filter(i=>parseInt(i.status)===1)
            .map(i=>(
                <option value={i.id}>{i.name} ({i.license_plate}) - {i.type}</option>
 

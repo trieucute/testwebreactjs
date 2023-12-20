@@ -42,7 +42,7 @@ const Payment = () => {
     const jsonData = await resp.json();
     if (resp.status == 200) {
       window.location.assign(
-        `https://deece.vn/dathanhtoan/qr/?code_bill=${data.code_bill}&total=${data.vnp_Amount}`
+        `https://ticketproweb-peach.vercel.app/dathanhtoan/qr/?code_bill=${data.code_bill}&total=${data.vnp_Amount}`
       );
       // window.location.assign(
       //   `http://localhost:3000/dathanhtoan/qr/?code_bill=${data.code_bill}&total=${data.vnp_Amount}`

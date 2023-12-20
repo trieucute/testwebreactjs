@@ -30,7 +30,7 @@ import ReactPaginate from 'react-paginate';
        const {admin}= useStateContext()
     const [topTrip, setTopTrip]= useState('')
     const [detailTrip, setDetailTrip]= useState([])
-console.log(admin);
+// console.log(admin);
     // const [day,setDay]= useState('')
     const [status, setStatus]=useState('')
     const fetchTripData = async () => {
@@ -154,7 +154,7 @@ console.log(admin);
         { angle: statistics.revenue?.monthly || 0, label: `Hàng tháng `, color: '#4339B4' },
     ];
     // bieu đồ lượng sóngg
-console.log(admin);
+// console.log(admin);
     return (
         <div className='dashboard-admin'>
 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>

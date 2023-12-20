@@ -27,7 +27,7 @@ if(tokenDriver ){
     })
     .then((res=>{
       console.log(res);
-      setDriver(res.data)
+      setDriver(res.data.data)
       navigate('/driver/dashboard');
     }))
     .catch((res=>{

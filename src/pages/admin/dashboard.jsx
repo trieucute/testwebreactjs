@@ -72,7 +72,7 @@ console.log(admin);
     const handleSubmitTrip= async (e) => {
       e.preventDefault()
       const currentDate = new Date();
-      const formattedDate = format(currentDate, 'dd/MM/yyyy');
+      const formattedDate = format(currentDate, 'yyyy-MM-dd');
     //   setDay( formattedDate )
       const data={
         day:formattedDate ,

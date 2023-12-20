@@ -48,7 +48,7 @@ const TripOfDriver = () => {
 
   // tìm kiếm
   const [searchTerm, setSearchTerm] = useState('');
-  const [perPage] = useState(3); // Số lượng xe hiển thị mỗi trang
+  const [perPage] = useState(10); // Số lượng xe hiển thị mỗi trang
   const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
   // const [pageCount, setPageCount] = useState(0); // Initialize pageCount state
   const offset = pageNumber * perPage;

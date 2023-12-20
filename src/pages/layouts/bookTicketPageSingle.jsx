@@ -22,7 +22,9 @@ const BookTicketPageSingle  = () => {
 
 
 
-
+useEffect(()=>{
+  tabsStepMobile()
+},[])
       const [isInforVisible, setIsInforVisible] = useState(false);
       const showInforne=()=>{
         setIsInforVisible(!isInforVisible)

@@ -57,7 +57,7 @@ const AddNewTrip = () => {
     },[])
     const stationData= station?.data.data;
     const carData= car?.data.data;
-
+     console.log('carData:', carData);
     
     useEffect(() => {
       console.log('idStationStart:', idStationStart);
